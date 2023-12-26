@@ -10,5 +10,5 @@
 
 #Как установить
 
-		composer require atispro/emt-php8
+	composer require atispro/emt-php8
 
