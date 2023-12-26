@@ -14,16 +14,17 @@
 
 ## Как использовать
 
-	<?php
+```php
+<?php
 
-	$html = "<div>HTML-код, который надо оттипографить</div>";
+$html = "<div>HTML-код, который надо оттипографить</div>";
 
-	/* опции здесь опциональны и приведены для примера */
-	$options = array(
-		'OptAlign.all'=>'off',
-		//'Etc.split_number_to_triads'=>'off',
-		'Text.paragraphs'=>'off',
-		'Space.bracket_fix'=>'off',
-		);
+/* опции здесь опциональны и приведены для примера */
+$options = array(
+	'OptAlign.all'=>'off',
+	//'Etc.split_number_to_triads'=>'off',
+	'Text.paragraphs'=>'off',
+	'Space.bracket_fix'=>'off',
+	);
 
-	$html = EMT\EMTypograph::fast_apply($html,$options);
+$html = EMT\EMTypograph::fast_apply($html,$options);
