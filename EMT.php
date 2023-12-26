@@ -10,6 +10,8 @@ AT / atis.pro
 26.12.23
 */
 
+namespace EMT;
+
 class EMT_Lib
 {
 	const LAYOUT_STYLE = 1;
