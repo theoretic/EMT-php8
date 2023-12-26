@@ -11,5 +11,10 @@
 			"email": "info@atis.pro"
 		}
 	],
-	"minimum-stability": "dev"
+	"minimum-stability": "dev",
+	"autoload": {
+		"psr-4": {
+			"EMT\\": ""
+		}
+	}
 }

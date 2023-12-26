@@ -8,7 +8,8 @@
 - изменено правило mdash_symbol_to_html_mdash (теперь символ &mdash; должен быть окружён пробелами)
 - добавлено правило double_minus_to_html_mdash (последовательность " -- " заменяется на " &mdash; ")
 
-#Как установить
+## Как установить
 
 	composer require atispro/emt-php8
 
+##
