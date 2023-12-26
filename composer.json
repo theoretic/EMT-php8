@@ -3,11 +3,13 @@
 	"description": "EMT typograf compatible with php8+",
 	"type": "library",
 	"require": {
+		"php": ">=7.3.0"
 	},
 	"authors": [
 		{
 			"name": "atis.pro",
 			"email": "info@atis.pro"
 		}
-	]
+	],
+	"minimum-stability": "dev"
 }
