@@ -1,0 +1,13 @@
+{
+	"name": "atispro/emt-php8",
+	"description": "EMT typograf compatible with php8+",
+	"type": "library",
+	"require": {
+	},
+	"authors": [
+		{
+			"name": "atis.pro",
+			"email": "info@atis.pro"
+		}
+	]
+}
