@@ -7,7 +7,7 @@
 
 php8 version
 AT / atis.pro
-26.12.23
+27.12.23
 */
 
 namespace EMT;
@@ -23,49 +23,48 @@ class EMT_Lib
 	 *
 	 * @var array
 	 */
-	public static $_charsTable = array(
-		'"' 	=> array('html' => array('&laquo;', '&raquo;', '&rdquo;', '&lsquo;', '&bdquo;', '&ldquo;', '&quot;', '&#171;', '&#187;'),
-					 	 'utf8' => array(0x201E, 0x201C, 0x201F, 0x201D, 0x00AB, 0x00BB)),
-		' ' 	=> array('html' => array('&nbsp;', '&thinsp;', '&#160;'),
-					 	 'utf8' => array(0x00A0, 0x2002, 0x2003, 0x2008, 0x2009)),
-		'-' 	=> array('html' => array(/*'&mdash;',*/ '&ndash;', '&minus;', '&#151;', '&#8212;', '&#8211;'),
-					 	 'utf8' => array(0x002D, /*0x2014,*/ 0x2010, 0x2012, 0x2013)),
-		'—' 	=> array('html' => array('&mdash;'),
-					 	 'utf8' => array(0x2014)),
-		'==' 	=> array('html' => array('&equiv;'),
-						 'utf8' => array(0x2261)),
-		'...' 	=> array('html' => array('&hellip;', '&#0133;'),
-						 'utf8' => array(0x2026)),
-		'!=' 	=> array('html' => array('&ne;', '&#8800;'),
-						 'utf8' => array(0x2260)),
-		'<=' 	=> array('html' => array('&le;', '&#8804;'),
-						 'utf8' => array(0x2264)),
-		'>=' 	=> array('html' => array('&ge;', '&#8805;'),
-						 'utf8' => array(0x2265)),
-		'1/2' 	=> array('html' => array('&frac12;', '&#189;'),
-						 'utf8' => array(0x00BD)),
-		'1/4' 	=> array('html' => array('&frac14;', '&#188;'),
-						'utf8' => array(0x00BC)),
-		'3/4' 	=> array('html' => array('&frac34;', '&#190;'),
-						 'utf8' => array(0x00BE)),
-		'+-' 	=> array('html' => array('&plusmn;', '&#177;'),
-						 'utf8' => array(0x00B1)),
-		'&' 	=> array('html' => array('&amp;', '&#38;')),
-		'(tm)' 	=> array('html' => array('&trade;', '&#153;'),
-						 'utf8' => array(0x2122)),
-		//'(r)' 	=> array('html' => array('<sup>&reg;</sup>', '&reg;', '&#174;'), 
-		'(r)' 	=> array('html' => array('&reg;', '&#174;'), 
-						 'utf8' => array(0x00AE)),
-		'(c)' 	=> array('html' => array('&copy;', '&#169;'), 
-						'utf8' => array(0x00A9)),
-		'§' 	=> array('html' => array('&sect;', '&#167;'), 
-						'utf8' => array(0x00A7)),
-		'`' 	=> array('html' => array('&#769;')),
-		'\'' 	=> array('html' => array('&rsquo;', '’')),
-		'x' 	=> array('html' => array('&times;', '&#215;'), 
-						'utf8' => array('×') /* какой же у него может быть код? */),
-
-	);
+	public static $_charsTable = [
+		'"' 	=> ['html' => ['&laquo;', '&raquo;', '&rdquo;', '&lsquo;', '&bdquo;', '&ldquo;', '&quot;', '&#171;', '&#187;'],
+					 	 'utf8' => [0x201E, 0x201C, 0x201F, 0x201D, 0x00AB, 0x00BB]],
+		' ' 	=> ['html' => ['&nbsp;', '&thinsp;', '&#160;'],
+					 	 'utf8' => [0x00A0, 0x2002, 0x2003, 0x2008, 0x2009]],
+		'-' 	=> ['html' => [/*'&mdash;',*/ '&ndash;', '&minus;', '&#151;', '&#8212;', '&#8211;'],
+					 	 'utf8' => [0x002D, /*0x2014,*/ 0x2010, 0x2012, 0x2013]],
+		'—' 	=> ['html' => ['&mdash;'],
+					 	 'utf8' => [0x2014]],
+		'==' 	=> ['html' => ['&equiv;'],
+						 'utf8' => [0x2261]],
+		'...' 	=> ['html' => ['&hellip;', '&#0133;'],
+						 'utf8' => [0x2026]],
+		'!=' 	=> ['html' => ['&ne;', '&#8800;'],
+						 'utf8' => [0x2260]],
+		'<=' 	=> ['html' => ['&le;', '&#8804;'],
+						 'utf8' => [0x2264]],
+		'>=' 	=> ['html' => ['&ge;', '&#8805;'],
+						 'utf8' => [0x2265]],
+		'1/2' 	=> ['html' => ['&frac12;', '&#189;'],
+						 'utf8' => [0x00BD]],
+		'1/4' 	=> ['html' => ['&frac14;', '&#188;'],
+						'utf8' => [0x00BC]],
+		'3/4' 	=> ['html' => ['&frac34;', '&#190;'],
+						 'utf8' => [0x00BE]],
+		'+-' 	=> ['html' => ['&plusmn;', '&#177;'],
+						 'utf8' => [0x00B1]],
+		'&' 	=> ['html' => ['&amp;', '&#38;']],
+		'(tm)' 	=> ['html' => ['&trade;', '&#153;'],
+						 'utf8' => [0x2122]],
+		//'(r)' 	=> ['html' => ['<sup>&reg;</sup>', '&reg;', '&#174;'], 
+		'(r)' 	=> ['html' => ['&reg;', '&#174;'], 
+						 'utf8' => [0x00AE]],
+		'(c)' 	=> ['html' => ['&copy;', '&#169;'], 
+						'utf8' => [0x00A9]],
+		'§' 	=> ['html' => ['&sect;', '&#167;'], 
+						'utf8' => [0x00A7]],
+		'`' 	=> ['html' => ['&#769;']],
+		'\'' 	=> ['html' => ['&rsquo;', '’']],
+		'x' 	=> ['html' => ['&times;', '&#215;'], 
+						'utf8' => ['×'] /* какой же у него может быть код? */],
+	];
 	/**
 	 * Добавление к тегам атрибута 'id', благодаря которому
 	 * при повторном типографирование текста будут удалены теги,
@@ -123,11 +122,11 @@ class EMT_Lib
 	 */
 	public static function clear_special_chars($text, $mode = null)
 	{
-		if(is_string($mode)) $mode = array($mode);
-		if(is_null($mode)) $mode = array('utf8', 'html');
+		if(is_string($mode)) $mode = [$mode];
+		if(is_null($mode)) $mode = ['utf8', 'html'];
 		if(!is_array($mode)) return false;
-		$moder = array();
-		foreach($mode as $mod) if(in_array($mod, array('utf8','html'))) $moder[] = $mod;
+		$moder = [];
+		foreach($mode as $mod) if(in_array($mod, ['utf8','html'])) $moder[] = $mod;
 		if(count($moder)==0) return false;
 
 		foreach (self::$_charsTable as $char => $vals) 
@@ -174,11 +173,11 @@ class EMT_Lib
 		{
 			if (is_string($allowableTag)) 
 			{
-				$allowableTag = array($allowableTag);
+				$allowableTag = [$allowableTag];
 			}
 			if (is_array($allowableTag))
 			{
-				$tags = array();
+				$tags = [];
 				foreach ($allowableTag as $tag) 
 				{
 					if ('<' !== substr($tag, 0, 1) || '>' !== substr($tag, -1, 1)) continue;
@@ -188,7 +187,7 @@ class EMT_Lib
 				$ignore = implode('', $tags);
 			}
 		}
-		$text = preg_replace(array('/\<br\s*\/?>/i', '/\<\/p\>\s*\<p\>/'), array("\n","\n\n"), $text);
+		$text = preg_replace(['/\<br\s*\/?>/i', '/\<\/p\>\s*\<p\>/'], ["\n","\n\n"], $text);
 		$text = strip_tags($text, $ignore);
 		return $text;
 	}
@@ -241,7 +240,7 @@ class EMT_Lib
 	* @param 	array $attribute список атрибутов, где ключ - имя атрибута, а значение - само значение данного атрибута
 	* @return 	string
 	*/
-	public static function build_safe_tag($content, $tag = 'span', $attribute = array(), $layout = EMT_Lib::LAYOUT_STYLE )
+	public static function build_safe_tag($content, $tag = 'span', $attribute = [], $layout = EMT_Lib::LAYOUT_STYLE)
 	{
 		$htmlTag = $tag;
 
@@ -337,7 +336,7 @@ class EMT_Lib
 				}
 			}
 			if($m === false) return false;
-			return array('pos' => $m, 'str' => $w);
+			return ['pos' => $m, 'str' => $w];
 		}
 		return strpos($haystack, $needle, $offset);
 	}
@@ -355,25 +354,25 @@ class EMT_Lib
 	}
 	public static function strtolower($string)
 	{ 
-		$convert_to = array( 
+		$convert_to = [ 
 			"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", 
 			"v", "w", "x", "y", "z", "à", "á", "â", "ã", "ä", "å", "æ", "ç", "è", "é", "ê", "ë", "ì", "í", "î", "ï", 
 			"ð", "ñ", "ò", "ó", "ô", "õ", "ö", "ø", "ù", "ú", "û", "ü", "ý", "а", "б", "в", "г", "д", "е", "ё", "ж", 
 			"з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", 
 			"ь", "э", "ю", "я" 
-		); 
-		$convert_from = array( 
+		]; 
+		$convert_from = [ 
 			"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", 
 			"V", "W", "X", "Y", "Z", "À", "Á", "Â", "Ã", "Ä", "Å", "Æ", "Ç", "È", "É", "Ê", "Ë", "Ì", "Í", "Î", "Ï", 
 			"Ð", "Ñ", "Ò", "Ó", "Ô", "Õ", "Ö", "Ø", "Ù", "Ú", "Û", "Ü", "Ý", "А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", 
 			"З", "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ъ", 
 			"Ь", "Э", "Ю", "Я" 
-		); 
+		]; 
 
 		return str_replace($convert_from, $convert_to, $string); 
 	} 
 	// взято с http://www.w3.org/TR/html4/sgml/entities.html
-	protected static $html4_char_ents = array(
+	protected static $html4_char_ents = [
 		'nbsp' => 160,
 		'iexcl' => 161,
 		'cent' => 162,
@@ -626,7 +625,7 @@ class EMT_Lib
 		'lsaquo' => 8249,
 		'rsaquo' => 8250,
 		'euro' => 8364,
-	);
+	];
 	/**
 	 * Вернуть уникод символ по html entinty
 	 *
@@ -706,21 +705,21 @@ class EMT_Tret {
 	public	$rules;
 	public	$title;
 
-	private	$disabled = array();
-	private	$enabled  = array();
+	private	$disabled = [];
+	private	$enabled  = [];
 	protected $_text= '';
 	public $logging = false;
 	public $logs	= false;
 	public $errors  = false;
 	public $debug_enabled  = false;
-	public $debug_info	= array();
+	public $debug_info	= [];
 
 	private $use_layout = false;
 	private $use_layout_set = false;
 	private $class_layout_prefix = false;
-	public $class_names	= array();
-	public $classes		= array();
-	public $settings		= array();
+	public $class_names	= [];
+	public $classes		= [];
+	public $settings		= [];
 	/**
 	 * Защищенные теги
 	 * 
@@ -741,20 +740,20 @@ class EMT_Tret {
 	private function log($str, $data = null)
 	{
 		if(!$this->logging) return;
-		$this->logs[] = array('info' => $str, 'data' => $data);
+		$this->logs[] = ['info' => $str, 'data' => $data];
 	}
 	private function error($info, $data = null)
 	{
-		$this->errors[] = array('info' => $info, 'data' => $data);
+		$this->errors[] = ['info' => $info, 'data' => $data];
 		$this->log('ERROR: '. $info , $data);
 	}
 	public function debug($place, &$after_text)
 	{
 		if(!$this->debug_enabled) return;
-		$this->debug_info[] = array(
+		$this->debug_info[] = [
 				'place' => $place,
 				'text'  => $after_text,
-			);
+			];
 	}
 
 	/**
@@ -800,7 +799,7 @@ class EMT_Tret {
 	{
 		if(!$name) return false;
 		if(!method_exists($this, $name)) return false;
-		return array($this, $name);
+		return [$this, $name];
 	}
 	private function _pre_parse()
 	{
@@ -847,10 +846,8 @@ class EMT_Tret {
 				if(method_exists($this, $rule['function']))
 				{
 					$this->log("Правило $name", "Используется метод ".$rule['function']." в правиле");
-
-					call_user_func(array($this, $rule['function']));
-					return;
-				} 
+					call_user_func( [$this, $rule['function']] );
+				}
 				if(function_exists($rule['function']))
 				{
 					$this->log("Правило $name", "Используется функция ".$rule['function']." в правиле");
@@ -868,7 +865,7 @@ class EMT_Tret {
 					{
 						$this->log("Правило $name", "Замена с использованием preg_replace_callback с методом ".$rule['function']."");
 
-						$this->_text = preg_replace_callback($rule['pattern'], array($this, $rule['function']), $this->_text);
+						$this->_text = preg_replace_callback($rule['pattern'], [$this, $rule['function']], $this->_text);
 						return;
 					} 
 					if(function_exists($rule['function']))
@@ -902,7 +899,7 @@ class EMT_Tret {
 		}
 
 		$pattern = $rule['pattern'];
-		if(is_string($pattern)) $pattern = array($pattern);
+		if(is_string($pattern)) $pattern = [$pattern];
 		$eval = false;
 		foreach($pattern as $patt)
 		{
@@ -940,7 +937,7 @@ class EMT_Tret {
 				$patt = implode($chr, $preg_arr);
 				$this->thereplacement = $repl;
 				do {
-					$this->_text = preg_replace_callback($patt, array($this, "thereplcallback"), $this->_text);
+					$this->_text = preg_replace_callback($patt, [$this, "thereplcallback"], $this->_text);
 					if(!(isset($rule['cycled']) && $rule['cycled'])) break;
 				} while(preg_match($patt, $this->_text));
 
@@ -962,7 +959,7 @@ class EMT_Tret {
 		$preg_arr[count($preg_arr)-1] = str_replace("e","",$preg_arr[count($preg_arr)-1]);
 		$patt = implode($chr, $preg_arr);
 		$this->thereplacement = $replacement;
-		return preg_replace_callback($patt, array($this, "thereplcallback"), $text);
+		return preg_replace_callback($patt, [$this, "thereplcallback"], $text);
 	}
 	private $thereplacement = "";
 	private function thereplcallback($m)
@@ -974,12 +971,12 @@ class EMT_Tret {
 	}
 	private function _apply($list)
 	{
-		$this->errors = array();
+		$this->errors = [];
 		$this->_pre_parse();
 
 		$this->log("Применяется набор правил", implode(",",$list));
 
-		$rulelist = array();
+		$rulelist = [];
 		foreach($list as $k)
 		{
 			$rule = $this->rules[$k];
@@ -987,7 +984,7 @@ class EMT_Tret {
 			$rule['order'] = isset($rule['order'])? $rule['order'] : 5 ;
 			$rulelist[] = $rule;
 		}
-		//usort($rulelist, array($this, "rule_order_sort"));
+		//usort($rulelist, [$this, "rule_order_sort")];
 
 		foreach($rulelist as $rule)
 		{
@@ -1007,7 +1004,7 @@ class EMT_Tret {
 	 * @param 	array $attribute
 	 * @return 	string
 	 */
-	protected function tag($content, $tag = 'span', $attribute = array())
+	protected function tag($content, $tag = 'span', $attribute = [])
 	{
 		if(isset($attribute['class']))
 		{
@@ -1017,7 +1014,7 @@ class EMT_Tret {
 				if(!$this->is_on('nowrap'))
 				{
 					$tag = "nobr";
-					$attribute = array();
+					$attribute = [];
 					$classname = "";
 				}
 			}
@@ -1137,8 +1134,8 @@ class EMT_Tret {
 	public function set_text(&$text)
 	{
 		$this->_text = &$text;
-		$this->debug_info = array();
-		$this->logs = array();
+		$this->debug_info = [];
+		$this->logs = [];
 	}
 
 	/**
@@ -1150,7 +1147,7 @@ class EMT_Tret {
 	 */
 	public function apply($list = null)
 	{
-		if(is_string($list)) $rlist = array($list);
+		if(is_string($list)) $rlist = [$list];
 		elseif(is_array($list)) $rlist = $list;
 		else $rlist = array_keys($this->rules);
 		$this->_apply($rlist);
@@ -1182,131 +1179,131 @@ class EMT_Tret {
 class EMT_Tret_Abbr extends EMT_Tret
 {
 	public $title = "Сокращения";
-	public $domain_zones = array('ru','ру','com','ком','org','орг', 'уа', 'ua');
-	public $classes = array(
+	public $domain_zones = ['ru','ру','com','ком','org','орг', 'уа', 'ua'];
+	public $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
-			);
-	public $rules = array(
-		'nobr_abbreviation' => array(
+			];
+	public $rules = [
+		'nobr_abbreviation' => [
 				'description'	=> 'Расстановка пробелов перед сокращениями dpi, lpi',
 				'pattern' 		=> '/(\s+|^|\>)(\d+)(\040|\t)*(dpi|lpi)([\s\;\.\?\!\:\(]|$)/i', 
 				'replacement' 	=> '\1\2&nbsp;\4\5'
-			),
-		'nobr_acronym' => array(
+			],
+		'nobr_acronym' => [
 				'description'	=> 'Расстановка пробелов перед сокращениями гл., стр., рис., илл., ст., п.',
 				'pattern' 		=> '/(\s|^|\>|\()(гл|стр|рис|илл?|ст|п|с)\.(\040|\t)*(\d+)(\&nbsp\;|\s|\.|\,|\?|\!|$)/iu', 
 				'replacement' 	=> '\1\2.&nbsp;\4\5'
-			),
-		'nobr_sm_im' => array(
+			],
+		'nobr_sm_im' => [
 				'description'	=> 'Расстановка пробелов перед сокращениями см., им.',
 				'pattern' 		=> '/(\s|^|\>|\()(см|им)\.(\040|\t)*([а-яё0-9a-z]+)(\s|\.|\,|\?|\!|$)/iu', 
 				'replacement' 	=> '\1\2.&nbsp;\4\5'
-			),
-		'nobr_locations' => array(
+			],
+		'nobr_locations' => [
 				'description'	=> 'Расстановка пробелов в сокращениях г., ул., пер., д.',
-				'pattern' 		=> array(
+				'pattern' 		=> [
 						'/(\s|^|\>)(г|ул|пер|просп|пл|бул|наб|пр|ш|туп)\.(\040|\t)*([а-яё0-9a-z]+)(\s|\.|\,|\?|\!|$)/iu', 
 						'/(\s|^|\>)(б\-р|пр\-кт)(\040|\t)*([а-яё0-9a-z]+)(\s|\.|\,|\?|\!|$)/iu', 
 						'/(\s|^|\>)(д|кв|эт)\.(\040|\t)*(\d+)(\s|\.|\,|\?|\!|$)/iu', 
-						),
-				'replacement' 	=> array(
+						],
+				'replacement' 	=> [
 						'\1\2.&nbsp;\4\5',
 						'\1\2&nbsp;\4\5',
 						'\1\2.&nbsp;\4\5',
-						)
-			),
-		'nbsp_before_unit' => array(
+						]
+			],
+		'nbsp_before_unit' => [
 				'description'	=> 'Замена символов и привязка сокращений в размерных величинах: м, см, м2…',
-				'pattern' 		=> array(
+				'pattern' 		=> [
 							'/(\s|^|\>|\&nbsp\;|\,)(\d+)( |\&nbsp\;)?(м|мм|см|дм|км|гм|km|dm|cm|mm)(\s|\.|\!|\?|\,|$|\&plusmn\;|\;|\<)/iu', 
 							'/(\s|^|\>|\&nbsp\;|\,)(\d+)( |\&nbsp\;)?(м|мм|см|дм|км|гм|km|dm|cm|mm)([32]|&sup3;|&sup2;)(\s|\.|\!|\?|\,|$|\&plusmn\;|\;|\<)/iue'
-							),
-				'replacement' 	=> array(
+							],
+				'replacement' 	=> [
 							'\1\2&nbsp;\4\5',
 							'$m[1].$m[2]."&nbsp;".$m[4].($m[5]=="3"||$m[5]=="2"? "&sup".$m[5].";" : $m[5] ).$m[6]'
-							),
-			),
-		'nbsp_before_weight_unit' => array(
+							],
+			],
+		'nbsp_before_weight_unit' => [
 				'description'	=> 'Замена символов и привязка сокращений в весовых величинах: г, кг, мг…',
 				'pattern' 		=> '/(\s|^|\>|\&nbsp\;|\,)(\d+)( |\&nbsp\;)?(г|кг|мг|т)(\s|\.|\!|\?|\,|$|\&nbsp\;|\;)/iu', 
 				'replacement' 	=> '\1\2&nbsp;\4\5',
-			),
-		'nobr_before_unit_volt' => array(
+			],
+		'nobr_before_unit_volt' => [
 				'description'	=> 'Установка пробельных символов в сокращении вольт',
 				'pattern' 		=> '/(\d+)([вВ]| В)(\s|\.|\!|\?|\,|$)/u', 
 				'replacement' 	=> '\1&nbsp;В\3'
-			),
-		'ps_pps' => array(
+			],
+		'ps_pps' => [
 				'description'	=> 'Объединение сокращений P.S., P.P.S.',
 				'pattern' 		=> '/(^|\040|\t|\>|\r|\n)(p\.\040?)(p\.\040?)?(s\.)([^\<])/ie',
-				'replacement' 	=> '$m[1] . $this->tag(trim($m[2]) . " " . ($m[3] ? trim($m[3]) . " " : ""). $m[4], "span",  array("class" => "nowrap") ).$m[5] '
-			),
-		'nobr_vtch_itd_itp'	=> array(
+				'replacement' 	=> '$m[1] . $this->tag(trim($m[2]) . " " . ($m[3] ? trim($m[3]) . " " : ""). $m[4], "span",  ["class" => "nowrap") ].$m[5] '
+			],
+		'nobr_vtch_itd_itp'	=> [
 				'description'	=> 'Объединение сокращений и т.д., и т.п., в т.ч.',
 				'cycled'		=> true,
-				'pattern' 		=> array(
+				'pattern' 		=> [
 						'/(^|\s|\&nbsp\;)и( |\&nbsp\;)т\.?[ ]?д(\.|$|\s|\&nbsp\;)/ue',
 						'/(^|\s|\&nbsp\;)и( |\&nbsp\;)т\.?[ ]?п(\.|$|\s|\&nbsp\;)/ue',
 						'/(^|\s|\&nbsp\;)в( |\&nbsp\;)т\.?[ ]?ч(\.|$|\s|\&nbsp\;)/ue',
-					),
-				'replacement' 	=> array(
-						'$m[1].$this->tag("и т. д.", "span",  array("class" => "nowrap")).($m[3]!="."? $m[3] : "" )',
-						'$m[1].$this->tag("и т. п.", "span",  array("class" => "nowrap")).($m[3]!="."? $m[3] : "" )',
-						'$m[1].$this->tag("в т. ч.", "span",  array("class" => "nowrap")).($m[3]!="."? $m[3] : "" )',
-					)
-			),
-		'nbsp_te'	=> array(
+					],
+				'replacement' 	=> [
+						'$m[1].$this->tag("и т. д.", "span",  ["class" => "nowrap")).($m[3]!="."? $m[3] : "" ]',
+						'$m[1].$this->tag("и т. п.", "span",  ["class" => "nowrap")).($m[3]!="."? $m[3] : "" ]',
+						'$m[1].$this->tag("в т. ч.", "span",  ["class" => "nowrap")).($m[3]!="."? $m[3] : "" ]',
+					]
+			],
+		'nbsp_te'	=> [
 				'description'	=> 'Обработка т.е.',
 				'pattern' 		=> '/(^|\s|\&nbsp\;)([тТ])\.?[ ]?е\./ue',
-				'replacement' 	=> '$m[1].$this->tag($m[2].". е.", "span",  array("class" => "nowrap"))',
-			),
-		'nbsp_money_abbr' => array(
+				'replacement' 	=> '$m[1].$this->tag($m[2].". е.", "span",  ["class" => "nowrap")]',
+			],
+		'nbsp_money_abbr' => [
 				'description'	=> 'Форматирование денежных сокращений (расстановка пробелов и привязка названия валюты к числу)',
 				'pattern' 		=> '/(\d)((\040|\&nbsp\;)?(тыс|млн|млрд)\.?(\040|\&nbsp\;)?)?(\040|\&nbsp\;)?(руб\.|долл\.|евро|€|&euro;|\$|у[\.]? ?е[\.]?)/ieu', 
 				'replacement' 	=> '$m[1].($m[4]?"&nbsp;".$m[4].($m[4]=="тыс"?".":""):"")."&nbsp;".(!preg_match("#у[\\\\.]? ?е[\\\\.]?#iu",$m[7])?$m[7]:"у.е.")',
-			),
-		'nbsp_money_abbr_rev' => array(
+			],
+		'nbsp_money_abbr_rev' => [
 				'description'	=> 'Привязка валюты к числу спереди',
 				'pattern' 		=> '/(€|&euro;|\$)\s?(\d)/iu', 
 				'replacement' 	=> '\1&nbsp;\2'
-			),
-		'nbsp_org_abbr' => array(
+			],
+		'nbsp_org_abbr' => [
 				'description'	=> 'Привязка сокращений форм собственности к названиям организаций',
 				'pattern' 		=> '/([^a-zA-Zа-яёА-ЯЁ]|^)(ООО|ЗАО|ОАО|НИИ|ПБОЮЛ) ([a-zA-Zа-яёА-ЯЁ]|\"|\&laquo\;|\&bdquo\;|<)/u', 
 				'replacement' 	=> '\1\2&nbsp;\3'
-			),
-		'nobr_gost' => array(
+			],
+		'nobr_gost' => [
 				'description'	=> 'Привязка сокращения ГОСТ к номеру',
-				'pattern' 		=> array(
+				'pattern' 		=> [
 						'/(\040|\t|\&nbsp\;|^)ГОСТ( |\&nbsp\;)?(\d+)((\-|\&minus\;|\&mdash\;)(\d+))?(( |\&nbsp\;)(\-|\&mdash\;))?/ieu',
 						'/(\040|\t|\&nbsp\;|^|\>)ГОСТ( |\&nbsp\;)?(\d+)(\-|\&minus\;|\&mdash\;)(\d+)/ieu',
-						),
-				'replacement' 	=> array(
-						'$m[1].$this->tag("ГОСТ ".$m[3].(isset($m[6])?"&ndash;".$m[6]:"").(isset($m[7])?" &mdash;":""),"span", array("class"=>"nowrap"))',
+						],
+				'replacement' 	=> [
+						'$m[1].$this->tag("ГОСТ ".$m[3].(isset($m[6])?"&ndash;".$m[6]:"").(isset($m[7])?" &mdash;":""],"span", ["class"=>"nowrap")]',
 						'$m[1]."ГОСТ ".$m[3]."&ndash;".$m[5]',
-						),
-			),
+						],
+			],
 			/*
-		'nobr_vtch_itd_itp'	=> array(
+		'nobr_vtch_itd_itp'	=> [
 				'description'	=> 'Привязка сокращений до н.э., н.э.',
-				'pattern' 		=> array(
+				'pattern' 		=> [
 
 				//IV в до н.э, в V-VIвв до нэ., третий в. н.э.
 
 						'/(\s|\&nbsp\;)и( |\&nbsp\;)т\.?[ ]?д\./ue',
 						'/(\s|\&nbsp\;)и( |\&nbsp\;)т\.?[ ]?п\./ue',
 						'/(\s|\&nbsp\;)в( |\&nbsp\;)т\.?[ ]?ч\./ue',
-					),
-				'replacement' 	=> array(
-						'$m[1].$this->tag("и т. д.", "span",  array("class" => "nowrap"))',
-						'$m[1].$this->tag("и т. п.", "span",  array("class" => "nowrap"))',
-						'$m[1].$this->tag("в т. ч.", "span",  array("class" => "nowrap"))',
+					],
+				'replacement' 	=> [
+						'$m[1].$this->tag("и т. д.", "span",  ["class" => "nowrap")]',
+						'$m[1].$this->tag("и т. п.", "span",  ["class" => "nowrap")]',
+						'$m[1].$this->tag("в т. ч.", "span",  ["class" => "nowrap")]',
 					)
-			),
+			],
 			*/
 
 
-		);
+		];
 }
 
 /**
@@ -1315,73 +1312,71 @@ class EMT_Tret_Abbr extends EMT_Tret
 class EMT_Tret_Dash extends EMT_Tret
 {
 	public $title = "Дефисы и тире";
-	public $rules = array(
-		'mdash_symbol_to_html_mdash' => array(
-				'description'	=> 'Замена символа тире на html конструкцию',
-				'pattern' 		=> '/ — /iu',
-				'replacement' 	=> ' &mdash; '
-			),
-		'double_minus_to_html_mdash' => array(
+	public $rules = [
+		'double_minus_to_html_mdash' => [
 				'description'	=> 'Замена двойного минуса на html конструкцию',
 				'pattern' 		=> '/ [\-]{2} /iu',
 				'replacement' 	=> ' &mdash; '
-			),
-		'mdash' => array(
+			],
+		'mdash_symbol_to_html_mdash' => [
+				'description'	=> 'Замена символа тире на html конструкцию',
+				'pattern' 		=> '/ — /iu',
+				'replacement' 	=> ' &mdash; '
+			],
+		'mdash' => [
 				'description'	=> 'Тире после кавычек, скобочек, пунктуации',
-				'pattern' 		=> array(
+				'pattern' 		=> [
 						'/([a-zа-яё0-9]+|\,|\:|\)|\&(ra|ld)quo\;|\|\"|\>)(\040|\t)(—|\-|\&mdash\;)(\s|$|\<)/ui', 
 						'/(\,|\:|\)|\")(—|\-|\&mdash\;)(\s|$|\<)/ui', 
-						),
-				'replacement' 	=> array(
+						],
+				'replacement' 	=> [
 						'\1&nbsp;&mdash;\5',
 						'\1&nbsp;&mdash;\3',
-						),
-			),
-		'mdash_2' => array(
+						],
+			],
+		'mdash_2' => [
 				'description'	=> 'Тире после переноса строки',
 				'pattern' 		=> '/(\n|\r|^|\>)(\-|\&mdash\;)(\t|\040)/',
 				'replacement' 	=> '\1&mdash;&nbsp;'
-			),
-		'mdash_3' => array(
+			],
+		'mdash_3' => [
 				'description'	=> 'Тире после знаков восклицания, троеточия и прочее',
 				'pattern' 		=> '/(\.|\!|\?|\&hellip\;)(\040|\t|\&nbsp\;)(\-|\&mdash\;)(\040|\t|\&nbsp\;)/',
 				'replacement' 	=> '\1 &mdash;&nbsp;'
-			),
-		'iz_za_pod' => array(
+			],
+		'iz_za_pod' => [
 				'description'	=> 'Расстановка дефисов между из-за, из-под',
 				'pattern' 		=> '/(\s|\&nbsp\;|\>|^)(из)(\040|\t|\&nbsp\;)\-?(за|под)([\.\,\!\?\:\;]|\040|\&nbsp\;)/uie',
 				'replacement' 	=> '($m[1] == "&nbsp;" ? " " : $m[1]) . $m[2]."-".$m[4] . ($m[5] == "&nbsp;"? " " : $m[5])'
-			),
-		'to_libo_nibud' => array(
+			],
+		'to_libo_nibud' => [
 				'description'	=> 'Автоматическая простановка дефисов в обезличенных местоимениях и междометиях',
 				'cycled'		=> true,
 				'pattern' 		=> '/(\s|^|\&nbsp\;|\>)(кто|кем|когда|зачем|почему|как|что|чем|где|чего|кого)\-?(\040|\t|\&nbsp\;)\-?(то|либо|нибудь)([\.\,\!\?\;]|\040|\&nbsp\;|$)/uie',
 				'replacement' 	=> '($m[1] == "&nbsp;" ? " " : $m[1]) . $m[2]."-".$m[4] . ($m[5] == "&nbsp;"? " " : $m[5])'
-			),
-		'koe_kak' => array(
+			],
+		'koe_kak' => [
 				'description'	=> 'Кое-как, кой-кого, все-таки',
 				'cycled'		=> true,
-				'pattern' 		=> array(
+				'pattern' 		=> [
 						'/(\s|^|\&nbsp\;|\>)(кое)\-?(\040|\t|\&nbsp\;)\-?(как)([\.\,\!\?\;]|\040|\&nbsp\;|$)/uie',
 						'/(\s|^|\&nbsp\;|\>)(кой)\-?(\040|\t|\&nbsp\;)\-?(кого)([\.\,\!\?\;]|\040|\&nbsp\;|$)/uie',
 						'/(\s|^|\&nbsp\;|\>)(вс[её])\-?(\040|\t|\&nbsp\;)\-?(таки)([\.\,\!\?\;]|\040|\&nbsp\;|$)/uie',
-						),
+						],
 				'replacement' 	=> '($m[1] == "&nbsp;" ? " " : $m[1]) . $m[2]."-".$m[4] . ($m[5] == "&nbsp;"? " " : $m[5])'
-			),
-		'ka_de_kas' => array(
+			],
+		'ka_de_kas' => [
 				'description'	=> 'Расстановка дефисов с частицами ка, де, кась',
 				'disabled'		=> true,
-				'pattern' 		=> array(
+				'pattern' 		=> [
 						'/(\s|^|\&nbsp\;|\>)([а-яё]+)(\040|\t|\&nbsp\;)(ка)([\.\,\!\?\;]|\040|\&nbsp\;|$)/uie',
 						'/(\s|^|\&nbsp\;|\>)([а-яё]+)(\040|\t|\&nbsp\;)(де)([\.\,\!\?\;]|\040|\&nbsp\;|$)/uie',
 						'/(\s|^|\&nbsp\;|\>)([а-яё]+)(\040|\t|\&nbsp\;)(кась)([\.\,\!\?\;]|\040|\&nbsp\;|$)/uie',
-						),
+						],
 				'replacement' 	=> '($m[1] == "&nbsp;" ? " " : $m[1]) . $m[2]."-".$m[4] . ($m[5] == "&nbsp;"? " " : $m[5])'
-			),
+			],
 
-
-
-		);
+		];
 }
 
 /**
@@ -1390,50 +1385,50 @@ class EMT_Tret_Dash extends EMT_Tret
 class EMT_Tret_Date extends EMT_Tret
 {
 	public $title = "Даты и дни";
-	public $classes = array(
+	public $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
-			);
-	public $rules = array(
-		'years' => array(
+			];
+	public $rules = [
+		'years' => [
 				'description'	=> 'Установка тире и пробельных символов в периодах дат',
 				'pattern' 		=> '/(с|по|период|середины|начала|начало|конца|конец|половины|в|между|\([cс]\)|\&copy\;)(\s+|\&nbsp\;)([\d]{4})(-|\&mdash\;|\&minus\;)([\d]{4})(( |\&nbsp\;)?(г\.г\.|гг\.|гг|г\.|г)([^а-яёa-z]))?/eui',
 				'replacement' 	=> '$m[1].$m[2].  (intval($m[3])>=intval($m[5])? $m[3].$m[4].$m[5] : $m[3]."&mdash;".$m[5]) . (isset($m[6])? "&nbsp;гг.":"").(isset($m[9])?$m[9]:"")'
-			),
-		'mdash_month_interval' => array(
+			],
+		'mdash_month_interval' => [
 				'description'	=> 'Расстановка тире и объединение в неразрывные периоды месяцев',
 				'disabled'		=> true,
 				'pattern' 		=> '/((январ|феврал|сентябр|октябр|ноябр|декабр)([ьяюе]|[её]м)|(апрел|июн|июл)([ьяюе]|ем)|(март|август)([ауе]|ом)?|ма[йяюе]|маем)\-((январ|феврал|сентябр|октябр|ноябр|декабр)([ьяюе]|[её]м)|(апрел|июн|июл)([ьяюе]|ем)|(март|август)([ауе]|ом)?|ма[йяюе]|маем)/iu',
 				'replacement' 	=> '\1&mdash;\8'
-			),
-		'nbsp_and_dash_month_interval' => array(
+			],
+		'nbsp_and_dash_month_interval' => [
 				'description'	=> 'Расстановка тире и объединение в неразрывные периоды дней',
 				'disabled'	 => true,
 				'pattern' 		=> '/([^\>]|^)(\d+)(\-|\&minus\;|\&mdash\;)(\d+)( |\&nbsp\;)(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)([^\<]|$)/ieu',
-				'replacement' 	=> '$m[1].$this->tag($m[2]."&mdash;".$m[4]." ".$m[6],"span", array("class"=>"nowrap")).$m[7]'
-			),
-		'nobr_year_in_date' => array(
+				'replacement' 	=> '$m[1].$this->tag($m[2]."&mdash;".$m[4]." ".$m[6],"span", ["class"=>"nowrap")].$m[7]'
+			],
+		'nobr_year_in_date' => [
 				'description'	=> 'Привязка года к дате',
-				'pattern' 		=> array(
+				'pattern' 		=> [
 					'/(\s|\&nbsp\;)([0-9]{2}\.[0-9]{2}\.([0-9]{2})?[0-9]{2})(\s|\&nbsp\;)?г(\.|\s|\&nbsp\;)/eiu',
 					'/(\s|\&nbsp\;)([0-9]{2}\.[0-9]{2}\.([0-9]{2})?[0-9]{2})(\s|\&nbsp\;|\.(\s|\&nbsp\;|$)|$)/eiu',
-					),
-				'replacement' 	=> array(
-					'$m[1].$this->tag($m[2]." г.","span", array("class"=>"nowrap")).($m[5]==="."?"":" ")',
-					'$m[1].$this->tag($m[2],"span", array("class"=>"nowrap")).$m[4]',
-					),
-			),
-		'space_posle_goda' => array(
+					],
+				'replacement' 	=> [
+					'$m[1].$this->tag($m[2]." г.","span", ["class"=>"nowrap")).($m[5]==="."?"":" "]',
+					'$m[1].$this->tag($m[2],"span", ["class"=>"nowrap")].$m[4]',
+					],
+			],
+		'space_posle_goda' => [
 				'description'	=> 'Пробел после года',
 				'pattern' 		=> '/(^|\040|\&nbsp\;)([0-9]{3,4})(год([ауе]|ом)?)([^a-zа-яё]|$)/ui', 
 				'replacement' 	=> '\1\2 \3\5'
-			),
-		'nbsp_posle_goda_abbr' => array(
+			],
+		'nbsp_posle_goda_abbr' => [
 				'description'	=> 'Пробел после года',
 				'pattern' 		=> '/(^|\040|\&nbsp\;|\"|\&laquo\;)([0-9]{3,4})[ ]?(г\.)([^a-zа-яё]|$)/ui', 
 				'replacement' 	=> '\1\2&nbsp;\3\4'
-			),
+			],
 
-		);
+		];
 }
 
 /**
@@ -1442,9 +1437,9 @@ class EMT_Tret_Date extends EMT_Tret
 class EMT_Tret_Etc extends EMT_Tret
 {
 
-	public $classes = array(
+	public $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
-		);
+		];
 
 	/**
 	 * Базовые параметры тофа
@@ -1452,49 +1447,46 @@ class EMT_Tret_Etc extends EMT_Tret
 	 * @var array
 	 */
 	public $title = "Прочее";
-	public $rules = array(
-		'acute_accent' => array(
+	public $rules = [
+		'acute_accent' => [
 				'description'	=> 'Акцент',
 				'pattern' 		=> '/(у|е|ы|а|о|э|я|и|ю|ё)\`(\w)/i', 
 				'replacement' 	=> '\1&#769;\2'
-			),
-
-
-
-		'word_sup' => array(
+			],
+		'word_sup' => [
 				'description'	=> 'Надстрочный текст после символа ^',
 				'pattern' 		=> '/((\s|\&nbsp\;|^)+)\^([a-zа-яё0-9\.\:\,\-]+)(\s|\&nbsp\;|$|\.$)/ieu',
-				'replacement' 	=> '"" . $this->tag($this->tag($m[3],"small"),"sup") . $m[4]'
-			),
-		'century_period' => array(
+				'replacement' 	=> '"" . $this->tag($this->tag($m[3],"small"],"sup") . $m[4]'
+			],
+		'century_period' => [
 				'description'	=> 'Тире между диапозоном веков',
 				'pattern' 		=> '/(\040|\t|\&nbsp\;|^)([XIV]{1,5})(-|\&mdash\;)([XIV]{1,5})(( |\&nbsp\;)?(в\.в\.|вв\.|вв|в\.|в))/eu',
-				'replacement' 	=> '$m[1] .$this->tag($m[2]."&mdash;".$m[4]." вв.","span", array("class"=>"nowrap"))'
-			),
-		'time_interval' => array(
+				'replacement' 	=> '$m[1] .$this->tag($m[2]."&mdash;".$m[4]." вв.","span", ["class"=>"nowrap")]'
+			],
+		'time_interval' => [
 				'description'	=> 'Тире и отмена переноса между диапозоном времени',
 				'pattern' 		=> '/([^\d\>]|^)([\d]{1,2}\:[\d]{2})(-|\&mdash\;|\&minus\;)([\d]{1,2}\:[\d]{2})([^\d\<]|$)/eui',
-				'replacement' 	=> '$m[1] . $this->tag($m[2]."&mdash;".$m[4],"span", array("class"=>"nowrap")).$m[5]'
-			),
-		'split_number_to_triads' => array(
+				'replacement' 	=> '$m[1] . $this->tag($m[2]."&mdash;".$m[4],"span", ["class"=>"nowrap")].$m[5]'
+			],
+		'split_number_to_triads' => [
 				'description'	=> 'Разбиение числа на триады',
 				'pattern' 		=> '/([^a-zA-Z0-9<\)]|^)([0-9]{5,})([^a-zA-Z>\(]|$)/eu',
 				'replacement' 	=> '$m[1].str_replace(" ","&thinsp;",EMT_Lib::split_number($m[2])).$m[3] '
 				//'function'		=> 'split_number'
-			),
-		'expand_no_nbsp_in_nobr' => array(
+			],
+		'expand_no_nbsp_in_nobr' => [
 				'description'	=> 'Удаление nbsp в nobr/nowrap тэгах',
 				'function'	=> 'remove_nbsp'
-			),
-		'nobr_to_nbsp' => array(
+			],
+		'nobr_to_nbsp' => [
 				'description'	=> 'Преобразование nobr в nbsp',
 				'disabled'		=> true,
 				'function'	=> 'nobr_to_nbsp'
-			),
-		);
+			],
+		];
 	protected function remove_nbsp()
 	{
-		$thetag = $this->tag("###", 'span', array('class' => "nowrap"));
+		$thetag = $this->tag("###", 'span', ['class' => "nowrap"]);
 		$arr = explode("###", $thetag);
 		$b = preg_quote($arr[0], '/');
 		$e = preg_quote($arr[1], '/');
@@ -1512,7 +1504,7 @@ class EMT_Tret_Etc extends EMT_Tret
 	}
 	protected function nobr_to_nbsp()
 	{
-		$thetag = $this->tag("###", 'span', array('class' => "nowrap"));
+		$thetag = $this->tag("###", 'span', ['class' => "nowrap"]);
 		$arr = explode("###", $thetag);
 		$b = preg_quote($arr[0], '/');
 		$e = preg_quote($arr[1], '/');
@@ -1541,109 +1533,109 @@ class EMT_Tret_Etc extends EMT_Tret
 class EMT_Tret_Nobr extends EMT_Tret
 {
 	public $title = "Неразрывные конструкции";
-	public $classes = array(
+	public $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
-			);
-	public $rules = array(
+			];
+	public $rules = [
 
-		'super_nbsp' => array(
+		'super_nbsp' => [
 				'description'	=> 'Привязка союзов и предлогов к написанным после словам',
 				'pattern' 		=> '/(\s|^|\&(la|bd)quo\;|\>|\(|\&mdash\;\&nbsp\;)([a-zа-яё]{1,2}\s+)([a-zа-яё]{1,2}\s+)?([a-zа-яё0-9\-]{2,}|[0-9])/ieu',
 				'replacement' 	=> '$m[1] . trim($m[3]) . "&nbsp;" . ($m[4] ? trim($m[4]) . "&nbsp;" : "") . $m[5]'
-			),
-		'nbsp_in_the_end' => array(
+			],
+		'nbsp_in_the_end' => [
 				'description'	=> 'Привязка союзов и предлогов к предыдущим словам в случае конца предложения',
 				'pattern' 		=> '/([a-zа-яё0-9\-]{3,}) ([a-zа-яё]{1,2})\.( [A-ZА-ЯЁ]|$)/u', 
 				'replacement' 	=> '\1&nbsp;\2.\3'
-			),
-		'phone_builder' => array(
+			],
+		'phone_builder' => [
 				'description'	=> 'Объединение в неразрывные конструкции номеров телефонов',
 				'pattern' 		=> 
-					array(
+					[
 						'/([^\d\+]|^)([\+]?[0-9]{1,3})( |\&nbsp\;|\&thinsp\;)([0-9]{3,4}|\([0-9]{3,4}\))( |\&nbsp\;|\&thinsp\;)([0-9]{2,3})(-|\&minus\;)([0-9]{2})(-|\&minus\;)([0-9]{2})([^\d]|$)/e',
 						'/([^\d\+]|^)([\+]?[0-9]{1,3})( |\&nbsp\;|\&thinsp\;)([0-9]{3,4}|[0-9]{3,4})( |\&nbsp\;|\&thinsp\;)([0-9]{2,3})(-|\&minus\;)([0-9]{2})(-|\&minus\;)([0-9]{2})([^\d]|$)/e',
-					),
+					],
 				'replacement'	=> 
-					array(
-						'$m[1]  .(($m[1] == ">" || $m[11] == "<") ? $m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10] :$this->tag($m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10], "span", array("class"=>"nowrap"))  ).$m[11]',
-						'$m[1]  .(($m[1] == ">" || $m[11] == "<") ? $m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10] :$this->tag($m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10], "span", array("class"=>"nowrap"))  ).$m[11]',
-					),
-			),
-		'phone_builder_v2' => array(
+					[
+						'$m[1]  .(($m[1] == ">" || $m[11] == "<") ? $m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10] :$this->tag($m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10], "span", ["class"=>"nowrap"))  ].$m[11]',
+						'$m[1]  .(($m[1] == ">" || $m[11] == "<") ? $m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10] :$this->tag($m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10], "span", ["class"=>"nowrap"))  ].$m[11]',
+					],
+			],
+		'phone_builder_v2' => [
 				'description'	=> 'Дополнительный формат номеров телефонов',
 				'pattern' 		=> '/([^\d]|^)\+\s?([0-9]{1})\s?\(([0-9]{3,4})\)\s?(\d{3})(\d{2})(\d{2})([^\d]|$)/ie',
-				'replacement'	=> '$m[1].$this->tag("+".$m[2]." ".$m[3]." ".$m[4]."-".$m[5]."-".$m[6], "span",  array("class" => "nowrap")).$m[7]',
-			),
-		'ip_address' => array(
+				'replacement'	=> '$m[1].$this->tag("+".$m[2]." ".$m[3]." ".$m[4]."-".$m[5]."-".$m[6], "span",  ["class" => "nowrap")].$m[7]',
+			],
+		'ip_address' => [
 				'description'	=> 'Объединение IP-адресов',
 				'pattern' 		=> '/(\s|\&nbsp\;|^)(\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3})/ie', 
 				'replacement' 	=> '$m[1] . $this->nowrap_ip_address($m[2])'
-			),
-		'dots_for_surname_abbr' => array(
+			],
+		'dots_for_surname_abbr' => [
 				'disabled'	 => true,
 				'description'	=> 'Простановка точек к инициалам у фамилии',
 				'pattern' 		=> 
-					array(
+					[
 						'/(\s|^|\.|\,|\;|\:|\?|\!|\&nbsp\;)([А-ЯЁ])\.?(\s|\&nbsp\;)?([А-ЯЁ])(\s|\&nbsp\;)([А-ЯЁ][а-яё]+)(\s|$|\.|\,|\;|\:|\?|\!|\&nbsp\;)/ue',
 						'/(\s|^|\.|\,|\;|\:|\?|\!|\&nbsp\;)([А-ЯЁ][а-яё]+)(\s|\&nbsp\;)([А-ЯЁ])\.?(\s|\&nbsp\;)?([А-ЯЁ])\.?(\s|$|\.|\,|\;|\:|\?|\!|\&nbsp\;)/ue',
-					),
+					],
 				'replacement' 	=> 
-					array(
-						'$m[1].$this->tag($m[2].". ".$m[4].". ".$m[6], "span",  array("class" => "nowrap")).$m[7]',
-						'$m[1].$this->tag($m[2]." ".$m[4].". ".$m[6].".", "span",  array("class" => "nowrap")).$m[7]',
-					),
-			),
-		'spaces_nobr_in_surname_abbr' => array(
+					[
+						'$m[1].$this->tag($m[2].". ".$m[4].". ".$m[6], "span",  ["class" => "nowrap")].$m[7]',
+						'$m[1].$this->tag($m[2]." ".$m[4].". ".$m[6].".", "span",  ["class" => "nowrap")].$m[7]',
+					],
+			],
+		'spaces_nobr_in_surname_abbr' => [
 				'description'	=> 'Привязка инициалов к фамилиям',
 				'pattern' 		=> 
-					array(
+					[
 						'/(\s|^|\.|\,|\;|\:|\?|\!|\&nbsp\;)([А-ЯЁ])\.(\s|\&nbsp\;)?([А-ЯЁ])\.(\s|\&nbsp\;)?([А-ЯЁ][а-яё]+)(\s|$|\.|\,|\;|\:|\?|\!|\&nbsp\;)/ue',
 						'/(\s|^|\.|\,|\;|\:|\?|\!|\&nbsp\;)([А-ЯЁ][а-яё]+)(\s|\&nbsp\;)([А-ЯЁ])\.(\s|\&nbsp\;)?([А-ЯЁ])\.(\s|$|\.|\,|\;|\:|\?|\!|\&nbsp\;)/ue',
 						'/(\s|^|\.|\,|\;|\:|\?|\!|\&nbsp\;)([А-ЯЁ])(\s|\&nbsp\;)?([А-ЯЁ])(\s|\&nbsp\;)([А-ЯЁ][а-яё]+)(\s|$|\.|\,|\;|\:|\?|\!|\&nbsp\;)/ue',
 						'/(\s|^|\.|\,|\;|\:|\?|\!|\&nbsp\;)([А-ЯЁ][а-яё]+)(\s|\&nbsp\;)([А-ЯЁ])(\s|\&nbsp\;)?([А-ЯЁ])(\s|$|\.|\,|\;|\:|\?|\!|\&nbsp\;)/ue',
 						//'/(\s|^|\.|\,|\;|\:|\?|\!|\&nbsp\;)([A-Z])\.?(\s|\&nbsp\;)?([A-Z])(\.(\s|\&nbsp\;)?|(\s|\&nbsp\;))([A-Z][a-z]+)(\s|$|\.|\,|\;|\:|\?|\!|\&nbsp\;)/ue',
 						//'/(\s|^|\.|\,|\;|\:|\?|\!|\&nbsp\;)([A-Z][a-z]+)(\s|\&nbsp\;)([A-Z])\.?(\s|\&nbsp\;)?([A-Z])\.?(\s|$|\.|\,|\;|\:|\?|\!|\&nbsp\;)/ue',
-					),
+					],
 				'replacement' 	=> 
-					array(
-						'$m[1].$this->tag($m[2].". ".$m[4].". ".$m[6], "span",  array("class" => "nowrap")).$m[7]',
-						'$m[1].$this->tag($m[2]." ".$m[4].". ".$m[6].".", "span",  array("class" => "nowrap")).$m[7]',
-						'$m[1].$this->tag($m[2].(isset($m[3])? " " : "" ).$m[4].(isset($m[5])? " " : "" ).$m[6], "span",  array("class" => "nowrap")).$m[7]',
-						'$m[1].$this->tag($m[2]." ".$m[4].(isset($m[5])? " " : "" ).$m[6], "span",  array("class" => "nowrap")).$m[7]',
-						//'$m[1].$this->tag($m[2].". ".$m[4].". ".$m[8], "span",  array("class" => "nowrap")).$m[9]',
-						//'$m[1].$this->tag($m[2]." ".$m[4].". ".$m[6].".", "span",  array("class" => "nowrap")).$m[7]',
-					),
-			),
-		'nbsp_before_particle' => array(
+					[
+						'$m[1].$this->tag($m[2].". ".$m[4].". ".$m[6], "span",  ["class" => "nowrap")].$m[7]',
+						'$m[1].$this->tag($m[2]." ".$m[4].". ".$m[6].".", "span",  ["class" => "nowrap")].$m[7]',
+						'$m[1].$this->tag($m[2].(isset($m[3])? " " : "" ).$m[4].(isset($m[5])? " " : "" ).$m[6], "span",  ["class" => "nowrap")].$m[7]',
+						'$m[1].$this->tag($m[2]." ".$m[4].(isset($m[5])? " " : "" ).$m[6], "span",  ["class" => "nowrap")].$m[7]',
+						//'$m[1].$this->tag($m[2].". ".$m[4].". ".$m[8], "span",  ["class" => "nowrap")].$m[9]',
+						//'$m[1].$this->tag($m[2]." ".$m[4].". ".$m[6].".", "span",  ["class" => "nowrap")].$m[7]',
+					],
+			],
+		'nbsp_before_particle' => [
 				'description'	=> 'Неразрывный пробел перед частицей',
 				'pattern' 		=> '/(\040|\t)+(ли|бы|б|же|ж)(\&nbsp\;|\.|\,|\:|\;|\&hellip\;|\?|\s)/iue', 
 				'replacement' 	=> '"&nbsp;".$m[2] . ($m[3] == "&nbsp;" ? " " : $m[3])'
-			),
-		'nbsp_v_kak_to' => array(
+			],
+		'nbsp_v_kak_to' => [
 				'description'	=> 'Неразрывный пробел в как то',
 				'pattern' 		=> '/как то\:/ui', 
 				'replacement' 	=> 'как&nbsp;то:'
-			),
-		'nbsp_celcius' => array(
+			],
+		'nbsp_celcius' => [
 				'description'	=> 'Привязка градусов к числу',
 				'pattern' 		=> '/(\s|^|\>|\&nbsp\;)(\d+)( |\&nbsp\;)?(°|\&deg\;)(C|С)(\s|\.|\!|\?|\,|$|\&nbsp\;|\;)/iu', 
 				'replacement' 	=> '\1\2&nbsp;\4C\6'
-			),
-		'hyphen_nowrap_in_small_words' => array(
+			],
+		'hyphen_nowrap_in_small_words' => [
 				'description'	=> 'Обрамление пятисимвольных слов разделенных дефисом в неразрывные блоки',
 				'disabled'	 => true,
 				'cycled'		=> true,
 				'pattern' 		=> '/(\&nbsp\;|\s|\>|^)([a-zа-яё]{1}\-[a-zа-яё]{4}|[a-zа-яё]{2}\-[a-zа-яё]{3}|[a-zа-яё]{3}\-[a-zа-яё]{2}|[a-zа-яё]{4}\-[a-zа-яё]{1}|когда\-то|кое\-как|кой\-кого|вс[её]\-таки|[а-яё]+\-(кась|ка|де))(\s|\.|\,|\!|\?|\&nbsp\;|\&hellip\;|$)/uie',
-				'replacement' 	=> '$m[1] . $this->tag($m[2], "span", array("class"=>"nowrap")) . $m[4]',
-			),
-		'hyphen_nowrap' => array(
+				'replacement' 	=> '$m[1] . $this->tag($m[2], "span", ["class"=>"nowrap")] . $m[4]',
+			],
+		'hyphen_nowrap' => [
 				'description'	=> 'Отмена переноса слова с дефисом',
 				'disabled'	 => true,
 				'cycled'		=> true,
 				'pattern' 		=> '/(\&nbsp\;|\s|\>|^)([a-zа-яё]+)((\-([a-zа-яё]+)){1,2})(\s|\.|\,|\!|\?|\&nbsp\;|\&hellip\;|$)/uie',
-				'replacement' 	=> '$m[1] . $this->tag($m[2].$m[3], "span", array("class"=>"nowrap")) . $m[6]'
-			),
-		);
+				'replacement' 	=> '$m[1] . $this->tag($m[2].$m[3], "span", ["class"=>"nowrap")] . $m[6]'
+			],
+		];
 
 	/**
 	 * Объединение IP-адрессов в неразрывные конструкции (IPv4 only)
@@ -1665,7 +1657,7 @@ class EMT_Tret_Nobr extends EMT_Tret
 		}
 
 		if (true === $addTag) {
-			$triads = $this->tag($triads, 'span', array('class' => "nowrap"));
+			$triads = $this->tag($triads, 'span', ['class' => "nowrap"]);
 		}
 
 		return $triads;
@@ -1679,60 +1671,60 @@ class EMT_Tret_Number extends EMT_Tret
 {
 	public $title = "Числа, дроби, математические знаки";
 
-	public $rules = array(
-		'minus_between_nums' => array(
+	public $rules = [
+		'minus_between_nums' => [
 				'description'	=> 'Расстановка знака минус между числами',
 				'pattern' 		=> '/(\d+)\-(\d)/i',
 				'replacement' 	=> '\1&minus;\2'
-			),
-		'minus_in_numbers_range' => array(
+			],
+		'minus_in_numbers_range' => [
 				'description'	=> 'Расстановка знака минус между диапозоном чисел',
 				'pattern' 		=> '/(^|\s|\&nbsp\;)(\&minus\;|\-)(\d+)(\.\.\.|\&hellip\;)(\s|\&nbsp\;)?(\+|\-|\&minus\;)?(\d+)/ie',
 				'replacement' 	=> '$m[1] ."&minus;".$m[3] . $m[4].$m[5].($m[6]=="+"?$m[6]:"&minus;").$m[7]'
-			),
-		'auto_times_x' => array(
+			],
+		'auto_times_x' => [
 				'description'	=> 'Замена x на символ × в размерных единицах',
 				'cycled' 		=> true,
 				'pattern' 		=> '/([^a-zA-Z><]|^)(\&times\;)?(\d+)(\040*)(x|х)(\040*)(\d+)([^a-zA-Z><]|$)/u',
 				'replacement' 	=> '\1\2\3&times;\7\8'
-			),
-		'numeric_sub' => array(
+			],
+		'numeric_sub' => [
 				'description'	=> 'Нижний индекс',
 				'pattern' 		=> '/([a-zа-яё0-9])\_([\d]{1,3})([^@а-яёa-z0-9]|$)/ieu',
-				'replacement' 	=> '$m[1] . $this->tag($this->tag($m[2],"small"),"sub") . $m[3]'
-			),
-		'numeric_sup' => array(
+				'replacement' 	=> '$m[1] . $this->tag($this->tag($m[2],"small"],"sub") . $m[3]'
+			],
+		'numeric_sup' => [
 				'description'	=> 'Верхний индекс',
 				'pattern' 		=> '/([a-zа-яё0-9])\^([\d]{1,3})([^а-яёa-z0-9]|$)/ieu',
-				'replacement' 	=> '$m[1] . $this->tag($this->tag($m[2],"small"),"sup") . $m[3]'
-			),
-		'simple_fraction' => array(
+				'replacement' 	=> '$m[1] . $this->tag($this->tag($m[2],"small"],"sup") . $m[3]'
+			],
+		'simple_fraction' => [
 				'description'	=> 'Замена дробей 1/2, 1/4, 3/4 на соответствующие символы',
-				'pattern' 		=> array('/(^|\D)1\/(2|4)(\D)/', '/(^|\D)3\/4(\D)/'),
-				'replacement' 	=> array('\1&frac1\2;\3', '\1&frac34;\2')
-			),
-		'math_chars' => array(
+				'pattern' 		=> ['/(^|\D)1\/(2|4)(\D)/', '/(^|\D)3\/4(\D)/'],
+				'replacement' 	=> ['\1&frac1\2;\3', '\1&frac34;\2']
+			],
+		'math_chars' => [
 				'description'	=> 'Математические знаки больше/меньше/плюс минус/неравно',
-				'pattern' 		=> array('/!=/', '/\<=/', '/([^=]|^)\>=/', '/~=/', '/\+-/'),
-				'replacement' 	=> array('&ne;', '&le;', '\1&ge;', '&cong;', '&plusmn;' )
-			),
+				'pattern' 		=> ['/!=/', '/\<=/', '/([^=]|^)\>=/', '/~=/', '/\+-/'],
+				'replacement' 	=> ['&ne;', '&le;', '\1&ge;', '&cong;', '&plusmn;' ]
+			],
 
-		'thinsp_between_number_triads' => array(
+		'thinsp_between_number_triads' => [
 				'description'	=> 'Объединение триад чисел полупробелом',
 				'pattern' 		=> '/([0-9]{1,3}( [0-9]{3}){1,})(.|$)/ue',
 				'replacement' 	=> '($m[3]=="-"? $m[0]:str_replace(" ","&thinsp;",$m[1]).$m[3])'
-			),
-		'thinsp_between_no_and_number' => array(
+			],
+		'thinsp_between_no_and_number' => [
 				'description'	=> 'Пробел между симоволом номера и числом',
 				'pattern' 		=> '/(№|\&#8470\;)(\s|&nbsp;)*(\d)/iu',
 				'replacement' 	=> '&#8470;&thinsp;\3'
-			),
-		'thinsp_between_sect_and_number' => array(
+			],
+		'thinsp_between_sect_and_number' => [
 				'description'	=> 'Пробел между параграфом и числом',
 				'pattern' 		=> '/(§|\&sect\;)(\s|&nbsp;)*(\d+|[IVX]+|[a-zа-яё]+)/ui',
 				'replacement' 	=> '&sect;&thinsp;\3'
-			),
-		);
+			],
+		];
 }
 
 /**
@@ -1740,7 +1732,7 @@ class EMT_Tret_Number extends EMT_Tret
  */
 class EMT_Tret_OptAlign extends EMT_Tret
 {
-	public $classes = array(
+	public $classes = [
 			'oa_obracket_sp_s' => "margin-right:0.3em;",
 			"oa_obracket_sp_b" => "margin-left:-0.3em;",
 			"oa_obracket_nl_b" => "margin-left:-0.3em;",
@@ -1749,47 +1741,47 @@ class EMT_Tret_OptAlign extends EMT_Tret
 			'oa_oquote_nl' => "margin-left:-0.44em;",
 			'oa_oqoute_sp_s' => "margin-right:0.44em;",
 			'oa_oqoute_sp_q' => "margin-left:-0.44em;",
-		);
+		];
 	/**
 	 * Базовые параметры тофа
 	 *
 	 * @var array
 	 */
 	public $title = "Оптическое выравнивание";
-	public $rules = array(
-		'oa_oquote' => array(
+	public $rules = [
+		'oa_oquote' => [
 				'description'	=> 'Оптическое выравнивание открывающей кавычки',
 				//'disabled'	 => true,
-				'pattern' 		=> array(
+				'pattern' 		=> [
 							'/([a-zа-яё\-]{3,})(\040|\&nbsp\;|\t)(\&laquo\;)/uie',
 							'/(\n|\r|^)(\&laquo\;)/ei'
-						),
-				'replacement' 	=> array(
-							'$m[1] . $this->tag($m[2], "span", array("class"=>"oa_oqoute_sp_s")) . $this->tag($m[3], "span", array("class"=>"oa_oqoute_sp_q"))',
-							'$m[1] . $this->tag($m[2], "span", array("class"=>"oa_oquote_nl"))',
-						),
-			),
-		'oa_oquote_extra' => array(
+						],
+				'replacement' 	=> [
+							'$m[1] . $this->tag($m[2], "span", ["class"=>"oa_oqoute_sp_s")) . $this->tag($m[3], "span", ["class"=>"oa_oqoute_sp_q")]',
+							'$m[1] . $this->tag($m[2], "span", ["class"=>"oa_oquote_nl")]',
+						],
+			],
+		'oa_oquote_extra' => [
 			'description'	=> 'Оптическое выравнивание кавычки',
 			//'disabled'	 => true,
 			'function'	=> 'oaquote_extra'
-		),
-		'oa_obracket_coma' => array(
+		],
+		'oa_obracket_coma' => [
 				'description'	=> 'Оптическое выравнивание для пунктуации (скобка)',
 				//'disabled'	 => true,
-				'pattern' 		=> array(
+				'pattern' 		=> [
 							'/(\040|\&nbsp\;|\t)\(/ei',
 							'/(\n|\r|^)\(/ei',
 							//'/([а-яёa-z0-9]+)\,(\040+)/iue',
-						),
-				'replacement' 	=> array(
-							'$this->tag($m[1], "span", array("class"=>"oa_obracket_sp_s")) . $this->tag("(", "span", array("class"=>"oa_obracket_sp_b"))',
-							'$m[1] . $this->tag("(", "span", array("class"=>"oa_obracket_nl_b"))',
-							//'$m[1] . $this->tag(",", "span", array("class"=>"oa_comma_b")) . $this->tag(" ", "span", array("class"=>"oa_comma_e"))',
-						),
-			),
+						],
+				'replacement' 	=> [
+							'$this->tag($m[1], "span", ["class"=>"oa_obracket_sp_s")) . $this->tag("(", "span", ["class"=>"oa_obracket_sp_b")]',
+							'$m[1] . $this->tag("(", "span", ["class"=>"oa_obracket_nl_b")]',
+							//'$m[1] . $this->tag(",", "span", ["class"=>"oa_comma_b")) . $this->tag(" ", "span", ["class"=>"oa_comma_e")]',
+						],
+			],
 
-		);
+		];
 
 	/**
 	 * Если стоит открывающая кавычка после <p> надо делать её висячей
@@ -1800,7 +1792,7 @@ class EMT_Tret_OptAlign extends EMT_Tret
 	{
 		$this->_text = $this->preg_replace_e(
 				'/(<' .self::BASE64_PARAGRAPH_TAG . '>)([\040\t]+)?(\&laquo\;)/e', 
-				'$m[1] . $this->tag($m[3], "span", array("class"=>"oa_oquote_nl"))',
+				'$m[1] . $this->tag($m[3], "span", ["class"=>"oa_oquote_nl")]',
 				$this->_text);
 	}
 
@@ -1812,65 +1804,65 @@ class EMT_Tret_OptAlign extends EMT_Tret
 class EMT_Tret_Punctmark extends EMT_Tret
 {
 	public $title = "Пунктуация и знаки препинания";
-	public $rules = array( 
-	 	'auto_comma' => array(
+	public $rules = [ 
+	 	'auto_comma' => [
 	 			'description'	=> 'Расстановка запятых перед а, но',
 		 		'pattern' 		=> '/([a-zа-яё])(\s|&nbsp;)(но|а)(\s|&nbsp;)/iu',
 		 		'replacement' 	=> '\1,\2\3\4'
-	 		), 
-		'punctuation_marks_limit' => array(
+	 		], 
+		'punctuation_marks_limit' => [
 				'description'	=> 'Лишние восклицательные, вопросительные знаки и точки',
 				'pattern' 		=> '/([\!\.\?]){4,}/', 
 				'replacement' 	=> '\1\1\1'
-			), 
-		'punctuation_marks_base_limit' => array(
+			], 
+		'punctuation_marks_base_limit' => [
 				'description'	=> 'Лишние запятые, двоеточия, точки с запятой',
 				'pattern' 		=> '/([\,]|[\:]|[\;]]){2,}/',
 				'replacement' 	=> '\1'
-			),
-		'hellip' => array(
+			],
+		'hellip' => [
 				'description'	=> 'Замена трех точек на знак многоточия',
 				'simple_replace'=> true,
 				'pattern' 		=> '...',
 				'replacement'	=> '&hellip;'
-			),
-		'fix_excl_quest_marks' => array(
+			],
+		'fix_excl_quest_marks' => [
 				'description'	=> 'Замена восклицательного и вопросительного знаков местами',
 				'pattern' 		=> '/([a-zа-яё0-9])\!\?(\s|$|\<)/ui',
 				'replacement' 	=> '\1?!\2'
-			),
-		'fix_pmarks' => array(
+			],
+		'fix_pmarks' => [
 				'description'	=> 'Замена сдвоенных знаков препинания на одинарные',
-				'pattern' 		=> array(
+				'pattern' 		=> [
 							'/([^\!\?])\.\./',
 							'/([a-zа-яё0-9])(\!|\.)(\!|\.|\?)(\s|$|\<)/ui', 
 							'/([a-zа-яё0-9])(\?)(\?)(\s|$|\<)/ui',
-							),
-				'replacement' 	=> array(
+							],
+				'replacement' 	=> [
 							'\1.',
 							'\1\2\4',
 							'\1\2\4'
-							),
-			),
-		'fix_brackets' => array(
+							],
+			],
+		'fix_brackets' => [
 				'description'	=> 'Лишние пробелы после открывающей скобочки и перед закрывающей',
-				'pattern' 		=> array('/(\()(\040|\t)+/', '/(\040|\t)+(\))/'),
-				'replacement' 	=> array('\1', '\2')
-			),
-		'fix_brackets_space' => array(
+				'pattern' 		=> ['/(\()(\040|\t)+/', '/(\040|\t)+(\))/'],
+				'replacement' 	=> ['\1', '\2']
+			],
+		'fix_brackets_space' => [
 				'description'	=> 'Пробел перед открывающей скобочкой',
 				'pattern' 		=> '/([a-zа-яё])(\()/iu',
 				'replacement' 	=> '\1 \2'
-			),
-		'dot_on_end' => array(
+			],
+		'dot_on_end' => [
 				'description'	=> 'Точка в конце текста, если её там нет',
 				'disabled'	 => true,
 				'pattern' 		=> '/([a-zа-яё0-9])(\040|\t|\&nbsp\;)*$/ui',
 				//'pattern' 		=> '/(([^\.\!\?])|(&(ra|ld)quo;))$/',
 				'replacement' 	=> '\1.'
-			),
+			],
 
-		);
+		];
 }
 
 /**
@@ -1885,29 +1877,29 @@ class EMT_Tret_Quote extends EMT_Tret
 	 */
 	public $title = "Кавычки";
 
-	public $rules = array(
-		'quotes_outside_a' => array(
+	public $rules = [
+		'quotes_outside_a' => [
 				'description'	=> 'Кавычки вне тэга <a>',
 				//'pattern' 		=> '/(\<%%\_\_.+?\>)\"(.+?)\"(\<\/%%\_\_.+?\>)/s',
 				'pattern' 		=> '/(\<%%\_\_[^\>]+\>)\"(.+?)\"(\<\/%%\_\_[^\>]+\>)/s',
 				'replacement' 	=> '"\1\2\3"'
-			),
+			],
 
-		'open_quote' => array(
+		'open_quote' => [
 				'description'	=> 'Открывающая кавычка',
 				'pattern' 		=> '/(^|\(|\s|\>|-)((\"|\\\")+)(\S+)/iue',
 				'replacement' 	=> '$m[1] . str_repeat(self::QUOTE_FIRS_OPEN, substr_count($m[2],"\"") ) . $m[4]'
-			),
-		'close_quote' => array(
+			],
+		'close_quote' => [
 				'description'	=> 'Закрывающая кавычка',
 				'pattern' 		=> '/([a-zа-яё0-9]|\.|\&hellip\;|\!|\?|\>|\)|\:|\+|\%|\@|\#|\$|\*)((\"|\\\")+)(\.|\&hellip\;|\;|\:|\?|\!|\,|\s|\)|\<\/|\<|$)/uie',
 				'replacement' 	=> '$m[1] . str_repeat(self::QUOTE_FIRS_CLOSE, substr_count($m[2],"\"") ) . $m[4]'
-			),
-		'close_quote_adv' => array(
+			],
+		'close_quote_adv' => [
 				'description'	=> 'Закрывающая кавычка особые случаи',
 				//'pattern' 		=> '/([a-zа-яё0-9]|\.|\&hellip\;|\!|\?|\>|\)|\:)((\"|\\\"|\&laquo\;)+)(\<.+?\>)(\.|\&hellip\;|\;|\:|\?|\!|\,|\s|\)|\<\/|$)/uie',
 				'pattern' 		=> 
-					array(
+					[
 						'/([a-zа-яё0-9]|\.|\&hellip\;|\!|\?|\>|\)|\:|\+|\%|\@|\#|\$|\*)((\"|\\\"|\&laquo\;)+)(\<[^\>]+\>)(\.|\&hellip\;|\;|\:|\?|\!|\,|\)|\<\/|$| )/uie',
 						'/([a-zа-яё0-9]|\.|\&hellip\;|\!|\?|\>|\)|\:|\+|\%|\@|\#|\$|\*)(\s+)((\"|\\\")+)(\s+)(\.|\&hellip\;|\;|\:|\?|\!|\,|\)|\<\/|$| )/uie',
 						'/\>(\&laquo\;)\.($|\s|\<)/ui',
@@ -1916,9 +1908,9 @@ class EMT_Tret_Quote extends EMT_Tret
 						'/\>(\&laquo\;);($|\s|\<|\S)/ui',
 						'/\>(\&laquo\;)\)($|\s|\<|\S)/ui',
 						'/((\"|\\\")+)$/uie',
-					),
+					],
 				'replacement' 	=> 
-					array(
+					[
 						'$m[1] . str_repeat(self::QUOTE_FIRS_CLOSE, substr_count($m[2],"\"")+substr_count($m[2],"&laquo;") ) . $m[4]. $m[5]',
 						'$m[1] .$m[2]. str_repeat(self::QUOTE_FIRS_CLOSE, substr_count($m[3],"\"")+substr_count($m[3],"&laquo;") ) . $m[5]. $m[6]',
 						'>&raquo;.\2',
@@ -1927,23 +1919,23 @@ class EMT_Tret_Quote extends EMT_Tret
 						'>&raquo;;\2',
 						'>&raquo;)\2',
 						'str_repeat(self::QUOTE_FIRS_CLOSE, substr_count($m[1],"\"") )',
-					),
-			),
-		'open_quote_adv' => array(
+					],
+			],
+		'open_quote_adv' => [
 				'description'	=> 'Открывающая кавычка особые случаи',
 				'pattern' 		=> '/(^|\(|\s|\>)(\"|\\\")(\s)(\S+)/iue',
 				'replacement' 	=> '$m[1] . self::QUOTE_FIRS_OPEN .$m[4]'
-			),
-		'close_quote_adv_2' => array(
+			],
+		'close_quote_adv_2' => [
 				'description'	=> 'Закрывающая кавычка последний шанс',
 				'pattern' 		=> '/(\S)((\"|\\\")+)(\.|\&hellip\;|\;|\:|\?|\!|\,|\s|\)|\<\/|\<|$)/uie',
 				'replacement' 	=> '$m[1] . str_repeat(self::QUOTE_FIRS_CLOSE, substr_count($m[2],"\"") ) . $m[4]'
-			),
-		'quotation' => array(
+			],
+		'quotation' => [
 				'description'	=> 'Внутренние кавычки-лапки и дюймы',
 				'function' => 'build_sub_quotations'
-			),
-		);
+			],
+		];
 	protected function inject_in($pos, $text, &$thetext)
 	{
 		for($i=0;$i<strlen($text);$i++) $thetext[$pos+$i] = $text[$i];
@@ -1955,17 +1947,17 @@ class EMT_Tret_Quote extends EMT_Tret
 		$exp = strpos($this->_text, "</cA===>")!==false ? "</cA===>" : (strpos($this->_text,"\r\n")!==false ? "\r\n\r\n" :"\n\n");
 
 		$texts_in = explode($exp, $this->_text);
-		$texts_out = array();
+		$texts_out = [];
 
 		foreach($texts_in as $textx) {
 
-			$okposstack = array('0');
+			$okposstack = ['0'];
 			$okpos = 0;
 			$level = 0;
 			$off = 0;
 			while(true)
 			{
-				$p = EMT_Lib::strpos_ex($textx, array("&laquo;", "&raquo;"), $off);
+				$p = EMT_Lib::strpos_ex($textx, ["&laquo;", "&raquo;"], $off);
 				if($p===false) break;
 				if($p['str'] == "&laquo;")
 				{
@@ -2025,7 +2017,7 @@ class EMT_Tret_Quote extends EMT_Tret
 							$level = 0;
 							$textx = substr($textx, 0, $p['pos']). '&quot;' . substr($textx, $off);
 							$off = $p['pos'] + strlen('&quot;');
-							$okposstack = array($off);
+							$okposstack = [$off];
 							continue;
 						}
 					}
@@ -2059,92 +2051,91 @@ class EMT_Tret_Quote extends EMT_Tret
 class EMT_Tret_Space extends EMT_Tret
 {
 	public $title = "Расстановка и удаление пробелов";
-	public $domain_zones = array('ru','ру','ком','орг', 'уа', 'ua', 'uk', 'co', 'fr', 
-							'com', 'net', 'edu', 'gov', 'org', 'mil', 'int', 'info', 'biz', 'info', 'name', 'pro');
-	public $classes = array(
+	public $domain_zones = ['ru','ру','ком','орг', 'уа', 'ua', 'uk', 'co', 'fr', 'com', 'net', 'edu', 'gov', 'org', 'mil', 'int', 'info', 'biz', 'info', 'name', 'pro'];
+	public $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
-			);
-	public $rules = array(
-		'nobr_twosym_abbr' => array(
+			];
+	public $rules = [
+		'nobr_twosym_abbr' => [
 				'description'	=> 'Неразрывный перед 2х символьной аббревиатурой',
 				'pattern' 		=> '/([a-zA-Zа-яёА-ЯЁ])(\040|\t)+([A-ZА-ЯЁ]{2})([\s\;\.\?\!\:\(\"]|\&(ra|ld)quo\;|$)/u', 
 				'replacement' 	=> '\1&nbsp;\3\4'
-			),
-		'remove_space_before_punctuationmarks' => array(
+			],
+		'remove_space_before_punctuationmarks' => [
 				'description'	=> 'Удаление пробела перед точкой, запятой, двоеточием, точкой с запятой',
 				'pattern' 		=> '/((\040|\t|\&nbsp\;)+)([\,\:\.\;\?])(\s+|$)/', 
 				'replacement' 	=> '\3\4'
-			),
-		'autospace_after_comma' => array(
+			],
+		'autospace_after_comma' => [
 				'description'	=> 'Пробел после запятой',
-				'pattern' 		=> array(
+				'pattern' 		=> [
 						'/(\040|\t|\&nbsp\;)\,([а-яёa-z0-9])/iu', 
 						'/([^0-9])\,([а-яёa-z0-9])/iu', 
-						),
-				'replacement' 	=> array(
+						],
+				'replacement' 	=> [
 						', \2',
 						'\1, \2'
-						),
-			),
-		'autospace_after_pmarks' => array(
+						],
+			],
+		'autospace_after_pmarks' => [
 				'description'	=> 'Пробел после знаков пунктуации, кроме точки',
 				'pattern' 		=> '/(\040|\t|\&nbsp\;|^|\n)([a-zа-яё0-9]+)(\040|\t|\&nbsp\;)?(\:|\)|\,|\&hellip\;|(?:\!|\?)+)([а-яёa-z])/iu', 
 				'replacement' 	=> '\1\2\4 \5'
-			),
-		'autospace_after_dot' => array(
+			],
+		'autospace_after_dot' => [
 				'description'	=> 'Пробел после точки',
-				'pattern' 		=> array(
+				'pattern' 		=> [
 						'/(\040|\t|\&nbsp\;|^)([a-zа-яё0-9]+)(\040|\t|\&nbsp\;)?\.([а-яёa-z]{5,})($|[^a-zа-яё])/iue', 
 						'/(\040|\t|\&nbsp\;|^)([a-zа-яё0-9]+)\.([а-яёa-z]{1,4})($|[^a-zа-яё])/iue', 
-						),
-				'replacement' 	=> array(
+						],
+				'replacement' 	=> [
 						//'\1\2. \4',
 						'$m[1].$m[2]."." .( $m[5] == "." ? "" : " ").$m[4].$m[5]',
-						'$m[1].$m[2]."." .(in_array(EMT_Lib::strtolower($m[3]), $this->domain_zones)? "":( $m[4] == "." ? "" : " ")). $m[3].$m[4]'
-						),
-			),
-		'autospace_after_hellips' => array(
+						'$m[1].$m[2]."." .(in_array(EMT_Lib::strtolower($m[3]], $this->domain_zones)? "":( $m[4] == "." ? "" : " ")]. $m[3].$m[4]'
+						],
+			],
+		'autospace_after_hellips' => [
 				'description'	=> 'Пробел после знаков троеточий с вопросительным или восклицательными знаками',
 				'pattern' 		=> '/([\?\!]\.\.)([а-яёa-z])/iu', 
 				'replacement' 	=> '\1 \2'
-			),
-		'many_spaces_to_one' => array(
+			],
+		'many_spaces_to_one' => [
 				'description'	=> 'Удаление лишних пробельных символов и табуляций',
 				'pattern' 		=> '/(\040|\t)+/', 
 				'replacement' 	=> ' '
-			),
-		'clear_percent' => array(
+			],
+		'clear_percent' => [
 				'description'	=> 'Удаление пробела перед символом процента',
 				'pattern' 		=> '/(\d+)([\t\040]+)\%/', 
 				'replacement' 	=> '\1%'
-			),
-		'nbsp_before_open_quote' => array(
+			],
+		'nbsp_before_open_quote' => [
 				'description'	=> 'Неразрывный пробел перед открывающей скобкой',
 				'pattern' 		=> '/(^|\040|\t|>)([a-zа-яё]{1,2})\040(\&laquo\;|\&bdquo\;)/u', 
 				'replacement' 	=> '\1\2&nbsp;\3'
-			),
+			],
 
-		'nbsp_before_month'	=> array(
+		'nbsp_before_month'	=> [
 				'description'	=> 'Неразрывный пробел в датах перед числом и месяцем',
 				'pattern' 		=> '/(\d)(\s)+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)([^\<]|$)/iu',
 				'replacement' 	=> '\1&nbsp;\3\4'
-			),
-		'spaces_on_end'	=> array(
+			],
+		'spaces_on_end'	=> [
 				'description'	=> 'Удаление пробелов в конце текста',
 				'pattern' 		=> '/ +$/',
 				'replacement' 	=> ''
-			),
-		'no_space_posle_hellip' => array(
+			],
+		'no_space_posle_hellip' => [
 				'description'	=> 'Отсутстввие пробела после троеточия после открывающей кавычки',
 				'pattern' 		=> '/(\&laquo\;|\&bdquo\;)( |\&nbsp\;)?\&hellip\;( |\&nbsp\;)?([a-zа-яё])/ui', 
 				'replacement' 	=> '\1&hellip;\4'
-			),
-		'space_posle_goda' => array(
+			],
+		'space_posle_goda' => [
 				'description'	=> 'Пробел после года',
 				'pattern' 		=> '/(^|\040|\&nbsp\;)([0-9]{3,4})(год([ауе]|ом)?)([^a-zа-яё]|$)/ui', 
 				'replacement' 	=> '\1\2 \3\5'
-			),
-		);
+			],
+		];
 }
 
 /**
@@ -2157,74 +2148,74 @@ class EMT_Tret_Symbol extends EMT_Tret
 	 *
 	 * @var array
 	 */
-	public $classes = array(
+	public $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
-		);
+		];
 
 	public $title = "Специальные символы";
-	public $rules = array(
-		'tm_replace' => array(
+	public $rules = [
+		'tm_replace' => [
 				'description'	=> 'Замена (tm) на символ торговой марки',
 				'pattern' 		=> '/([\040\t])?\(tm\)/i', 
 				'replacement' 	=> '&trade;'
-			),
-		'r_sign_replace' => array(
+			],
+		'r_sign_replace' => [
 				'description'	=> 'Замена (R) на символ зарегистрированной торговой марки',
-				'pattern' 		=> array(
+				'pattern' 		=> [
 					'/(.|^)\(r\)(.|$)/ie', 
 					//'/([^\>]|^)\(r\)([^\<]|$)/ie', 
 					//'/\>\(r\)\</i', 
-					),
-				'replacement' 	=> array(
+					],
+				'replacement' 	=> [
 					//'$m[1].$this->tag("&reg;", "sup").$m[2]',
 					'$m[1]."&reg;".$m[2]',
 					//'>&reg;<'
-					),
-			),
-		'copy_replace' => array(
+					],
+			],
+		'copy_replace' => [
 				'description'	=> 'Замена (c) на символ копирайт',
-				'pattern' 		=> array(
+				'pattern' 		=> [
 							'/\((c|с)\)\s+/iu', 
 							'/\((c|с)\)($|\.|,|!|\?)/iu', 
-							),
-				'replacement' 	=> array(
+							],
+				'replacement' 	=> [
 							'&copy;&nbsp;',
 							'&copy;\2',
-							),
-			),
-		'apostrophe' => array(
+							],
+			],
+		'apostrophe' => [
 				'description'	=> 'Расстановка правильного апострофа в текстах',
 				'pattern' 		=> '/(\s|^|\>|\&rsquo\;)([a-zа-яё]{1,})\'([a-zа-яё]+)/ui',
 				'replacement' 	=> '\1\2&rsquo;\3',
 				'cycled'		=> true
-			),
+			],
 			/*
-		'ru_apostrophe' => array(
+		'ru_apostrophe' => [
 				'description'	=> 'Расстановка правильного апострофа в русских текстах',
 				'pattern' 		=> '/(\s|^|\>)([а-яё]+)\'([а-яё]+)/iu',
 				'replacement' 	=> '\1\2&rsquo;\3'
-			),
+			],
 			*/
-		'degree_f' => array(
+		'degree_f' => [
 				'description'	=> 'Градусы по Фаренгейту',
 				'pattern' 		=> '/([0-9]+)F($|\s|\.|\,|\;|\:|\&nbsp\;|\?|\!)/eu',
-				'replacement' 	=> '"".$this->tag($m[1]." &deg;F","span", array("class"=>"nowrap")) .$m[2]'
-			),
-		'euro_symbol' => array(
+				'replacement' 	=> '"".$this->tag($m[1]." &deg;F","span", ["class"=>"nowrap")] .$m[2]'
+			],
+		'euro_symbol' => [
 				'description'	=> 'Символ евро',
 				'simple_replace' => true,
 				'pattern' 		=> '€',
 				'replacement' 	=> '&euro;'
-			),
-		'arrows_symbols' => array(
+			],
+		'arrows_symbols' => [
 				'description'	=> 'Замена стрелок вправо-влево на html коды',
-				//'pattern' 		=> array('/(\s|\>|\&nbsp\;|^)\-\>($|\s|\&nbsp\;|\<)/', '/(\s|\>|\&nbsp\;|^|;)\<\-(\s|\&nbsp\;|$|\<)/', '/→/u', '/←/u'),
-				//'pattern' 		=> array('/\-\>($|\s|\&nbsp\;|\<)/', '/(\s|\>|\&nbsp\;|^|;)\<\-(\s|\&nbsp\;|$|\<)/', '/→/u', '/←/u'),
-				'pattern' 		=> array('/\-\>/', '/\<\-/', '/→/u', '/←/u'),
-				//'replacement' 	=> array('\1&rarr;\2', '\1&larr;\2', '&rarr;', '&larr;' ),
-				'replacement' 	=> array('&rarr;', '&larr;', '&rarr;', '&larr;' ),
-			),
-		);
+				//'pattern' 		=> ['/(\s|\>|\&nbsp\;|^)\-\>($|\s|\&nbsp\;|\<)/', '/(\s|\>|\&nbsp\;|^|;)\<\-(\s|\&nbsp\;|$|\<)/', '/→/u', '/←/u'],
+				//'pattern' 		=> ['/\-\>($|\s|\&nbsp\;|\<)/', '/(\s|\>|\&nbsp\;|^|;)\<\-(\s|\&nbsp\;|$|\<)/', '/→/u', '/←/u'],
+				'pattern' 		=> ['/\-\>/', '/\<\-/', '/→/u', '/←/u'],
+				//'replacement' 	=> ['\1&rarr;\2', '\1&larr;\2', '&rarr;', '&larr;' ],
+				'replacement' 	=> ['&rarr;', '&larr;', '&rarr;', '&larr;' ],
+			],
+		];
 }
 
 /**
@@ -2232,48 +2223,48 @@ class EMT_Tret_Symbol extends EMT_Tret
  */
 class EMT_Tret_Text extends EMT_Tret
 {
-	public $classes = array(
+	public $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
-		);
+		];
 	/**
 	 * Базовые параметры тофа
 	 *
 	 * @var array
 	 */
 	public $title = "Текст и абзацы";
-	public $rules = array(
-		'auto_links' => array(
+	public $rules = [
+		'auto_links' => [
 				'description'	=> 'Выделение ссылок из текста',
 				'pattern' 		=> '/(\s|^)(http|ftp|mailto|https)(:\/\/)([^\s\,\!\<]{4,})(\s|\.|\,|\!|\?|\<|$)/ieu', 
-				'replacement' 	=> '$m[1] . $this->tag((substr($m[4],-1)=="."?substr($m[4],0,-1):$m[4]), "a", array("href" => $m[2].$m[3].(substr($m[4],-1)=="."?substr($m[4],0,-1):$m[4]))) . (substr($m[4],-1)=="."?".":"") .$m[5]'
-			),
-		'email' => array(
+				'replacement' 	=> '$m[1] . $this->tag((substr($m[4],-1)=="."?substr($m[4],0,-1):$m[4]], "a", ["href" => $m[2].$m[3].(substr($m[4],-1)=="."?substr($m[4],0,-1):$m[4]))) . (substr($m[4],-1)=="."?".":""] .$m[5]'
+			],
+		'email' => [
 				'description'	=> 'Выделение эл. почты из текста',
 				'pattern' 		=> '/(\s|^|\&nbsp\;|\()([a-z0-9\-\_\.]{2,})\@([a-z0-9\-\.]{2,})\.([a-z]{2,6})(\)|\s|\.|\,|\!|\?|$|\<)/e',
-				'replacement' 	=> '$m[1] . $this->tag($m[2]."@".$m[3].".".$m[4], "a", array("href" => "mailto:".$m[2]."@".$m[3].".".$m[4])) . $m[5]'
-			),
-		'no_repeat_words' => array(
+				'replacement' 	=> '$m[1] . $this->tag($m[2]."@".$m[3].".".$m[4], "a", ["href" => "mailto:".$m[2]."@".$m[3].".".$m[4])] . $m[5]'
+			],
+		'no_repeat_words' => [
 				'description'	=> 'Удаление повторяющихся слов',
 				'disabled'	 => true,
-				'pattern' 		=> array(
+				'pattern' 		=> [
 					'/([а-яё]{3,})( |\t|\&nbsp\;)\1/iu',
 					'/(\s|\&nbsp\;|^|\.|\!|\?)(([А-ЯЁ])([а-яё]{2,}))( |\t|\&nbsp\;)(([а-яё])\4)/eu',
-					),
-				'replacement' 	=> array(
+					],
+				'replacement' 	=> [
 					'\1',
 					'$m[1].($m[7] === EMT_Lib::strtolower($m[3]) ? $m[2] : $m[2].$m[5].$m[6] )',
-					)
-			),
-		'paragraphs' => array(
+					]
+			],
+		'paragraphs' => [
 				'description'	=> 'Простановка параграфов',
 				'function'	=> 'build_paragraphs'
-			),
-		'breakline' => array(
+			],
+		'breakline' => [
 				'description'	=> 'Простановка переносов строк',
 				'function'	=> 'build_brs'
-			),
+			],
 
-		);
+		];
 	/**
 	 * Расстановка защищенных тегов параграфа (<p>...</p>) и переноса строки
 	 *
@@ -2285,7 +2276,7 @@ class EMT_Tret_Text extends EMT_Tret
 		$text = '<' . self::BASE64_PARAGRAPH_TAG . '>' . trim($text) . '</' . self::BASE64_PARAGRAPH_TAG . '>';
 		//$text = $this->preg_replace_e('/([\040\t]+)?(\n|\r){2,}/e', '"</" . self::BASE64_PARAGRAPH_TAG . "><" .self::BASE64_PARAGRAPH_TAG . ">"', $text);
 		//$text = $this->preg_replace_e('/([\040\t]+)?(\n){2,}/e', '"</" . self::BASE64_PARAGRAPH_TAG . "><" .self::BASE64_PARAGRAPH_TAG . ">"', $text);
-		$text = $this->preg_replace_e('/([\040\t]+)?(\n)+([\040\t]*)(\n)+/e', '$m[1]."</" . self::BASE64_PARAGRAPH_TAG . ">".EMT_Lib::iblock($m[2].$m[3])."<" .self::BASE64_PARAGRAPH_TAG . ">"', $text);
+		$text = $this->preg_replace_e('/([\040\t]+)?(\n)+([\040\t]*)(\n)+/e', '$m[1]."</" . self::BASE64_PARAGRAPH_TAG . ">" . EMT\EMT_Lib::iblock($m[2].$m[3]) . "<" .self::BASE64_PARAGRAPH_TAG . ">"', $text);
 		//$text = $this->preg_replace_e('/([\040\t]+)?(\n)+([\040\t]*)(\n)+/e', '"</" . self::BASE64_PARAGRAPH_TAG . ">"."<" .self::BASE64_PARAGRAPH_TAG . ">"', $text);
 		//может от открвающего до закрывающего ?!
 		$text = preg_replace('/\<' . self::BASE64_PARAGRAPH_TAG . '\>('.EMT_Lib::INTERNAL_BLOCK_OPEN.'[a-zA-Z0-9\/=]+?'.EMT_Lib::INTERNAL_BLOCK_CLOSE.')?\<\/' . self::BASE64_PARAGRAPH_TAG . '\>/s', "", $text);
@@ -2300,7 +2291,7 @@ class EMT_Tret_Text extends EMT_Tret
 	protected function build_paragraphs()
 	{
 		$r = mb_strpos($this->_text, '<' . self::BASE64_PARAGRAPH_TAG . '>' );
-		$p = EMT_Lib::rstrpos($this->_text, '</' . self::BASE64_PARAGRAPH_TAG . '>' )	;
+		$p = EMT_Lib::rstrpos($this->_text, '</' . self::BASE64_PARAGRAPH_TAG . '>' );
 		if(($r!== false) && ($p !== false)) {
 
 			$beg = mb_substr($this->_text,0,$r);
@@ -2320,7 +2311,7 @@ class EMT_Tret_Text extends EMT_Tret
 	 */
 	protected function build_brs()
 	{
-		$this->_text = $this->preg_replace_e('/(\<\/' . self::BASE64_PARAGRAPH_TAG . '\>)([\r\n \t]+)(\<' . self::BASE64_PARAGRAPH_TAG . '\>)/mse', '$m[1].EMT_Lib::iblock($m[2]).$m[3]', $this->_text);
+		$this->_text = $this->preg_replace_e('/(\<\/' . self::BASE64_PARAGRAPH_TAG . '\>)([\r\n \t]+)(\<' . self::BASE64_PARAGRAPH_TAG . '\>)/mse', '$m[1].EMT\EMT_Lib::iblock($m[2]).$m[3]', $this->_text);
 
 		if (!preg_match('/\<' . self::BASE64_BREAKLINE_TAG . '\>/', $this->_text)) {
 			$this->_text = str_replace("\r\n","\n",$this->_text);
@@ -2352,53 +2343,53 @@ class EMT_Base
 	 *
 	 * @var array
 	 */
-	protected $trets = array() ; 
-	protected $trets_index = array() ; 
-	protected $tret_objects = array() ; 
+	protected $trets = [] ; 
+	protected $trets_index = [] ; 
+	protected $tret_objects = [] ; 
 	public $ok			= false;
 	public $debug_enabled  = false;
 	public $logging		= false;
-	public $logs		 = array();
-	public $errors		= array();
-	public $debug_info	= array();
+	public $logs		 = [];
+	public $errors		= [];
+	public $debug_info	= [];
 	private $use_layout = false;
 	private $class_layout_prefix = false;
 	private $use_layout_set = false;
 	public $disable_notg_replace = false;
 	public $remove_notg = false;
-	public $settings = array();
+	public $settings = [];
 	protected function log($str, $data = null)
 	{
 		if(!$this->logging) return;
-		$this->logs[] = array('class' => '', 'info' => $str, 'data' => $data);
+		$this->logs[] = ['class' => '', 'info' => $str, 'data' => $data];
 	}
 	protected function tret_log($tret, $str, $data = null)
 	{
-		$this->logs[] = array('class' => $tret, 'info' => $str, 'data' => $data);
+		$this->logs[] = ['class' => $tret, 'info' => $str, 'data' => $data];
 	}
 
 	protected function error($info, $data = null)
 	{
-		$this->errors[] = array('class' => '', 'info' => $info, 'data' => $data);
+		$this->errors[] = ['class' => '', 'info' => $info, 'data' => $data];
 		$this->log("ERROR $info", $data );
 	}
 	protected function tret_error($tret, $info, $data = null)
 	{
-		$this->errors[] = array('class' => $tret, 'info' => $info, 'data' => $data);
+		$this->errors[] = ['class' => $tret, 'info' => $info, 'data' => $data];
 	}
 	protected function debug($class, $place, &$after_text, $after_text_raw = "")
 	{
 		if(!$this->debug_enabled) return;
-		$this->debug_info[] = array(
+		$this->debug_info[] = [
 				'tret'  => $class == $this ? false: true,
 				'class' => is_object($class)? get_class($class) : $class,
 				'place' => $place,
 				'text'  => $after_text,
 				'text_raw'  => $after_text_raw,
-			);
+			];
 	}
 
-	protected $_safe_blocks = array();
+	protected $_safe_blocks = [];
 
 	/**
 	 * Включить режим отладки, чтобы посмотреть последовательность вызовов
@@ -2434,12 +2425,12 @@ class EMT_Base
 	*/
 	private function _add_safe_block($id, $open, $close, $tag)
 	{
-		$this->_safe_blocks[] = array(
+		$this->_safe_blocks[] = [
 				'id' => $id,
 				'tag' => $tag,
 				'open' =>  $open,
 				'close' =>  $close,
-			);
+			];
 	}
 	/**
 	* Список защищенных блоков
@@ -2684,7 +2675,7 @@ class EMT_Base
 		$this->_init();
 
 		$atrets = $this->trets;
-		if(is_string($trets)) $atrets = array($trets);
+		if(is_string($trets)) $atrets = [$trets];
 		elseif(is_array($trets)) $atrets = $trets;
 
 		$this->debug($this, 'init', $this->_text);
@@ -2757,9 +2748,9 @@ class EMT_Base
 
 		if(!$this->disable_notg_replace)
 		{
-			$repl = array('<span class="_notg_start"></span>', '<span class="_notg_end"></span>');
+			$repl = ['<span class="_notg_start"></span>', '<span class="_notg_end"></span>'];
 			if($this->remove_notg) $repl = "";
-			$this->_text = str_replace( array('<notg>','</notg>'), $repl , $this->_text);
+			$this->_text = str_replace(['<notg>','</notg>'], $repl , $this->_text);
 		}
 		$this->_text = trim($this->_text);
 		$this->ok = (count($this->errors)==0);
@@ -2776,7 +2767,7 @@ class EMT_Base
 	{
 		$this->_init();
 
-		$res = array();
+		$res = [];
 		foreach ($this->trets as $tret) 
 		{
 			$arr =$this->tret_objects[$tret]->classes;
@@ -2834,7 +2825,7 @@ class EMT_Base
 	public function set_enable_map($map, $disable = false, $strict = true)
 	{
 		if(!is_array($map)) return;
-		$trets = array();
+		$trets = [];
 		foreach($map as $tret => $list)
 		{
 			$tretx = $this->get_tret($tret);
@@ -2847,11 +2838,11 @@ class EMT_Base
 
 			if($list === true) // все
 			{
-				$tretx->activate(array(), !$disable ,  true);
+				$tretx->activate([], !$disable , true);
 			} elseif(is_string($list)) {
-				$tretx->activate(array($list), $disable ,  $strict);
+				$tretx->activate([$list], $disable , $strict);
 			} elseif(is_array($list)) {
-				$tretx->activate($list, $disable ,  $strict);
+				$tretx->activate($list, $disable , $strict);
 			}
 		}
 		if($strict)
@@ -2859,7 +2850,7 @@ class EMT_Base
 			foreach($this->trets as $tret)
 			{
 				if(in_array($this->tret_objects[$tret], $trets)) continue;
-				$this->tret_objects[$tret]->activate(array(), $disable ,  true);
+				$this->tret_objects[$tret]->activate([], $disable , true);
 			}
 		}
 
@@ -3025,7 +3016,7 @@ class EMT_Base
 				$ret['map'] = $test['params']['map'];
 				$ret['disable'] = $test['params']['map_disable'];
 				$ret['strict'] = $test['params']['map_strict'];
-				$test['params']['maps'] = array($ret);
+				$test['params']['maps'] = [$ret];
 				unset($setupmap['map']);
 				unset($setupmap['map_disable']);
 				unset($setupmap['map_strict']);
@@ -3048,14 +3039,25 @@ class EMT_Base
 		foreach($setupmap as $k => $v) $this->do_setup($k , $v);
 	}
 
-
 }
 
 class EMTypograph extends EMT_Base 
 {
-	public $trets = array('EMT_Tret_Quote', 'EMT_Tret_Dash', 'EMT_Tret_Symbol', 'EMT_Tret_Punctmark', 'EMT_Tret_Number',  'EMT_Tret_Space', 'EMT_Tret_Abbr',  'EMT_Tret_Nobr', 'EMT_Tret_Date', 'EMT_Tret_OptAlign', 'EMT_Tret_Etc', 'EMT_Tret_Text');
-
-	protected $group_list  = array(
+	public $trets = [
+		'EMT\EMT_Tret_Quote',
+		'EMT\EMT_Tret_Dash',
+		'EMT\EMT_Tret_Symbol',
+		'EMT\EMT_Tret_Punctmark',
+		'EMT\EMT_Tret_Number',
+		'EMT\EMT_Tret_Space',
+		'EMT\EMT_Tret_Abbr',
+		'EMT\EMT_Tret_Nobr',
+		'EMT\EMT_Tret_Date',
+		'EMT\EMT_Tret_OptAlign',
+		'EMT\EMT_Tret_Etc',
+		'EMT\EMT_Tret_Text'
+	];
+	protected $group_list  = [
 		'Quote'	=> true,
 		'Dash'	 => true,
 		'Nobr'	 => true,
@@ -3068,10 +3070,10 @@ class EMTypograph extends EMT_Base
 		'OptAlign'  => true,
 		'Text'	 => true,
 		'Etc'	  => true,
-	);
-	protected $all_options = array(
-		'Quote.quotes' => array( 'description' => 'Расстановка «кавычек-елочек» первого уровня', 'selector' => "Quote.*quote" ),
-		'Quote.quotation' => array( 'description' => 'Внутренние кавычки-лапки', 'selector' => "Quote", 'setting' => 'no_bdquotes', 'reversed' => true ),
+	];
+	protected $all_options = [
+		'Quote.quotes' => [ 'description' => 'Расстановка «кавычек-елочек» первого уровня', 'selector' => "Quote.*quote" ],
+		'Quote.quotation' => [ 'description' => 'Внутренние кавычки-лапки', 'selector' => "Quote", 'setting' => 'no_bdquotes', 'reversed' => true ],
 
 		'Dash.to_libo_nibud' => 'direct',
 		'Dash.iz_za_pod' => 'direct',
@@ -3087,7 +3089,7 @@ class EMTypograph extends EMT_Base
 		'Nobr.nbsp_celcius' => 'direct',
 		'Nobr.hyphen_nowrap_in_small_words' => 'direct',
 		'Nobr.hyphen_nowrap' => 'direct',
-		'Nobr.nowrap' => array('description' => 'Nobr (по умолчанию) & nowrap', 'disabled' => true, 'selector' => '*', 'setting' => 'nowrap' ),
+		'Nobr.nowrap' => ['description' => 'Nobr (по умолчанию) & nowrap', 'disabled' => true, 'selector' => '*', 'setting' => 'nowrap' ],
 
 		'Symbol.tm_replace'	=> 'direct',
 		'Symbol.r_sign_replace' => 'direct',
@@ -3095,7 +3097,7 @@ class EMTypograph extends EMT_Base
 		'Symbol.apostrophe' => 'direct',
 		'Symbol.degree_f' => 'direct',
 		'Symbol.arrows_symbols' => 'direct',
-		'Symbol.no_inches' => array( 'description' => 'Расстановка дюйма после числа', 'selector' => "Quote", 'setting' => 'no_inches', 'reversed' => true ),
+		'Symbol.no_inches' => [ 'description' => 'Расстановка дюйма после числа', 'selector' => "Quote", 'setting' => 'no_inches', 'reversed' => true ],
 
 		'Punctmark.auto_comma' => 'direct',
 		'Punctmark.hellip' => 'direct',
@@ -3119,12 +3121,12 @@ class EMTypograph extends EMT_Base
 
 		'Space.many_spaces_to_one' => 'direct',
 		'Space.clear_percent' => 'direct',
-		'Space.clear_before_after_punct' => array( 'description' => 'Удаление пробелов перед и после знаков препинания в предложении', 'selector' => 'Space.remove_space_before_punctuationmarks'),
-		'Space.autospace_after' => array( 'description' => 'Расстановка пробелов после знаков препинания', 'selector' => 'Space.autospace_after_*'),
-		'Space.bracket_fix' => array( 'description' => 'Удаление пробелов внутри скобок, а также расстановка пробела перед скобками', 'selector' => array('Space.nbsp_before_open_quote', 'Punctmark.fix_brackets')),
+		'Space.clear_before_after_punct' => [ 'description' => 'Удаление пробелов перед и после знаков препинания в предложении', 'selector' => 'Space.remove_space_before_punctuationmarks'],
+		'Space.autospace_after' => [ 'description' => 'Расстановка пробелов после знаков препинания', 'selector' => 'Space.autospace_after_*'],
+		'Space.bracket_fix' => [ 'description' => 'Удаление пробелов внутри скобок, а также расстановка пробела перед скобками', 'selector' => ['Space.nbsp_before_open_quote', 'Punctmark.fix_brackets']],
 
-		'Abbr.nbsp_money_abbr' => array( 'description' => 'Форматирование денежных сокращений (расстановка пробелов и привязка названия валюты к числу)', 
-				'selector' => array('Abbr.nbsp_money_abbr', 'Abbr.nbsp_money_abbr_rev')),
+		'Abbr.nbsp_money_abbr' => [ 'description' => 'Форматирование денежных сокращений (расстановка пробелов и привязка названия валюты к числу]', 
+				'selector' => ['Abbr.nbsp_money_abbr', 'Abbr.nbsp_money_abbr_rev']],
 		'Abbr.nobr_vtch_itd_itp' => 'direct',
 		'Abbr.nobr_sm_im' => 'direct',
 		'Abbr.nobr_acronym' => 'direct',
@@ -3136,11 +3138,11 @@ class EMTypograph extends EMT_Base
 		'Abbr.nobr_before_unit_volt' => 'direct',
 		'Abbr.nbsp_before_unit' => 'direct',
 
-		'OptAlign.all' => array( 'description' => 'Все настройки оптического выравнивания', 'hide' => true, 'selector' => 'OptAlign.*'),
+		'OptAlign.all' => [ 'description' => 'Все настройки оптического выравнивания', 'hide' => true, 'selector' => 'OptAlign.*'],
 		'OptAlign.oa_oquote' => 'direct',
 		'OptAlign.oa_obracket_coma' => 'direct',
 		'OptAlign.oa_oquote_extra' => 'direct',
-		'OptAlign.layout' => array( 'description' => 'Inline стили или CSS' ),
+		'OptAlign.layout' => [ 'description' => 'Inline стили или CSS' ],
 
 		'Text.paragraphs' => 'direct',
 		'Text.auto_links' => 'direct',
@@ -3150,10 +3152,10 @@ class EMTypograph extends EMT_Base
 
 
 		//'Etc.no_nbsp_in_nobr' => 'direct',
-		'Etc.unicode_convert' => array('description' => 'Преобразовывать html-сущности в юникод', 'selector' => array('*', 'Etc.nobr_to_nbsp'), 'setting' => array('dounicode','active'), 'exact_selector' => true ,'disabled' => true),
+		'Etc.unicode_convert' => ['description' => 'Преобразовывать html-сущности в юникод', 'selector' => ['*', 'Etc.nobr_to_nbsp'], 'setting' => ['dounicode','active'], 'exact_selector' => true ,'disabled' => true],
 		'Etc.nobr_to_nbsp' => 'direct',
 		'Etc.split_number_to_triads' => 'direct',
-	);
+	];
 	/**
 	 * Получить список имеющихся опций
 	 *
@@ -3163,15 +3165,15 @@ class EMTypograph extends EMT_Base
 	 */
 	public function get_options_list()
 	{
-		$arr['all'] = array();
-		$bygroup = array();
+		$arr['all'] = [];
+		$bygroup = [];
 		foreach($this->all_options as $opt => $op)
 		{
 			$arr['all'][$opt] = $this->get_option_info($opt);
 			$x = explode(".",$opt);
 			$bygroup[$x[0]][] = $opt;
 		}
-		$arr['group'] = array();
+		$arr['group'] = [];
 		foreach($this->group_list as $group => $ginfo)
 		{
 			if($ginfo === true)
@@ -3182,7 +3184,7 @@ class EMTypograph extends EMT_Base
 				$info = $ginfo;
 			}
 			$info['name'] = $group;
-			$info['options'] = array();
+			$info['options'] = [];
 			if(is_array($bygroup[$group])) foreach($bygroup[$group] as $opt) $info['options'][] = $opt;
 			$arr['group'][] = $info;
 		}
@@ -3262,5 +3264,3 @@ class EMTypograph extends EMT_Base
 		return $obj->apply();
 	}
 }
-
-?>
