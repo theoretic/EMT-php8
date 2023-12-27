@@ -1,16 +1,18 @@
 {
 	"name": "atispro/emt-php8",
-	"description": "EMT typograf compatible with php8+",
 	"type": "library",
-	"require": {
-		"php": ">=7.3.0"
-	},
+	"description": "EMT typograf compatible with php8+",
+	"keywords": ["typograf","EMT"],
 	"authors": [
 		{
 			"name": "atis.pro",
-			"email": "info@atis.pro"
+			"email": "info@atis.pro",
+			"role": "Developer"
 		}
 	],
+	"require": {
+		"php": ">=7.3.0"
+	},
 	"minimum-stability": "dev",
 	"autoload": {
 		"psr-4": {
