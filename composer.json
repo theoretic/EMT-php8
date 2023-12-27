@@ -3,6 +3,7 @@
 	"type": "library",
 	"description": "EMT typograf compatible with php8+",
 	"keywords": ["typograf","EMT"],
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "atis.pro",
@@ -16,7 +17,7 @@
 	"minimum-stability": "dev",
 	"autoload": {
 		"psr-4": {
-			"EMT": ""
+			"EMT\\": ""
 		}
 	}
 }
