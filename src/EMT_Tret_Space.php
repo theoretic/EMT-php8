@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Space
@@ -43,18 +43,18 @@ class EMT_Tret_Space extends EMT_Tret
 				'pattern' 		=> '/(\040|\t|\&nbsp\;|^|\n)([a-zа-яё0-9]+)(\040|\t|\&nbsp\;)?(\:|\)|\,|\&hellip\;|(?:\!|\?)+)([а-яёa-z])/iu', 
 				'replacement' 	=> '\1\2\4 \5'
 			],
-		'autospace_after_dot' => [
-				'description'	=> 'Пробел после точки',
-				'pattern' 		=> [
-						'/(\040|\t|\&nbsp\;|^)([a-zа-яё0-9]+)(\040|\t|\&nbsp\;)?\.([а-яёa-z]{5,})($|[^a-zа-яё])/iue', 
-						'/(\040|\t|\&nbsp\;|^)([a-zа-яё0-9]+)\.([а-яёa-z]{1,4})($|[^a-zа-яё])/iue', 
-						],
-				'replacement' 	=> [
-						//'\1\2. \4',
-						'$m[1].$m[2]."." .( $m[5] == "." ? "" : " ").$m[4].$m[5]',
-						'$m[1].$m[2]."." .(in_array(EMT_Lib::strtolower($m[3]], $this->domain_zones)? "":( $m[4] == "." ? "" : " ")]. $m[3].$m[4]'
-						],
-			],
+		//'autospace_after_dot' => [
+		//		'description'	=> 'Пробел после точки',
+		//		'pattern' 		=> [
+		//				'/(\040|\t|\&nbsp\;|^)([a-zа-яё0-9]+)(\040|\t|\&nbsp\;)?\.([а-яёa-z]{5,})($|[^a-zа-яё])/iue', 
+		//				'/(\040|\t|\&nbsp\;|^)([a-zа-яё0-9]+)\.([а-яёa-z]{1,4})($|[^a-zа-яё])/iue', 
+		//				],
+		//		'replacement' 	=> [
+		//				//'\1\2. \4',
+		//				'$m[1].$m[2]."." .( $m[5] == "." ? "" : " ").$m[4].$m[5]',
+		//				'$m[1].$m[2]."." .(in_array(EMT_Lib::strtolower($m[3]), $this->domain_zones)? "":( $m[4] == "." ? "" : " ")). $m[3].$m[4]'
+		//				],
+		//	],
 		'autospace_after_hellips' => [
 				'description'	=> 'Пробел после знаков троеточий с вопросительным или восклицательными знаками',
 				'pattern' 		=> '/([\?\!]\.\.)([а-яёa-z])/iu', 
