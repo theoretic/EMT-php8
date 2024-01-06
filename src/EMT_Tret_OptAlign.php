@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_OptAlign
@@ -36,8 +36,8 @@ class EMT_Tret_OptAlign extends EMT_Tret
 							'/(\n|\r|^)(\&laquo\;)/ei'
 						],
 				'replacement' 	=> [
-							'$m[1] . $this->tag($m[2], "span", ["class"=>"oa_oqoute_sp_s")) . $this->tag($m[3], "span", ["class"=>"oa_oqoute_sp_q")]',
-							'$m[1] . $this->tag($m[2], "span", ["class"=>"oa_oquote_nl")]',
+							'$m[1] . $this->tag($m[2], "span", ["class"=>"oa_oqoute_sp_s"]) . $this->tag($m[3], "span", ["class"=>"oa_oqoute_sp_q"])',
+							'$m[1] . $this->tag($m[2], "span", ["class"=>"oa_oquote_nl"])',
 						],
 			],
 		'oa_oquote_extra' => [
@@ -54,8 +54,8 @@ class EMT_Tret_OptAlign extends EMT_Tret
 							//'/([а-яёa-z0-9]+)\,(\040+)/iue',
 						],
 				'replacement' 	=> [
-							'$this->tag($m[1], "span", ["class"=>"oa_obracket_sp_s")) . $this->tag("(", "span", ["class"=>"oa_obracket_sp_b")]',
-							'$m[1] . $this->tag("(", "span", ["class"=>"oa_obracket_nl_b")]',
+							'$this->tag($m[1], "span", ["class"=>"oa_obracket_sp_s")) . $this->tag("(", "span", ["class"=>"oa_obracket_sp_b"])',
+							'$m[1] . $this->tag("(", "span", ["class"=>"oa_obracket_nl_b"])',
 							//'$m[1] . $this->tag(",", "span", ["class"=>"oa_comma_b")) . $this->tag(" ", "span", ["class"=>"oa_comma_e")]',
 						],
 			],
