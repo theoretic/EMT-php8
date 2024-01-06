@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Symbol
@@ -67,7 +67,7 @@ class EMT_Tret_Symbol extends EMT_Tret
 		'degree_f' => [
 				'description'	=> 'Градусы по Фаренгейту',
 				'pattern' 		=> '/([0-9]+)F($|\s|\.|\,|\;|\:|\&nbsp\;|\?|\!)/eu',
-				'replacement' 	=> '"".$this->tag($m[1]." &deg;F","span", ["class"=>"nowrap")] .$m[2]'
+				'replacement' 	=> '"".$this->tag($m[1]." &deg;F","span", ["class"=>"nowrap"]) .$m[2]'
 			],
 		'euro_symbol' => [
 				'description'	=> 'Символ евро',
