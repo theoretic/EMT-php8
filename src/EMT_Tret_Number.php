@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Number
@@ -65,6 +65,6 @@ class EMT_Tret_Number extends EMT_Tret
 				'description'	=> 'Пробел между параграфом и числом',
 				'pattern' 		=> '/(§|\&sect\;)(\s|&nbsp;)*(\d+|[IVX]+|[a-zа-яё]+)/ui',
 				'replacement' 	=> '&sect;&thinsp;\3'
-			],
+			]
 		];
 }
