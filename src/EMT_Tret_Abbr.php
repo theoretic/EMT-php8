@@ -69,7 +69,7 @@ class EMT_Tret_Abbr extends EMT_Tret
 		'ps_pps' => [
 				'description'	=> 'Объединение сокращений P.S., P.P.S.',
 				'pattern' 		=> '/(^|\040|\t|\>|\r|\n)(p\.\040?)(p\.\040?)?(s\.)([^\<])/ie',
-				'replacement' 	=> '$m[1] . $this->tag(trim($m[2]) . " " . ($m[3] ? trim($m[3]) . " " : ""). $m[4], "span",  ["class" => "nowrap") ].$m[5] '
+				'replacement' 	=> '$m[1] . $this->tag(trim($m[2]) . " " . ($m[3] ? trim($m[3]) . " " : ""). $m[4], "span",  ["class" => "nowrap"]).$m[5] '
 			],
 		'nobr_vtch_itd_itp'	=> [
 				'description'	=> 'Объединение сокращений и т.д., и т.п., в т.ч.',

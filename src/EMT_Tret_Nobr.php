@@ -43,7 +43,7 @@ class EMT_Tret_Nobr extends EMT_Tret
 		'phone_builder_v2' => [
 				'description'	=> 'Дополнительный формат номеров телефонов',
 				'pattern' 		=> '/([^\d]|^)\+\s?([0-9]{1})\s?\(([0-9]{3,4})\)\s?(\d{3})(\d{2})(\d{2})([^\d]|$)/ie',
-				'replacement'	=> '$m[1].$this->tag("+".$m[2]." ".$m[3]." ".$m[4]."-".$m[5]."-".$m[6], "span",  ["class" => "nowrap")].$m[7]',
+				'replacement'	=> '$m[1].$this->tag("+".$m[2]." ".$m[3]." ".$m[4]."-".$m[5]."-".$m[6], "span",  ["class" => "nowrap"]).$m[7]',
 			],
 		'ip_address' => [
 				'description'	=> 'Объединение IP-адресов',

@@ -54,9 +54,9 @@ class EMT_Tret_OptAlign extends EMT_Tret
 							//'/([а-яёa-z0-9]+)\,(\040+)/iue',
 						],
 				'replacement' 	=> [
-							'$this->tag($m[1], "span", ["class"=>"oa_obracket_sp_s")) . $this->tag("(", "span", ["class"=>"oa_obracket_sp_b"])',
+							'$this->tag($m[1], "span", ["class"=>"oa_obracket_sp_s"]) . $this->tag("(", "span", ["class"=>"oa_obracket_sp_b"])',
 							'$m[1] . $this->tag("(", "span", ["class"=>"oa_obracket_nl_b"])',
-							//'$m[1] . $this->tag(",", "span", ["class"=>"oa_comma_b")) . $this->tag(" ", "span", ["class"=>"oa_comma_e")]',
+							//'$m[1] . $this->tag(",", "span", ["class"=>"oa_comma_b")) . $this->tag(" ", "span", ["class"=>"oa_comma_e"])',
 						],
 			],
 
