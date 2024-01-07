@@ -40,7 +40,7 @@ class EMT_Tret_Text extends EMT_Tret
 					],
 				'replacement' 	=> [
 					'\1',
-					'$m[1].($m[7] === EMT_Lib::strtolower($m[3]) ? $m[2] : $m[2].$m[5].$m[6] )',
+					'$m[1].($m[7] === EMT\EMT_Lib::strtolower($m[3]) ? $m[2] : $m[2].$m[5].$m[6] )',
 					]
 			],
 		'paragraphs' => [
