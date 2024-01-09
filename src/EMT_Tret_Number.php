@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Number
@@ -33,12 +33,12 @@ class EMT_Tret_Number extends EMT_Tret
 		'numeric_sub' => [
 				'description'	=> 'Нижний индекс',
 				'pattern' 		=> '/([a-zа-яё0-9])\_([\d]{1,3})([^@а-яёa-z0-9]|$)/ieu',
-				'replacement' 	=> '$m[1] . $this->tag($this->tag($m[2],"small"],"sub") . $m[3]'
+				'replacement' 	=> '$m[1] . $this->tag($this->tag($m[2],"small"),"sub") . $m[3]'
 			],
 		'numeric_sup' => [
 				'description'	=> 'Верхний индекс',
 				'pattern' 		=> '/([a-zа-яё0-9])\^([\d]{1,3})([^а-яёa-z0-9]|$)/ieu',
-				'replacement' 	=> '$m[1] . $this->tag($this->tag($m[2],"small"],"sup") . $m[3]'
+				'replacement' 	=> '$m[1] . $this->tag($this->tag($m[2],"small"),"sup") . $m[3]'
 			],
 		'simple_fraction' => [
 				'description'	=> 'Замена дробей 1/2, 1/4, 3/4 на соответствующие символы',
@@ -65,6 +65,6 @@ class EMT_Tret_Number extends EMT_Tret
 				'description'	=> 'Пробел между параграфом и числом',
 				'pattern' 		=> '/(§|\&sect\;)(\s|&nbsp;)*(\d+|[IVX]+|[a-zа-яё]+)/ui',
 				'replacement' 	=> '&sect;&thinsp;\3'
-			],
+			]
 		];
 }

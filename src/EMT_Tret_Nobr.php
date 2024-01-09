@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Nobr
@@ -43,7 +43,7 @@ class EMT_Tret_Nobr extends EMT_Tret
 		'phone_builder_v2' => [
 				'description'	=> 'Дополнительный формат номеров телефонов',
 				'pattern' 		=> '/([^\d]|^)\+\s?([0-9]{1})\s?\(([0-9]{3,4})\)\s?(\d{3})(\d{2})(\d{2})([^\d]|$)/ie',
-				'replacement'	=> '$m[1].$this->tag("+".$m[2]." ".$m[3]." ".$m[4]."-".$m[5]."-".$m[6], "span",  ["class" => "nowrap")].$m[7]',
+				'replacement'	=> '$m[1].$this->tag("+".$m[2]." ".$m[3]." ".$m[4]."-".$m[5]."-".$m[6], "span",  ["class" => "nowrap"]).$m[7]',
 			],
 		'ip_address' => [
 				'description'	=> 'Объединение IP-адресов',
@@ -60,8 +60,8 @@ class EMT_Tret_Nobr extends EMT_Tret
 					],
 				'replacement' 	=> 
 					[
-						'$m[1].$this->tag($m[2].". ".$m[4].". ".$m[6], "span",  ["class" => "nowrap")].$m[7]',
-						'$m[1].$this->tag($m[2]." ".$m[4].". ".$m[6].".", "span",  ["class" => "nowrap")].$m[7]',
+						'$m[1].$this->tag($m[2].". ".$m[4].". ".$m[6], "span",  ["class" => "nowrap"]).$m[7]',
+						'$m[1].$this->tag($m[2]." ".$m[4].". ".$m[6].".", "span",  ["class" => "nowrap"]).$m[7]',
 					],
 			],
 		'spaces_nobr_in_surname_abbr' => [
@@ -77,10 +77,10 @@ class EMT_Tret_Nobr extends EMT_Tret
 					],
 				'replacement' 	=> 
 					[
-						'$m[1].$this->tag($m[2].". ".$m[4].". ".$m[6], "span",  ["class" => "nowrap")].$m[7]',
-						'$m[1].$this->tag($m[2]." ".$m[4].". ".$m[6].".", "span",  ["class" => "nowrap")].$m[7]',
-						'$m[1].$this->tag($m[2].(isset($m[3])? " " : "" ).$m[4].(isset($m[5])? " " : "" ).$m[6], "span",  ["class" => "nowrap")].$m[7]',
-						'$m[1].$this->tag($m[2]." ".$m[4].(isset($m[5])? " " : "" ).$m[6], "span",  ["class" => "nowrap")].$m[7]',
+						'$m[1].$this->tag($m[2].". ".$m[4].". ".$m[6], "span",  ["class" => "nowrap"]).$m[7]',
+						'$m[1].$this->tag($m[2]." ".$m[4].". ".$m[6].".", "span",  ["class" => "nowrap"]).$m[7]',
+						'$m[1].$this->tag($m[2].(isset($m[3])? " " : "" ).$m[4].(isset($m[5])? " " : "" ).$m[6], "span",  ["class" => "nowrap"]).$m[7]',
+						'$m[1].$this->tag($m[2]." ".$m[4].(isset($m[5])? " " : "" ).$m[6], "span",  ["class" => "nowrap"]).$m[7]',
 						//'$m[1].$this->tag($m[2].". ".$m[4].". ".$m[8], "span",  ["class" => "nowrap")].$m[9]',
 						//'$m[1].$this->tag($m[2]." ".$m[4].". ".$m[6].".", "span",  ["class" => "nowrap")].$m[7]',
 					],
@@ -105,14 +105,14 @@ class EMT_Tret_Nobr extends EMT_Tret
 				'disabled'	 => true,
 				'cycled'		=> true,
 				'pattern' 		=> '/(\&nbsp\;|\s|\>|^)([a-zа-яё]{1}\-[a-zа-яё]{4}|[a-zа-яё]{2}\-[a-zа-яё]{3}|[a-zа-яё]{3}\-[a-zа-яё]{2}|[a-zа-яё]{4}\-[a-zа-яё]{1}|когда\-то|кое\-как|кой\-кого|вс[её]\-таки|[а-яё]+\-(кась|ка|де))(\s|\.|\,|\!|\?|\&nbsp\;|\&hellip\;|$)/uie',
-				'replacement' 	=> '$m[1] . $this->tag($m[2], "span", ["class"=>"nowrap")] . $m[4]',
+				'replacement' 	=> '$m[1] . $this->tag($m[2], "span", ["class"=>"nowrap"]) . $m[4]',
 			],
 		'hyphen_nowrap' => [
 				'description'	=> 'Отмена переноса слова с дефисом',
 				'disabled'	 => true,
 				'cycled'		=> true,
 				'pattern' 		=> '/(\&nbsp\;|\s|\>|^)([a-zа-яё]+)((\-([a-zа-яё]+)){1,2})(\s|\.|\,|\!|\?|\&nbsp\;|\&hellip\;|$)/uie',
-				'replacement' 	=> '$m[1] . $this->tag($m[2].$m[3], "span", ["class"=>"nowrap")] . $m[6]'
+				'replacement' 	=> '$m[1] . $this->tag($m[2].$m[3], "span", ["class"=>"nowrap"]) . $m[6]'
 			],
 		];
 

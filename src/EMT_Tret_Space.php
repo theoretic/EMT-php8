@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Space
@@ -52,7 +52,7 @@ class EMT_Tret_Space extends EMT_Tret
 				'replacement' 	=> [
 						//'\1\2. \4',
 						'$m[1].$m[2]."." .( $m[5] == "." ? "" : " ").$m[4].$m[5]',
-						'$m[1].$m[2]."." .(in_array(EMT_Lib::strtolower($m[3]], $this->domain_zones)? "":( $m[4] == "." ? "" : " ")]. $m[3].$m[4]'
+						'$m[1].$m[2]."." .([EMT\EMT_Lib::strtolower($m[3]), $this->domain_zones]? "":( $m[4] == "." ? "" : " ")). $m[3].$m[4]'
 						],
 			],
 		'autospace_after_hellips' => [
@@ -75,7 +75,16 @@ class EMT_Tret_Space extends EMT_Tret
 				'pattern' 		=> '/(^|\040|\t|>)([a-zа-яё]{1,2})\040(\&laquo\;|\&bdquo\;)/u', 
 				'replacement' 	=> '\1\2&nbsp;\3'
 			],
-
+    	'nbsp_before_pretext' => [
+      		'description'	=> 'Неразрывный пробел перед предлогами',
+      		'pattern' 		=> '/([a-zA-Zа-яёА-ЯЁ])((\s|&nbsp;|\t)+)(без|в|для|до|за|из|из-за|из-под|к|ко|на|над|о|об|от|перед|по|под|пред|при|про|с|со|у|через)(\s|&nbsp;)/iu', 
+			'replacement' 	=> '\1\3\4&nbsp;'
+      	],
+    	'nbsp_after_numbers' => [
+      		'description'	=> 'Неразрывный пробел после чисел',
+      		'pattern' 		=> '/(\d+)((\s|&nbsp;|\t)+)([a-zA-Zа-яёА-ЯЁ])/iu', 
+			'replacement' 	=> '\1&nbsp;\4'
+      	],
 		'nbsp_before_month'	=> [
 				'description'	=> 'Неразрывный пробел в датах перед числом и месяцем',
 				'pattern' 		=> '/(\d)(\s)+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)([^\<]|$)/iu',

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Abbr
@@ -69,7 +69,7 @@ class EMT_Tret_Abbr extends EMT_Tret
 		'ps_pps' => [
 				'description'	=> 'Объединение сокращений P.S., P.P.S.',
 				'pattern' 		=> '/(^|\040|\t|\>|\r|\n)(p\.\040?)(p\.\040?)?(s\.)([^\<])/ie',
-				'replacement' 	=> '$m[1] . $this->tag(trim($m[2]) . " " . ($m[3] ? trim($m[3]) . " " : ""). $m[4], "span",  ["class" => "nowrap") ].$m[5] '
+				'replacement' 	=> '$m[1] . $this->tag(trim($m[2]) . " " . ($m[3] ? trim($m[3]) . " " : ""). $m[4], "span",  ["class" => "nowrap"]).$m[5] '
 			],
 		'nobr_vtch_itd_itp'	=> [
 				'description'	=> 'Объединение сокращений и т.д., и т.п., в т.ч.',
@@ -80,15 +80,15 @@ class EMT_Tret_Abbr extends EMT_Tret
 						'/(^|\s|\&nbsp\;)в( |\&nbsp\;)т\.?[ ]?ч(\.|$|\s|\&nbsp\;)/ue',
 					],
 				'replacement' 	=> [
-						'$m[1].$this->tag("и т. д.", "span",  ["class" => "nowrap")).($m[3]!="."? $m[3] : "" ]',
-						'$m[1].$this->tag("и т. п.", "span",  ["class" => "nowrap")).($m[3]!="."? $m[3] : "" ]',
-						'$m[1].$this->tag("в т. ч.", "span",  ["class" => "nowrap")).($m[3]!="."? $m[3] : "" ]',
+						'$m[1].$this->tag("и т. д.", "span",  ["class" => "nowrap"]).($m[3]!="."? $m[3] : "" ]',
+						'$m[1].$this->tag("и т. п.", "span",  ["class" => "nowrap"]).($m[3]!="."? $m[3] : "" ]',
+						'$m[1].$this->tag("в т. ч.", "span",  ["class" => "nowrap"]).($m[3]!="."? $m[3] : "" ]',
 					]
 			],
 		'nbsp_te'	=> [
 				'description'	=> 'Обработка т.е.',
 				'pattern' 		=> '/(^|\s|\&nbsp\;)([тТ])\.?[ ]?е\./ue',
-				'replacement' 	=> '$m[1].$this->tag($m[2].". е.", "span",  ["class" => "nowrap")]',
+				'replacement' 	=> '$m[1].$this->tag($m[2].". е.", "span",  ["class" => "nowrap"])',
 			],
 		'nbsp_money_abbr' => [
 				'description'	=> 'Форматирование денежных сокращений (расстановка пробелов и привязка названия валюты к числу)',
@@ -112,11 +112,11 @@ class EMT_Tret_Abbr extends EMT_Tret
 						'/(\040|\t|\&nbsp\;|^|\>)ГОСТ( |\&nbsp\;)?(\d+)(\-|\&minus\;|\&mdash\;)(\d+)/ieu',
 						],
 				'replacement' 	=> [
-						'$m[1].$this->tag("ГОСТ ".$m[3].(isset($m[6])?"&ndash;".$m[6]:"").(isset($m[7])?" &mdash;":""],"span", ["class"=>"nowrap")]',
+						'$m[1].$this->tag("ГОСТ ".$m[3].(isset($m[6])?"&ndash;".$m[6]:"").(isset($m[7])?" &mdash;":""),"span", ["class"=>"nowrap"])',
 						'$m[1]."ГОСТ ".$m[3]."&ndash;".$m[5]',
 						],
 			],
-			/*
+			
 		'nobr_vtch_itd_itp'	=> [
 				'description'	=> 'Привязка сокращений до н.э., н.э.',
 				'pattern' 		=> [
@@ -128,12 +128,12 @@ class EMT_Tret_Abbr extends EMT_Tret
 						'/(\s|\&nbsp\;)в( |\&nbsp\;)т\.?[ ]?ч\./ue',
 					],
 				'replacement' 	=> [
-						'$m[1].$this->tag("и т. д.", "span",  ["class" => "nowrap")]',
-						'$m[1].$this->tag("и т. п.", "span",  ["class" => "nowrap")]',
-						'$m[1].$this->tag("в т. ч.", "span",  ["class" => "nowrap")]',
-					)
+						'$m[1].$this->tag("и т. д.", "span",  ["class" => "nowrap"])',
+						'$m[1].$this->tag("и т. п.", "span",  ["class" => "nowrap"])',
+						'$m[1].$this->tag("в т. ч.", "span",  ["class" => "nowrap"])',
+					]
 			],
-			*/
+		
 
 
 		];

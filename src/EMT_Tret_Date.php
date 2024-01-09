@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Date
@@ -31,7 +31,7 @@ class EMT_Tret_Date extends EMT_Tret
 				'description'	=> 'Расстановка тире и объединение в неразрывные периоды дней',
 				'disabled'	 => true,
 				'pattern' 		=> '/([^\>]|^)(\d+)(\-|\&minus\;|\&mdash\;)(\d+)( |\&nbsp\;)(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)([^\<]|$)/ieu',
-				'replacement' 	=> '$m[1].$this->tag($m[2]."&mdash;".$m[4]." ".$m[6],"span", ["class"=>"nowrap")].$m[7]'
+				'replacement' 	=> '$m[1].$this->tag($m[2]."&mdash;".$m[4]." ".$m[6],"span", ["class"=>"nowrap"]).$m[7]'
 			],
 		'nobr_year_in_date' => [
 				'description'	=> 'Привязка года к дате',
@@ -40,7 +40,7 @@ class EMT_Tret_Date extends EMT_Tret
 					'/(\s|\&nbsp\;)([0-9]{2}\.[0-9]{2}\.([0-9]{2})?[0-9]{2})(\s|\&nbsp\;|\.(\s|\&nbsp\;|$)|$)/eiu',
 					],
 				'replacement' 	=> [
-					'$m[1].$this->tag($m[2]." г.","span", ["class"=>"nowrap")).($m[5]==="."?"":" "]',
+					'$m[1].$this->tag($m[2]." г.","span", ["class"=>"nowrap"]).($m[5]==="."?"":" "]',
 					'$m[1].$this->tag($m[2],"span", ["class"=>"nowrap")].$m[4]',
 					],
 			],

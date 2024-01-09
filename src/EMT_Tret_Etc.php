@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Etc
@@ -31,22 +31,22 @@ class EMT_Tret_Etc extends EMT_Tret
 		'word_sup' => [
 				'description'	=> 'Надстрочный текст после символа ^',
 				'pattern' 		=> '/((\s|\&nbsp\;|^)+)\^([a-zа-яё0-9\.\:\,\-]+)(\s|\&nbsp\;|$|\.$)/ieu',
-				'replacement' 	=> '"" . $this->tag($this->tag($m[3],"small"],"sup") . $m[4]'
+				'replacement' 	=> '"" . $this->tag($this->tag($m[3],"small"),"sup") . $m[4]'
 			],
 		'century_period' => [
 				'description'	=> 'Тире между диапозоном веков',
 				'pattern' 		=> '/(\040|\t|\&nbsp\;|^)([XIV]{1,5})(-|\&mdash\;)([XIV]{1,5})(( |\&nbsp\;)?(в\.в\.|вв\.|вв|в\.|в))/eu',
-				'replacement' 	=> '$m[1] .$this->tag($m[2]."&mdash;".$m[4]." вв.","span", ["class"=>"nowrap")]'
+				'replacement' 	=> '$m[1] .$this->tag($m[2]."&mdash;".$m[4]." вв.","span", ["class"=>"nowrap"])'
 			],
 		'time_interval' => [
 				'description'	=> 'Тире и отмена переноса между диапозоном времени',
 				'pattern' 		=> '/([^\d\>]|^)([\d]{1,2}\:[\d]{2})(-|\&mdash\;|\&minus\;)([\d]{1,2}\:[\d]{2})([^\d\<]|$)/eui',
-				'replacement' 	=> '$m[1] . $this->tag($m[2]."&mdash;".$m[4],"span", ["class"=>"nowrap")].$m[5]'
+				'replacement' 	=> '$m[1] . $this->tag($m[2]."&mdash;".$m[4],"span", ["class"=>"nowrap"]).$m[5]'
 			],
 		'split_number_to_triads' => [
 				'description'	=> 'Разбиение числа на триады',
 				'pattern' 		=> '/([^a-zA-Z0-9<\)]|^)([0-9]{5,})([^a-zA-Z>\(]|$)/eu',
-				'replacement' 	=> '$m[1].str_replace(" ","&thinsp;",EMT_Lib::split_number($m[2])).$m[3] '
+				'replacement' 	=> '$m[1].str_replace(" ","&thinsp;",EMT\EMT_Lib::split_number($m[2])).$m[3] '
 				//'function'		=> 'split_number'
 			],
 		'expand_no_nbsp_in_nobr' => [

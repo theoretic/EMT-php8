@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Text
@@ -29,7 +29,7 @@ class EMT_Tret_Text extends EMT_Tret
 		'email' => [
 				'description'	=> 'Выделение эл. почты из текста',
 				'pattern' 		=> '/(\s|^|\&nbsp\;|\()([a-z0-9\-\_\.]{2,})\@([a-z0-9\-\.]{2,})\.([a-z]{2,6})(\)|\s|\.|\,|\!|\?|$|\<)/e',
-				'replacement' 	=> '$m[1] . $this->tag($m[2]."@".$m[3].".".$m[4], "a", ["href" => "mailto:".$m[2]."@".$m[3].".".$m[4])] . $m[5]'
+				'replacement' 	=> '$m[1] . $this->tag($m[2]."@".$m[3].".".$m[4], "a", ["href" => "mailto:".$m[2]."@".$m[3].".".$m[4]]) . $m[5]'
 			],
 		'no_repeat_words' => [
 				'description'	=> 'Удаление повторяющихся слов',
@@ -40,7 +40,7 @@ class EMT_Tret_Text extends EMT_Tret
 					],
 				'replacement' 	=> [
 					'\1',
-					'$m[1].($m[7] === EMT_Lib::strtolower($m[3]) ? $m[2] : $m[2].$m[5].$m[6] )',
+					'$m[1].($m[7] === EMT\EMT_Lib::strtolower($m[3]) ? $m[2] : $m[2].$m[5].$m[6] )',
 					]
 			],
 		'paragraphs' => [
