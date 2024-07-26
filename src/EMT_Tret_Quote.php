@@ -76,11 +76,28 @@ class EMT_Tret_Quote extends EMT_Tret
 				'description'	=> 'Внутренние кавычки-лапки и дюймы',
 				'function' => 'build_sub_quotations'
 			],
+		'backtick' => [
+				'description'	=> 'Замена обратного апострофа',
+				'pattern' 		=> '/`/',
+				'replacement' 	=> '&backquote;'
+			],
+		'apostrophe_open' => [
+				'description'	=> 'Замена символа ʻ на HTML-сущность',
+				'pattern' 		=> '/ʻ/',
+				'replacement' 	=> '&lsquo;'
+			],
+		'apostrophe_close' => [
+				'description'	=> 'Замена символа ʼ на HTML-сущность',
+				'pattern' 		=> '/ʼ/',
+				'replacement' 	=> '&rsquo;'
+			]
 		];
+
 	protected function inject_in($pos, $text, &$thetext)
 	{
 		for($i=0;$i<strlen($text);$i++) $thetext[$pos+$i] = $text[$i];
 	}
+	
 	protected function build_sub_quotations()
 	{
 		global $__ax,$__ay;
