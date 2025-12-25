@@ -4,7 +4,7 @@ Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Base
 php8 version
 AT / atis.pro
-22.12.25
+25.12.25
 */
 
 /**
@@ -14,8 +14,9 @@ AT / atis.pro
  */
 
 namespace EMT;
-
-class EMT_Base{
+ 
+class EMT_Base 
+{
 	private $_text = "";
 	private $inited = false;
 	/**
@@ -38,25 +39,27 @@ class EMT_Base{
 	public $disable_notg_replace = false;
 	public $remove_notg = false;
 	public $settings = [];
-	protected function log($str, $data = null){
+	protected function log($str, $data = null)
+	{
 		if(!$this->logging) return;
 		$this->logs[] = ['class' => '', 'info' => $str, 'data' => $data];
 	}
-
-	protected function tret_log($tret, $str, $data = null){
+	protected function tret_log($tret, $str, $data = null)
+	{
 		$this->logs[] = ['class' => $tret, 'info' => $str, 'data' => $data];
 	}
 
-	protected function error($info, $data = null){
+	protected function error($info, $data = null)
+	{
 		$this->errors[] = ['class' => '', 'info' => $info, 'data' => $data];
 		$this->log("ERROR $info", $data );
 	}
-
-	protected function tret_error($tret, $info, $data = null){
+	protected function tret_error($tret, $info, $data = null)
+	{
 		$this->errors[] = ['class' => $tret, 'info' => $info, 'data' => $data];
 	}
-
-	protected function debug($class, $place, &$after_text, $after_text_raw = ""){
+	protected function debug($class, $place, &$after_text, $after_text_raw = "")
+	{
 		if(!$this->debug_enabled) return;
 		$this->debug_info[] = [
 				'tret'  => $class == $this ? false: true,
@@ -74,19 +77,19 @@ class EMT_Base{
 	 * третов и правил после
 	 *
 	 */
-	public function debug_on(){
+	public function debug_on()
+	{
 		$this->debug_enabled = true;
 	}
-
 	/**
 	 * Включить режим отладки, чтобы посмотреть последовательность вызовов
 	 * третов и правил после
 	 *
 	 */
-	public function log_on(){
+	public function log_on()
+	{
 		$this->logging = true;
 	}
-
 	/**
 	* Добавление защищенного блока
 	*
@@ -101,7 +104,8 @@ class EMT_Base{
 	* @param 	string $tag тэг
 	* @return  void
 	*/
-	private function _add_safe_block($id, $open, $close, $tag){
+	private function _add_safe_block($id, $open, $close, $tag)
+	{
 		$this->_safe_blocks[] = [
 				'id' => $id,
 				'tag' => $tag,
@@ -109,23 +113,23 @@ class EMT_Base{
 				'close' =>  $close,
 			];
 	}
-
 	/**
 	* Список защищенных блоков
 	*
 	* @return 	array
 	*/
-	public function get_all_safe_blocks(){
+	public function get_all_safe_blocks()
+	{
 		return $this->_safe_blocks;
 	}
-
 	/**
 	* Удаленного блока по его номеру ключа
 	*
 	* @param 	string $id идентифиактор защищённого блока 
 	* @return  void
 	*/
-	public function remove_safe_block($id){
+	public function remove_safe_block($id)
+	{
 		foreach($this->_safe_blocks as $k => $block) {
 			if($block['id']==$id) unset($this->_safe_blocks[$k]);
 		}
@@ -137,7 +141,8 @@ class EMT_Base{
 	* @param 	string $tag тэг, который должен быть защищён
 	* @return  void
 	*/
-	public function add_safe_tag($tag){	 
+	public function add_safe_tag($tag)
+	{	 
 		$open = preg_quote("<", '/'). $tag."[^>]*?" .  preg_quote(">", '/');
 		$close = preg_quote("</$tag>", '/');
 		$this->_add_safe_block($tag, $open, $close, $tag);
@@ -152,15 +157,18 @@ class EMT_Base{
 	* @param 	bool $quoted специальные символы в начале и конце блока экранированы
 	* @return  void
 	*/
-	public function add_safe_block($id, $open, $close, $quoted = false){
+	public function add_safe_block($id, $open, $close, $quoted = false)
+	{
 		$open = trim($open);
 		$close = trim($close);
 
-		if (empty($open) || empty($close)){
+		if (empty($open) || empty($close)) 
+		{
 			return false;
 		}
 
-		if (false === $quoted){
+		if (false === $quoted) 
+		{
 			$open = preg_quote($open, '/');
 		  $close = preg_quote($close, '/');
 		}
@@ -176,12 +184,15 @@ class EMT_Base{
 	* @param	bool $safe если true, то содержимое блоков будет сохранено, иначе - раскодировано. 
 	* @return  string
 	*/
-	public function safe_blocks($text, $way, $show = true){
-		if (count($this->_safe_blocks)) {
-			$this->safeType = true === $way ? "EMT_Lib::encrypt_tag(\$m[2])" : "stripslashes(EMT_Lib::decrypt_tag(\$m[2]))";
+	public function safe_blocks($text, $way, $show = true)
+	{
+		if (count($this->_safe_blocks)) 
+		{
+			$this->safeType = true === $way ? "\EMT\EMT_Lib::encrypt_tag(\$m[2])" : "stripslashes(\EMT\EMT_Lib::decrypt_tag(\$m[2]))";
 			$safeblocks = true === $way ? $this->_safe_blocks : array_reverse($this->_safe_blocks);
-			foreach ($safeblocks as $block) {
-			$text = preg_replace_callback("/({$block['open']})(.+?)({$block['close']})/s", function($m) { eval("namespace EMT; \$m[2]=".$this->safeType.";"); return $m[1].$m[2].$m[3]; }, $text); //
+			foreach ($safeblocks as $block) 
+			{
+			$text = preg_replace_callback("/({$block['open']})(.+?)({$block['close']})/s", function($m) { eval("\$m[2]=".$this->safeType.";"); return $m[1].$m[2].$m[3]; }, $text); //
 			}
 		}
 
@@ -194,14 +205,18 @@ class EMT_Base{
 	* @param	string $text
 	* @return  string
 	*/
-	public function decode_internal_blocks($text){
+	public function decode_internal_blocks($text)
+	{
 		return EMT_Lib::decode_internal_blocks($text);
 	}
 
-	private function create_object($tret){
+	private function create_object($tret)
+	{
 		// если класса нету, попытаемся его прогрузить, например, если стандартный
-		if(!class_exists($tret)){
-			if(preg_match("/^EMT_Tret_([a-zA-Z0-9_]+)$/",$tret, $m)){
+		if(!class_exists($tret))
+		{
+			if(preg_match("/^EMT_Tret_([a-zA-Z0-9_]+)$/",$tret, $m))
+			{
 				$tname = $m[1];
 				$fname = str_replace("_"," ",$tname);
 				$fname = ucwords($fname);
@@ -209,7 +224,8 @@ class EMT_Base{
 				//if(file_exists("EMT.Tret.".$fname.".php")) {}
 			}
 		}
-		if(!class_exists($tret)){
+		if(!class_exists($tret))
+		{
 			$this->error("Класс $tret не найден. Пожалуйста, подргузите нужный файл.");
 			return null;
 		}
@@ -219,21 +235,26 @@ class EMT_Base{
 		$obj->logging = $this->logging;
 		return $obj;
 	}
-	private function get_short_tret($tretname){
-		if(preg_match("/^EMT_Tret_([a-zA-Z0-9_]+)$/",$tretname, $m)){
+	private function get_short_tret($tretname)
+	{
+		if(preg_match("/^EMT_Tret_([a-zA-Z0-9_]+)$/",$tretname, $m))
+		{
 			return $m[1];
 		}
 		return $tretname;
 	}
-	private function _init(){
-		foreach($this->trets as $tret){
+	private function _init()
+	{
+		foreach($this->trets as $tret)
+		{
 			if(isset($this->tret_objects[$tret])) continue;
 			$obj = $this->create_object($tret);
 			if($obj == null) continue;
 			$this->tret_objects[$tret] = $obj;
 		}
 
-		if(!$this->inited){
+		if(!$this->inited)
+		{
 			$this->add_safe_tag('pre');
 			$this->add_safe_tag('script');
 			$this->add_safe_tag('style');
@@ -250,7 +271,8 @@ class EMT_Base{
 	 * Также здесь можно отменить защищённые блоки по умлочнаию
 	 *
 	 */
-	public function init(){
+	public function init()
+	{
 
 	}
 	/**
@@ -260,9 +282,12 @@ class EMT_Base{
 	 * @param string $altname - альтернативное имя, если хотим например иметь два одинаоковых терта в обработке
  	 * @return unknown
 	 */
-	public function add_tret($class, $altname = false){
-		if(is_object($class)){
-			if(!is_a($class, "EMT_Tret")){
+	public function add_tret($class, $altname = false)
+	{
+		if(is_object($class))
+		{
+			if(!is_a($class, "EMT_Tret"))
+			{
 				$this->error("You are adding Tret that doesn't inherit base class EMT_Tret", get_class($class));
 				return false;
 			}
@@ -273,7 +298,8 @@ class EMT_Base{
 			$this->trets[] = ($altname ? $altname : get_class($class));
 			return true;
 		}
-		if(is_string($class)){
+		if(is_string($class))
+		{
 			$obj = $this->create_object($class);
 			if($obj === null)
 				return false;
@@ -289,14 +315,18 @@ class EMT_Base{
 	 *
 	 * @param unknown_type $name
 	 */
-	public function get_tret($name){
+	public function get_tret($name)
+	{
 		if(isset($this->tret_objects[$name])) return $this->tret_objects[$name];
-		foreach($this->trets as $tret){
-			if($tret == $name){
+		foreach($this->trets as $tret)
+		{
+			if($tret == $name)
+			{
 				$this->_init();
 				return $this->tret_objects[$name];
 			}
-			if($this->get_short_tret($tret) == $name){
+			if($this->get_short_tret($tret) == $name)
+			{
 				$this->_init();
 				return $this->tret_objects[$tret];
 			}
@@ -309,7 +339,8 @@ class EMT_Base{
 	 *
 	 * @param string $text
 	 */
-	public function set_text($text){
+	public function set_text($text)
+	{
 		$this->_text = $text;
 	}
 
@@ -317,7 +348,8 @@ class EMT_Base{
 	 * Запустить типограф на выполнение
 	 *
 	 */
-	public function apply($trets = null){
+	public function apply($trets = null)
+	{
 		$this->ok = false;
 
 		$this->init();
@@ -338,7 +370,8 @@ class EMT_Base{
 		$this->_text = EMT_Lib::clear_special_chars($this->_text);
 		$this->debug($this, 'clear_special_chars', $this->_text);
 
-		foreach ($atrets as $tret) {
+		foreach ($atrets as $tret) 
+		{
 			// если установлен режим разметки тэгов то выставим его
 			if($this->use_layout_set)
 				$this->tret_objects[$tret]->set_tag_layout_ifnotset($this->use_layout);
@@ -368,7 +401,8 @@ class EMT_Base{
 
 			// отладка
 			if($this->debug_enabled)
-				foreach($this->tret_objects[$tret]->debug_info as $di){
+				foreach($this->tret_objects[$tret]->debug_info as $di)
+				{
 					$unsafetext = $di['text'];
 					$unsafetext = EMT_Lib::safe_tag_chars($unsafetext, false);
 					$unsafetext = $this->safe_blocks($unsafetext, false);
@@ -382,7 +416,8 @@ class EMT_Base{
 		$this->_text = $this->decode_internal_blocks($this->_text);
 		$this->debug($this, 'decode_internal_blocks', $this->_text);
 
-		if($this->is_on('dounicode')){
+		if($this->is_on('dounicode'))
+		{
 			EMT_Lib::convert_html_entities_to_unicode($this->_text);
 		}
 
@@ -392,7 +427,8 @@ class EMT_Base{
 		$this->_text = $this->safe_blocks($this->_text, false);
 		$this->debug($this, 'unsafe_blocks', $this->_text);
 
-		if(!$this->disable_notg_replace){
+		if(!$this->disable_notg_replace)
+		{
 			$repl = ['<span class="_notg_start"></span>', '<span class="_notg_end"></span>'];
 			if($this->remove_notg) $repl = "";
 			$this->_text = str_replace(['<notg>','</notg>'], $repl , $this->_text);
@@ -408,14 +444,17 @@ class EMT_Base{
 	 * @param bool $compact не выводить пустые классы
 	 * @return string|array
 	 */
-	public function get_style($list = false, $compact = false){
+	public function get_style($list = false, $compact = false)
+	{
 		$this->_init();
 
 		$res = [];
-		foreach ($this->trets as $tret) {
+		foreach ($this->trets as $tret) 
+		{
 			$arr =$this->tret_objects[$tret]->classes;
 			if(!is_array($arr)) continue;
-			foreach($arr as $classname => $str){
+			foreach($arr as $classname => $str)
+			{
 				if(($compact) && (!$str)) continue;
 				$clsname = ($this->class_layout_prefix ? $this->class_layout_prefix : "" ).(isset($this->tret_objects[$tret]->class_names[$classname]) ? $this->tret_objects[$tret]->class_names[$classname] :$classname);
 				$res[$clsname] = $str;
@@ -423,7 +462,8 @@ class EMT_Base{
 		}
 		if($list) return $res;
 		$str = "";
-		foreach($res as $k => $v){
+		foreach($res as $k => $v)
+		{
 			$str .= ".$k { $v }\n";
 		}
 		return $str;
@@ -438,7 +478,8 @@ class EMT_Base{
 	 *
 	 * @param int $layout
 	 */
-	public function set_tag_layout($layout = EMT_Lib::LAYOUT_STYLE){
+	public function set_tag_layout($layout = EMT_Lib::LAYOUT_STYLE)
+	{
 		$this->use_layout = $layout;
 		$this->use_layout_set = true;
 	}
@@ -447,7 +488,8 @@ class EMT_Base{
 	 *
 	 * @param string|bool $prefix если true то префикс 'emt_', иначе то, что передали
 	 */
-	public function set_class_layout_prefix($prefix ){
+	public function set_class_layout_prefix($prefix )
+	{
 		$this->class_layout_prefix = $prefix === true ? "emt_" : $prefix;
 	}
 	/**
@@ -461,19 +503,22 @@ class EMT_Base{
 	 *					иначе это список правил, которые надо выключить
 	 * @param boolean $strict строго, т.е. те которые не в списке будут тоже обработаны
 	 */
-	public function set_enable_map($map, $disable = false, $strict = true){
+	public function set_enable_map($map, $disable = false, $strict = true)
+	{
 		if(!is_array($map)) return;
 		$trets = [];
-		foreach($map as $tret => $list){
+		foreach($map as $tret => $list)
+		{
 			$tretx = $this->get_tret($tret);
-			if(!$tretx){
+			if(!$tretx)
+			{
 				$this->log("Трэт $tret не найден при применении карты включаемых правил");
 				continue;
 			}
 			$trets[] = $tretx;
 
-			if($list === true){
-				// все
+			if($list === true) // все
+			{
 				$tretx->activate([], !$disable , true);
 			} elseif(is_string($list)) {
 				$tretx->activate([$list], $disable , $strict);
@@ -481,8 +526,10 @@ class EMT_Base{
 				$tretx->activate($list, $disable , $strict);
 			}
 		}
-		if($strict){
-			foreach($this->trets as $tret){
+		if($strict)
+		{
+			foreach($this->trets as $tret)
+			{
 				if(in_array($this->tret_objects[$tret], $trets)) continue;
 				$this->tret_objects[$tret]->activate([], $disable , true);
 			}
@@ -495,7 +542,8 @@ class EMT_Base{
 	 *
 	 * @param string $key
 	 */
-	public function is_on($key){
+	public function is_on($key)
+	{
 		if(!isset($this->settings[$key])) return false;
 		$kk = $this->settings[$key];
 		return ((strtolower($kk)=="on") || ($kk === "1") || ($kk === true) || ($kk === 1));
@@ -508,12 +556,15 @@ class EMT_Base{
 	 * @param string $setting
 	 * @param mixed $value
 	 */
-	protected function doset($selector, $key, $value){
+	protected function doset($selector, $key, $value)
+	{
 		$tret_pattern = false;
 		$rule_pattern = false;
 		//if(($selector === false) || ($selector === null) || ($selector === false) || ($selector === "*")) $type = 0;
-		if(is_string($selector)){
-			if(strpos($selector,".")===false){
+		if(is_string($selector))
+		{
+			if(strpos($selector,".")===false)
+			{
 				$tret_pattern = $selector;
 			} else {
 				$pa = explode(".", $selector);
@@ -526,21 +577,26 @@ class EMT_Base{
 		EMT_Lib::_process_selector_pattern($rule_pattern);
 		if($selector == "*") $this->settings[$key] = $value;
 
-		foreach ($this->trets as $tret) {
+		foreach ($this->trets as $tret) 
+		{
 			$t1 = $this->get_short_tret($tret);
 			if(!EMT_Lib::_test_pattern($tret_pattern, $t1))	if(!EMT_Lib::_test_pattern($tret_pattern, $tret)) continue;
 			$tret_obj = $this->get_tret($tret);
-			if($key == "active"){
-				foreach($tret_obj->rules as $rulename => $v){
+			if($key == "active")
+			{
+				foreach($tret_obj->rules as $rulename => $v)
+				{
 					if(!EMT_Lib::_test_pattern($rule_pattern, $rulename)) continue;
 					if((strtolower($value) === "on") || ($value===1) || ($value === true) || ($value=="1")) $tret_obj->enable_rule($rulename);
 					if((strtolower($value) === "off") || ($value===0) || ($value === false) || ($value=="0")) $tret_obj->disable_rule($rulename);
 				}
 			} else {
-				if($rule_pattern===false){
+				if($rule_pattern===false)
+				{
 					$tret_obj->set($key, $value);
 				} else {
-					foreach($tret_obj->rules as $rulename => $v){
+					foreach($tret_obj->rules as $rulename => $v)
+					{
 						if(!EMT_Lib::_test_pattern($rule_pattern, $rulename)) continue;
 						$tret_obj->set_rule($rulename, $key, $value);
 					}
@@ -564,11 +620,13 @@ class EMT_Base{
 	 * @param mixed $value
 	 * @param mixed $exact_match
 	 */
-	public function set($selector, $key , $value = false, $exact_match = false){
+	public function set($selector, $key , $value = false, $exact_match = false)
+	{
 		if($exact_match && is_array($selector) && is_array($key) && count($selector)==count($key)) {
 			$idx = 0;
 			foreach($key as $x => $y){
-				if(is_array($value)){
+				if(is_array($value))
+				{
 					$kk = $y;
 					$vv = $value[$x];
 				} else {
@@ -580,13 +638,17 @@ class EMT_Base{
 			}
 			return ;
 		}
-		if(is_array($selector)) {
+		if(is_array($selector)) 
+		{
 			foreach($selector as $val) $this->set($val, $key, $value);
 			return;
 		}
-		if(is_array($key)){
-			foreach($key as $x => $y){
-				if(is_array($value)){
+		if(is_array($key))
+		{
+			foreach($key as $x => $y)
+			{
+				if(is_array($value))
+				{
 					$kk = $y;
 					$vv = $value[$x];
 				} else {
@@ -604,7 +666,8 @@ class EMT_Base{
 	 * Возвращает список текущих третов, которые установлены
 	 *
 	 */
-	public function get_trets_list(){
+	public function get_trets_list()
+	{
 		return $this->trets;
 	}
 	/**
@@ -613,7 +676,8 @@ class EMT_Base{
 	 * @param string $name
 	 * @param mixed $value
 	 */
-	public function do_setup($name, $value){
+	public function do_setup($name, $value)
+	{
 
 	}
 
@@ -622,11 +686,14 @@ class EMT_Base{
 	 *
 	 * @param array $setupmap
 	 */
-	public function setup($setupmap){
+	public function setup($setupmap)
+	{
 		if(!is_array($setupmap)) return;
 
-		if(isset($setupmap['map']) || isset($setupmap['maps'])){
-			if(isset($setupmap['map'])){
+		if(isset($setupmap['map']) || isset($setupmap['maps']))
+		{
+			if(isset($setupmap['map']))
+			{
 				$ret['map'] = $test['params']['map'];
 				$ret['disable'] = $test['params']['map_disable'];
 				$ret['strict'] = $test['params']['map_strict'];
@@ -635,8 +702,10 @@ class EMT_Base{
 				unset($setupmap['map_disable']);
 				unset($setupmap['map_strict']);
 			}
-			if(is_array($setupmap['maps'])){
-				foreach($setupmap['maps'] as $map){ 
+			if(is_array($setupmap['maps']))
+			{
+				foreach($setupmap['maps'] as $map)
+				{ 
 					$this->set_enable_map
 								($map['map'], 
 								isset($map['disable']) ? $map['disable'] : false,
