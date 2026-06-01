@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Etc
@@ -12,7 +13,7 @@ namespace EMT;
 class EMT_Tret_Etc extends EMT_Tret
 {
 
-	public $classes = [
+	public array $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
 		];
 
@@ -21,8 +22,8 @@ class EMT_Tret_Etc extends EMT_Tret
 	 *
 	 * @var array
 	 */
-	public $title = "Прочее";
-	public $rules = [
+	public string $title = "Прочее";
+	public array $rules = [
 		'acute_accent' => [
 				'description'	=> 'Акцент',
 				'pattern' 		=> '/(у|е|ы|а|о|э|я|и|ю|ё)\`(\w)/i', 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
 * Evgeny Muravjev Typograph, http://mdash.ru
 * Version: 3.5 Gold Master
@@ -14,7 +15,7 @@ namespace EMT;
 
 class EMTypograph extends EMT_Base 
 {
-	public $trets = [
+	public array $trets = [
 		'EMT\EMT_Tret_Quote',
 		'EMT\EMT_Tret_Dash',
 		'EMT\EMT_Tret_Symbol',
@@ -28,7 +29,7 @@ class EMTypograph extends EMT_Base
 		'EMT\EMT_Tret_Etc',
 		'EMT\EMT_Tret_Text'
 	];
-	protected $group_list  = [
+	protected array $group_list  = [
 		'Quote'	=> true,
 		'Dash'	 => true,
 		'Nobr'	 => true,
@@ -42,7 +43,7 @@ class EMTypograph extends EMT_Base
 		'Text'	 => true,
 		'Etc'	  => true,
 	];
-	protected $all_options = [
+	protected array $all_options = [
 		'Quote.quotes' => [ 'description' => 'Расстановка «кавычек-елочек» первого уровня', 'selector' => "Quote.*quote" ],
 		'Quote.quotation' => [ 'description' => 'Внутренние кавычки-лапки', 'selector' => "Quote", 'setting' => 'no_bdquotes', 'reversed' => true ],
 
@@ -156,7 +157,7 @@ class EMTypograph extends EMT_Base
 			}
 			$info['name'] = $group;
 			$info['options'] = [];
-			if(is_array($bygroup[$group])) foreach($bygroup[$group] as $opt) $info['options'][] = $opt;
+			if(isset($bygroup[$group]) && is_array($bygroup[$group])) foreach($bygroup[$group] as $opt) $info['options'][] = $opt;
 			$arr['group'][] = $info;
 		}
 		return $arr;

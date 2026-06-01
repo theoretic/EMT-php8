@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Nobr
@@ -11,11 +12,11 @@ namespace EMT;
 
 class EMT_Tret_Nobr extends EMT_Tret
 {
-	public $title = "Неразрывные конструкции";
-	public $classes = [
+	public string $title = "Неразрывные конструкции";
+	public array $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
 			];
-	public $rules = [
+	public array $rules = [
 
 		'super_nbsp' => [
 				'description'	=> 'Привязка союзов и предлогов к написанным после словам',
@@ -36,8 +37,8 @@ class EMT_Tret_Nobr extends EMT_Tret
 					],
 				'replacement'	=> 
 					[
-						'$m[1]  .(($m[1] == ">" || $m[11] == "<") ? $m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10] :$this->tag($m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10], "span", ["class"=>"nowrap"))  ].$m[11]',
-						'$m[1]  .(($m[1] == ">" || $m[11] == "<") ? $m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10] :$this->tag($m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10], "span", ["class"=>"nowrap"))  ].$m[11]',
+						'$m[1].(($m[1] == ">" || $m[11] == "<") ? $m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10] : $this->tag($m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10], "span", ["class"=>"nowrap"])).$m[11]',
+						'$m[1].(($m[1] == ">" || $m[11] == "<") ? $m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10] : $this->tag($m[2]." ".$m[4]." ".$m[6]."-".$m[8]."-".$m[10], "span", ["class"=>"nowrap"])).$m[11]',
 					],
 			],
 		'phone_builder_v2' => [

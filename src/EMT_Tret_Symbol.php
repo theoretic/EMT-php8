@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Symbol
@@ -16,12 +17,12 @@ class EMT_Tret_Symbol extends EMT_Tret
 	 *
 	 * @var array
 	 */
-	public $classes = [
+	public array $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
 		];
 
-	public $title = "Специальные символы";
-	public $rules = [
+	public string $title = "Специальные символы";
+	public array $rules = [
 		'tm_replace' => [
 				'description'	=> 'Замена (tm) на символ торговой марки',
 				'pattern' 		=> '/([\040\t])?\(tm\)/i', 

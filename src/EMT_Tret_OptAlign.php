@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_OptAlign
@@ -11,7 +12,7 @@ namespace EMT;
 
 class EMT_Tret_OptAlign extends EMT_Tret
 {
-	public $classes = [
+	public array $classes = [
 			'oa_obracket_sp_s' => "margin-right:0.3em;",
 			"oa_obracket_sp_b" => "margin-left:-0.3em;",
 			"oa_obracket_nl_b" => "margin-left:-0.3em;",
@@ -26,14 +27,14 @@ class EMT_Tret_OptAlign extends EMT_Tret
 	 *
 	 * @var array
 	 */
-	public $title = "Оптическое выравнивание";
-	public $rules = [
+	public string $title = "Оптическое выравнивание";
+	public array $rules = [
 		'oa_oquote' => [
 				'description'	=> 'Оптическое выравнивание открывающей кавычки',
 				//'disabled'	 => true,
 				'pattern' 		=> [
 							'/([a-zа-яё\-]{3,})(\040|\&nbsp\;|\t)(\&laquo\;)/uie',
-							'/(\n|\r|^)(\&laquo\;)/ei'
+							'/(\n|\r|^)(\&laquo\;)/uei'
 						],
 				'replacement' 	=> [
 							'$m[1] . $this->tag($m[2], "span", ["class"=>"oa_oqoute_sp_s"]) . $this->tag($m[3], "span", ["class"=>"oa_oqoute_sp_q"])',
@@ -71,7 +72,7 @@ class EMT_Tret_OptAlign extends EMT_Tret
 	{
 		$this->_text = $this->preg_replace_e(
 				'/(<' .self::BASE64_PARAGRAPH_TAG . '>)([\040\t]+)?(\&laquo\;)/e', 
-				'$m[1] . $this->tag($m[3], "span", ["class"=>"oa_oquote_nl")]',
+				'$m[1] . $this->tag($m[3], "span", ["class"=>"oa_oquote_nl"])',
 				$this->_text);
 	}
 

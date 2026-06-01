@@ -1,0 +1,7 @@
+.ai/
+.vscode/
+.cursorrules
+*.md
+*.log
+*.tmp
+*.bak

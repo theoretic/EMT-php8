@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Date
@@ -11,11 +12,11 @@ namespace EMT;
 
 class EMT_Tret_Date extends EMT_Tret
 {
-	public $title = "Даты и дни";
-	public $classes = [
+	public string $title = "Даты и дни";
+	public array $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
 			];
-	public $rules = [
+	public array $rules = [
 		'years' => [
 				'description'	=> 'Установка тире и пробельных символов в периодах дат',
 				'pattern' 		=> '/(с|по|период|середины|начала|начало|конца|конец|половины|в|между|\([cс]\)|\&copy\;)(\s+|\&nbsp\;)([\d]{4})(-|\&mdash\;|\&minus\;)([\d]{4})(( |\&nbsp\;)?(г\.г\.|гг\.|гг|г\.|г)([^а-яёa-z]))?/eui',
@@ -40,8 +41,8 @@ class EMT_Tret_Date extends EMT_Tret
 					'/(\s|\&nbsp\;)([0-9]{2}\.[0-9]{2}\.([0-9]{2})?[0-9]{2})(\s|\&nbsp\;|\.(\s|\&nbsp\;|$)|$)/eiu',
 					],
 				'replacement' 	=> [
-					'$m[1].$this->tag($m[2]." г.","span", ["class"=>"nowrap"]).($m[5]==="."?"":" "]',
-					'$m[1].$this->tag($m[2],"span", ["class"=>"nowrap")].$m[4]',
+					'$m[1].$this->tag($m[2]." г.","span", ["class"=>"nowrap"]).($m[5]==="."?"":" ")',
+					'$m[1].$this->tag($m[2],"span", ["class"=>"nowrap"]).$m[4]',
 					],
 			],
 		'space_posle_goda' => [

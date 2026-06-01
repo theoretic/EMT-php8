@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Text
@@ -11,7 +12,7 @@ namespace EMT;
 
 class EMT_Tret_Text extends EMT_Tret
 {
-	public $classes = [
+	public array $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
 		];
 	/**
@@ -19,12 +20,12 @@ class EMT_Tret_Text extends EMT_Tret
 	 *
 	 * @var array
 	 */
-	public $title = "Текст и абзацы";
-	public $rules = [
+	public string $title = "Текст и абзацы";
+	public array $rules = [
 		'auto_links' => [
 				'description'	=> 'Выделение ссылок из текста',
 				'pattern' 		=> '/(\s|^)(http|ftp|mailto|https)(:\/\/)([^\s\,\!\<]{4,})(\s|\.|\,|\!|\?|\<|$)/ieu', 
-				'replacement' 	=> '$m[1] . $this->tag((substr($m[4],-1)=="."?substr($m[4],0,-1):$m[4]], "a", ["href" => $m[2].$m[3].(substr($m[4],-1)=="."?substr($m[4],0,-1):$m[4]))) . (substr($m[4],-1)=="."?".":""] .$m[5]'
+			'replacement' 	=> '$m[1] . $this->tag((substr($m[4],-1)=="."?substr($m[4],0,-1):$m[4]), "a", ["href" => $m[2].$m[3].(substr($m[4],-1)=="."?substr($m[4],0,-1):$m[4])]) . (substr($m[4],-1)=="."?".":"") .$m[5]'
 			],
 		'email' => [
 				'description'	=> 'Выделение эл. почты из текста',

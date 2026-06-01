@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Abbr
@@ -11,12 +12,12 @@ namespace EMT;
 
 class EMT_Tret_Abbr extends EMT_Tret
 {
-	public $title = "Сокращения";
-	public $domain_zones = ['ru','ру','com','ком','org','орг', 'уа', 'ua'];
-	public $classes = [
+	public string $title = "Сокращения";
+	public array $domain_zones = ['ru','ру','com','ком','org','орг', 'уа', 'ua'];
+	public array $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
 			];
-	public $rules = [
+	public array $rules = [
 		'nobr_abbreviation' => [
 				'description'	=> 'Расстановка пробелов перед сокращениями dpi, lpi',
 				'pattern' 		=> '/(\s+|^|\>)(\d+)(\040|\t)*(dpi|lpi)([\s\;\.\?\!\:\(]|$)/i', 

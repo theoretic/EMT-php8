@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Lib
@@ -73,8 +74,6 @@ class EMT_Lib
 	 */
 	protected static $_typographSpecificTagId = false;
 
-	protected $safeType = '';
-
 	/**
 	* Костыли для работы с символами UTF-8
 	* 
@@ -119,41 +118,44 @@ class EMT_Lib
 	 * @param	mixed $mode
 	 * @return 	string|bool
 	 */
-	public static function clear_special_chars($text, $mode = null)
-	{
-		if(is_string($mode)) $mode = [$mode];
-		if(is_null($mode)) $mode = ['utf8', 'html'];
-		if(!is_array($mode)) return false;
-		$moder = [];
-		foreach($mode as $mod) if(in_array($mod, ['utf8','html'])) $moder[] = $mod;
-		if(count($moder)==0) return false;
+	/** @var array<string, array<string, string>> Cached strtr maps keyed by mode combination */
+	private static array $_charsMaps = [];
 
-		foreach (self::$_charsTable as $char => $vals) 
-		{
-			foreach ($mode as $type) 
-			{
-				if (isset($vals[$type])) 
-				{
-					foreach ($vals[$type] as $v) 
-					{
-						if ('utf8' === $type && is_int($v)) 
-						{
+	/** Build a strtr-compatible from→to map for the given modes. */
+	private static function _buildCharsMap(array $modes): array
+	{
+		$map = [];
+		foreach (self::$_charsTable as $char => $vals) {
+			foreach ($modes as $type) {
+				if (isset($vals[$type])) {
+					foreach ($vals[$type] as $v) {
+						if ($type === 'utf8' && is_int($v)) {
 							$v = self::_getUnicodeChar($v);
 						}
-						if ('html' === $type) 
-						{
-							if(preg_match("/<[a-z]+>/i",$v))
-							{
-								$v = self::safe_tag_chars($v, true);
-							}
+						if ($type === 'html' && preg_match('/<[a-z]+>/i', $v)) {
+							$v = self::safe_tag_chars($v, true);
 						}
-						$text = str_replace($v, $char, $text);
+						$map[(string)$v] = (string)$char;
 					}
 				}
 			}
 		}
+		return $map;
+	}
 
-		return $text;
+	public static function clear_special_chars($text, $mode = null)
+	{
+		if (is_string($mode)) $mode = [$mode];
+		if (is_null($mode)) $mode = ['utf8', 'html'];
+		if (!is_array($mode)) return false;
+		$moder = array_values(array_intersect($mode, ['utf8', 'html']));
+		if (count($moder) === 0) return false;
+
+		$cacheKey = implode(',', $moder);
+		if (!isset(self::$_charsMaps[$cacheKey])) {
+			self::$_charsMaps[$cacheKey] = self::_buildCharsMap($moder);
+		}
+		return strtr($text, self::$_charsMaps[$cacheKey]);
 	}
 	/**
 	 * Удаление тегов HTML из текста

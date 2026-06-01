@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Dash
@@ -11,8 +12,8 @@ namespace EMT;
 
 class EMT_Tret_Dash extends EMT_Tret
 {
-	public $title = "Дефисы и тире";
-	public $rules = [
+	public string $title = "Дефисы и тире";
+	public array $rules = [
 		'double_minus_to_html_mdash' => [
 				'description'	=> 'Замена двойного минуса на html конструкцию',
 				'pattern' 		=> '/ [\-]{2} /iu',

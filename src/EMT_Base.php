@@ -1,4 +1,5 @@
-<?
+<?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Base
@@ -17,28 +18,28 @@ namespace EMT;
  
 class EMT_Base 
 {
-	private $_text = "";
-	private $inited = false;
+	private string $_text = '';
+	private bool   $inited = false;
 	/**
 	 * Список Трэтов, которые надо применить к типографированию
 	 *
 	 * @var array
 	 */
-	protected $trets = [] ; 
-	protected $trets_index = [] ; 
-	protected $tret_objects = [] ; 
-	public $ok			= false;
-	public $debug_enabled  = false;
-	public $logging		= false;
-	public $logs		 = [];
-	public $errors		= [];
-	public $debug_info	= [];
-	private $use_layout = false;
-	private $class_layout_prefix = false;
-	private $use_layout_set = false;
-	public $disable_notg_replace = false;
-	public $remove_notg = false;
-	public $settings = [];
+	protected array $trets = [];
+	protected array $trets_index = [];
+	protected array $tret_objects = [];
+	public bool  $ok              = false;
+	public bool  $debug_enabled   = false;
+	public bool  $logging         = false;
+	public array $logs            = [];
+	public array $errors          = [];
+	public array $debug_info      = [];
+	private int          $use_layout          = EMT_Lib::LAYOUT_STYLE;
+	private string|false $class_layout_prefix = false;
+	private bool         $use_layout_set      = false;
+	public bool  $disable_notg_replace = false;
+	public bool  $remove_notg = false;
+	public array $settings = [];
 	protected function log($str, $data = null)
 	{
 		if(!$this->logging) return;
@@ -70,7 +71,7 @@ class EMT_Base
 			];
 	}
 
-	protected $_safe_blocks = [];
+	protected array $_safe_blocks = [];
 
 	/**
 	 * Включить режим отладки, чтобы посмотреть последовательность вызовов
@@ -188,11 +189,16 @@ class EMT_Base
 	{
 		if (count($this->_safe_blocks)) 
 		{
-			$this->safeType = true === $way ? "\EMT\EMT_Lib::encrypt_tag(\$m[2])" : "stripslashes(\EMT\EMT_Lib::decrypt_tag(\$m[2]))";
-			$safeblocks = true === $way ? $this->_safe_blocks : array_reverse($this->_safe_blocks);
+			$encode = ($way === true);
+			$safeblocks = $encode ? $this->_safe_blocks : array_reverse($this->_safe_blocks);
 			foreach ($safeblocks as $block) 
 			{
-			$text = preg_replace_callback("/({$block['open']})(.+?)({$block['close']})/s", function($m) { eval("\$m[2]=".$this->safeType.";"); return $m[1].$m[2].$m[3]; }, $text); //
+				$text = preg_replace_callback("/({$block['open']})(.+?)({$block['close']})/s", function($m) use ($encode) {
+					$m[2] = $encode
+						? EMT_Lib::encrypt_tag($m[2])
+						: stripslashes(EMT_Lib::decrypt_tag($m[2]));
+					return $m[1].$m[2].$m[3];
+				}, $text);
 			}
 		}
 
@@ -212,18 +218,6 @@ class EMT_Base
 
 	private function create_object($tret)
 	{
-		// если класса нету, попытаемся его прогрузить, например, если стандартный
-		if(!class_exists($tret))
-		{
-			if(preg_match("/^EMT_Tret_([a-zA-Z0-9_]+)$/",$tret, $m))
-			{
-				$tname = $m[1];
-				$fname = str_replace("_"," ",$tname);
-				$fname = ucwords($fname);
-				$fname = str_replace(" ",".",$fname);
-				//if(file_exists("EMT.Tret.".$fname.".php")) {}
-			}
-		}
 		if(!class_exists($tret))
 		{
 			$this->error("Класс $tret не найден. Пожалуйста, подргузите нужный файл.");
@@ -286,7 +280,7 @@ class EMT_Base
 	{
 		if(is_object($class))
 		{
-			if(!is_a($class, "EMT_Tret"))
+			if(!is_a($class, \EMT\EMT_Tret::class))
 			{
 				$this->error("You are adding Tret that doesn't inherit base class EMT_Tret", get_class($class));
 				return false;
@@ -456,7 +450,7 @@ class EMT_Base
 			foreach($arr as $classname => $str)
 			{
 				if(($compact) && (!$str)) continue;
-				$clsname = ($this->class_layout_prefix ? $this->class_layout_prefix : "" ).(isset($this->tret_objects[$tret]->class_names[$classname]) ? $this->tret_objects[$tret]->class_names[$classname] :$classname);
+				$clsname = ($this->class_layout_prefix ?: '') . ($this->tret_objects[$tret]->class_names[$classname] ?? $classname);
 				$res[$clsname] = $str;
 			}
 		}
@@ -546,7 +540,7 @@ class EMT_Base
 	{
 		if(!isset($this->settings[$key])) return false;
 		$kk = $this->settings[$key];
-		return ((strtolower($kk)=="on") || ($kk === "1") || ($kk === true) || ($kk === 1));
+		return (is_string($kk) && strtolower($kk)==="on") || $kk === "1" || $kk === true || $kk === 1;
 	}
 
 	/**
@@ -563,7 +557,7 @@ class EMT_Base
 		//if(($selector === false) || ($selector === null) || ($selector === false) || ($selector === "*")) $type = 0;
 		if(is_string($selector))
 		{
-			if(strpos($selector,".")===false)
+			if(!str_contains($selector, '.'))
 			{
 				$tret_pattern = $selector;
 			} else {
@@ -580,15 +574,15 @@ class EMT_Base
 		foreach ($this->trets as $tret) 
 		{
 			$t1 = $this->get_short_tret($tret);
-			if(!EMT_Lib::_test_pattern($tret_pattern, $t1))	if(!EMT_Lib::_test_pattern($tret_pattern, $tret)) continue;
+			if(!EMT_Lib::_test_pattern($tret_pattern, $t1) && !EMT_Lib::_test_pattern($tret_pattern, $tret)) continue;
 			$tret_obj = $this->get_tret($tret);
 			if($key == "active")
 			{
 				foreach($tret_obj->rules as $rulename => $v)
 				{
 					if(!EMT_Lib::_test_pattern($rule_pattern, $rulename)) continue;
-					if((strtolower($value) === "on") || ($value===1) || ($value === true) || ($value=="1")) $tret_obj->enable_rule($rulename);
-					if((strtolower($value) === "off") || ($value===0) || ($value === false) || ($value=="0")) $tret_obj->disable_rule($rulename);
+			if((is_string($value) && strtolower($value) === "on") || ($value===1) || ($value === true) || ($value=="1")) $tret_obj->enable_rule($rulename);
+				if((is_string($value) && strtolower($value) === "off") || ($value===0) || ($value === false) || ($value=="0")) $tret_obj->disable_rule($rulename);
 				}
 			} else {
 				if($rule_pattern===false)
@@ -694,15 +688,17 @@ class EMT_Base
 		{
 			if(isset($setupmap['map']))
 			{
-				$ret['map'] = $test['params']['map'];
-				$ret['disable'] = $test['params']['map_disable'];
-				$ret['strict'] = $test['params']['map_strict'];
-				$test['params']['maps'] = [$ret];
+				$ret = [
+					'map'     => $setupmap['map'],
+					'disable' => $setupmap['map_disable'] ?? false,
+					'strict'  => $setupmap['map_strict']  ?? false,
+				];
+				$setupmap['maps'] = [$ret];
 				unset($setupmap['map']);
 				unset($setupmap['map_disable']);
 				unset($setupmap['map_strict']);
 			}
-			if(is_array($setupmap['maps']))
+			if(isset($setupmap['maps']) && is_array($setupmap['maps']))
 			{
 				foreach($setupmap['maps'] as $map)
 				{ 

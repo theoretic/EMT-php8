@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Quote
@@ -16,9 +17,9 @@ class EMT_Tret_Quote extends EMT_Tret
 	 *
 	 * @var array
 	 */
-	public $title = "Кавычки";
+	public string $title = "Кавычки";
 
-	public $rules = [
+	public array $rules = [
 		'quotes_outside_a' => [
 				'description'	=> 'Кавычки вне тэга <a>',
 				//'pattern' 		=> '/(\<%%\_\_.+?\>)\"(.+?)\"(\<\/%%\_\_.+?\>)/s',

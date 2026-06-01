@@ -1,4 +1,5 @@
-<?
+<?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Punctmark
@@ -11,8 +12,8 @@ namespace EMT;
 
 class EMT_Tret_Punctmark extends EMT_Tret
 {
-	public $title = "Пунктуация и знаки препинания";
-	public $rules = [ 
+	public string $title = "Пунктуация и знаки препинания";
+	public array $rules = [ 
 	 	'auto_comma' => [
 	 			'description'	=> 'Расстановка запятых перед а, но',
 		 		'pattern' 		=> '/([a-zа-яё])(\s|&nbsp;)(но|а)(\s|&nbsp;)/iu',

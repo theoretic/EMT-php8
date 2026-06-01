@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret
@@ -23,24 +24,26 @@ class EMT_Tret {
 	 *
 	 * @var unknown_type
 	 */
-	public	$rules;
-	public	$title;
+	public array  $rules = [];
+	public string $title = '';
 
-	private	$disabled = [];
-	private	$enabled  = [];
-	protected $_text= '';
-	public $logging = false;
-	public $logs	= false;
-	public $errors  = false;
-	public $debug_enabled  = false;
-	public $debug_info	= [];
+	private array  $disabled = [];
+	private array  $enabled  = [];
+	protected string $_text = '';
+	public bool  $logging = false;
+	public array $logs   = [];
+	public array $errors = [];
+	public bool  $debug_enabled = false;
+	public array $debug_info    = [];
 
-	private $use_layout = false;
-	private $use_layout_set = false;
-	private $class_layout_prefix = false;
-	public $class_names	= [];
-	public $classes		= [];
-	public $settings		= [];
+	private int         $use_layout          = EMT_Lib::LAYOUT_STYLE;
+	private bool        $use_layout_set      = false;
+	private string|false $class_layout_prefix = false;
+	public array $class_names = [];
+	public array $classes     = [];
+	public array $settings    = [];
+	/** Reference back to the owning EMT_Base instance */
+	public ?EMT_Base $EMT = null;
 	/**
 	 * Защищенные теги
 	 * 
@@ -168,6 +171,7 @@ class EMT_Tret {
 				{
 					$this->log("Правило $name", "Используется метод ".$rule['function']." в правиле");
 					call_user_func( [$this, $rule['function']] );
+					return;
 				}
 				if(function_exists($rule['function']))
 				{
@@ -226,7 +230,7 @@ class EMT_Tret {
 		{
 			$chr = substr($patt,0,1);
 			$preg_arr = explode($chr, $patt);
-			if(strpos($preg_arr[count($preg_arr)-1], "e")!==false)
+			if(str_contains($preg_arr[count($preg_arr)-1], 'e'))
 			{
 				$eval = true;
 				break;
@@ -236,10 +240,11 @@ class EMT_Tret {
 		{
 			$this->log("Правило $name", "Замена с использованием preg_replace");
 
+			$_iter = 0;
 			do {
 				$this->_text = preg_replace($rule['pattern'], $rule['replacement'], $this->_text);
 				if(!(isset($rule['cycled']) && $rule['cycled'])) break;
-			} while(preg_match($rule['pattern'], $this->_text));
+			} while(++$_iter < 20 && preg_match($rule['pattern'], $this->_text));
 
 			return;
 		}
@@ -252,21 +257,23 @@ class EMT_Tret {
 
 			$chr = substr($patt,0,1);
 			$preg_arr = explode($chr, $patt);
-			if(strpos($preg_arr[count($preg_arr)-1], "e")!==false) // eval система
+			if(str_contains($preg_arr[count($preg_arr)-1], 'e')) // eval система
 			{
 				$preg_arr[count($preg_arr)-1] = str_replace("e","",$preg_arr[count($preg_arr)-1]);
 				$patt = implode($chr, $preg_arr);
-				$this->thereplacement = $repl;
+				$cb = $this->repl_cache[$repl] ??= $this->make_repl_closure($repl);
+				$_iter = 0;
 				do {
-					$this->_text = preg_replace_callback($patt, [$this, "thereplcallback"], $this->_text);
+					$this->_text = preg_replace_callback($patt, $cb, $this->_text);
 					if(!(isset($rule['cycled']) && $rule['cycled'])) break;
-				} while(preg_match($patt, $this->_text));
+				} while(++$_iter < 20 && preg_match($patt, $this->_text));
 
 			} else {
+				$_iter = 0;
 				do {
 					$this->_text = preg_replace($patt, $repl, $this->_text);
 					if(!(isset($rule['cycled']) && $rule['cycled'])) break;
-				} while(preg_match($patt, $this->_text));
+				} while(++$_iter < 20 && preg_match($patt, $this->_text));
 			}
 			$k++;
 		}
@@ -276,18 +283,26 @@ class EMT_Tret {
 	{
 		$chr = substr($pattern,0,1);
 		$preg_arr = explode($chr, $pattern);
-		if(strpos($preg_arr[count($preg_arr)-1], "e")===false) return preg_replace($pattern, $replacement, $text);
+		if(!str_contains($preg_arr[count($preg_arr)-1], 'e')) return preg_replace($pattern, $replacement, $text);
 		$preg_arr[count($preg_arr)-1] = str_replace("e","",$preg_arr[count($preg_arr)-1]);
 		$patt = implode($chr, $preg_arr);
-		$this->thereplacement = $replacement;
-		return preg_replace_callback($patt, [$this, "thereplcallback"], $text);
+		$cb = $this->repl_cache[$replacement] ??= $this->make_repl_closure($replacement);
+		return preg_replace_callback($patt, $cb, $text);
 	}
-	private $thereplacement = "";
+	private string $thereplacement = '';
+	/** @var array<string, \Closure> Cache of compiled replacement closures keyed by replacement expression */
+	private array $repl_cache = [];
+
+	/** Compile a replacement expression string into a reusable Closure (cached). */
+	private function make_repl_closure(string $repl): \Closure
+	{
+		// phpcs:ignore Squiz.PHP.Eval.Discouraged
+		return eval('return function(array $m) { return ' . ($repl !== '' ? $repl : '""') . '; };');
+	}
 	private function thereplcallback($m)
 	{
 		$x = "";
 		eval('$x = '.($this->thereplacement? $this->thereplacement : '""').';');
-		//$x = $this->thereplacement? $this->thereplacement : '""';
 		return $x;
 	}
 	private function _apply($list)
@@ -302,10 +317,10 @@ class EMT_Tret {
 		{
 			$rule = $this->rules[$k];
 			$rule['id']	= $k;
-			$rule['order'] = isset($rule['order'])? $rule['order'] : 5 ;
+			$rule['order'] = $rule['order'] ?? 5;
 			$rulelist[] = $rule;
 		}
-		//usort($rulelist, [$this, "rule_order_sort")];
+		//usort($rulelist, [$this, 'rule_order_sort']);
 
 		foreach($rulelist as $rule)
 		{
@@ -344,13 +359,12 @@ class EMT_Tret {
 				$style_inline = $this->classes[$classname];
 				if($style_inline) $attribute['__style'] = $style_inline;
 			}
-			$classname = (isset($this->class_names[$classname]) ? $this->class_names[$classname] :$classname);
-			$classname = ($this->class_layout_prefix ? $this->class_layout_prefix : "" ).$classname;
+			$classname = $this->class_names[$classname] ?? $classname;
+			$classname = ($this->class_layout_prefix ?: '') . $classname;
 			$attribute['class'] = $classname;
 		}
 
-		return EMT_Lib::build_safe_tag($content, $tag, $attribute, 
-				$this->use_layout === false? EMT_Lib::LAYOUT_STYLE  : $this->use_layout );
+		return EMT_Lib::build_safe_tag($content, $tag, $attribute, $this->use_layout);
 	}
 
 	/**
@@ -403,7 +417,7 @@ class EMT_Tret {
 	{
 		if(!isset($this->settings[$key])) return false;
 		$kk = $this->settings[$key];
-		return ((strtolower($kk)=="on") || ($kk === "1") || ($kk === true) || ($kk === 1));
+		return (is_string($kk) && strtolower($kk)==="on") || $kk === "1" || $kk === true || $kk === 1;
 	}
 	/**
 	 * Получить строковое значение настройки

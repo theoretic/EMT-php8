@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Number
@@ -11,9 +12,9 @@ namespace EMT;
 
 class EMT_Tret_Number extends EMT_Tret
 {
-	public $title = "Числа, дроби, математические знаки";
+	public string $title = "Числа, дроби, математические знаки";
 
-	public $rules = [
+	public array $rules = [
 		'minus_between_nums' => [
 				'description'	=> 'Расстановка знака минус между числами',
 				'pattern' 		=> '/(\d+)\-(\d)/i',

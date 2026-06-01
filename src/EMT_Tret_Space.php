@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
 Evgeny Muravjev Typograph, http://mdash.ru
 class EMT_Tret_Space
@@ -11,12 +12,12 @@ namespace EMT;
 
 class EMT_Tret_Space extends EMT_Tret
 {
-	public $title = "Расстановка и удаление пробелов";
-	public $domain_zones = ['ru','ру','ком','орг', 'уа', 'ua', 'uk', 'co', 'fr', 'com', 'net', 'edu', 'gov', 'org', 'mil', 'int', 'info', 'biz', 'info', 'name', 'pro'];
-	public $classes = [
+	public string $title = "Расстановка и удаление пробелов";
+	public array $domain_zones = ['ru','ру','ком','орг', 'уа', 'ua', 'uk', 'co', 'fr', 'com', 'net', 'edu', 'gov', 'org', 'mil', 'int', 'info', 'biz', 'info', 'name', 'pro'];
+	public array $classes = [
 			'nowrap'		 => 'word-spacing:nowrap;',
 			];
-	public $rules = [
+	public array $rules = [
 		'nobr_twosym_abbr' => [
 				'description'	=> 'Неразрывный перед 2х символьной аббревиатурой',
 				'pattern' 		=> '/([a-zA-Zа-яёА-ЯЁ])(\040|\t)+([A-ZА-ЯЁ]{2})([\s\;\.\?\!\:\(\"]|\&(ra|ld)quo\;|$)/u', 
