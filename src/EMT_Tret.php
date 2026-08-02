@@ -60,6 +60,8 @@ class EMT_Tret {
 	const QUOTE_FIRS_CLOSE = '&raquo;';
 	const QUOTE_CRAWSE_OPEN = '&bdquo;';
 	const QUOTE_CRAWSE_CLOSE = '&ldquo;';
+	/** Предел повторов для правил с 'cycled' => true */
+	const MAX_CYCLES = 20;
 
 	private function log($str, $data = null)
 	{
@@ -230,16 +232,12 @@ class EMT_Tret {
 				break;
 			}
 		}
+		$cycled = isset($rule['cycled']) && $rule['cycled'];
+
 		if(!$eval)
 		{
 			$this->log("Правило $name", "Замена с использованием preg_replace");
-
-			$_iter = 0;
-			do {
-				$this->_text = preg_replace($rule['pattern'], $rule['replacement'], $this->_text);
-				if(!(isset($rule['cycled']) && $rule['cycled'])) break;
-			} while(++$_iter < 20 && preg_match($rule['pattern'], $this->_text));
-
+			$this->replace_cycled($rule['pattern'], $rule['replacement'], $cycled, $name);
 			return;
 		}
 
@@ -255,22 +253,39 @@ class EMT_Tret {
 			{
 				$preg_arr[count($preg_arr)-1] = str_replace("e","",$preg_arr[count($preg_arr)-1]);
 				$patt = implode($chr, $preg_arr);
-				$cb = $this->repl_cache[$repl] ??= $this->make_repl_closure($repl);
-				$_iter = 0;
-				do {
-					$this->_text = preg_replace_callback($patt, $cb, $this->_text);
-					if(!(isset($rule['cycled']) && $rule['cycled'])) break;
-				} while(++$_iter < 20 && preg_match($patt, $this->_text));
-
-			} else {
-				$_iter = 0;
-				do {
-					$this->_text = preg_replace($patt, $repl, $this->_text);
-					if(!(isset($rule['cycled']) && $rule['cycled'])) break;
-				} while(++$_iter < 20 && preg_match($patt, $this->_text));
+				$repl = $this->repl_cache[$repl] ??= $this->make_repl_closure($repl);
 			}
+			$this->replace_cycled($patt, $repl, $cycled, $name);
 			$k++;
 		}
+	}
+
+	/**
+	 * Применить замену к $this->_text, при $cycled — повторять пока замены происходят.
+	 *
+	 * Счётчик замен из preg_replace() заменяет отдельный preg_match(): цикл
+	 * решает, надо ли повторять, не сканируя текст второй раз.
+	 *
+	 * @param string|string[] $pattern
+	 * @param string|\Closure $replacement строка-замена либо callback для preg_replace_callback
+	 */
+	private function replace_cycled($pattern, $replacement, bool $cycled, string $name): void
+	{
+		$iter = 0;
+		do {
+			$result = $replacement instanceof \Closure
+				? preg_replace_callback($pattern, $replacement, $this->_text, -1, $count)
+				: preg_replace($pattern, $replacement, $this->_text, -1, $count);
+
+			if($result === null)
+			{
+				// PCRE упёрся в лимит (backtrack/recursion) — оставляем текст как есть
+				$this->error("Правило $name: ошибка PCRE, замена пропущена", preg_last_error_msg());
+				return;
+			}
+
+			$this->_text = $result;
+		} while($cycled && $count > 0 && ++$iter < self::MAX_CYCLES);
 	}
 
 	protected function preg_replace_e($pattern, $replacement, $text)

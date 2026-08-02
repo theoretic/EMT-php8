@@ -32,6 +32,7 @@ class EMT_Tret_Punctmark extends EMT_Tret
 		'hellip' => [
 				'description'	=> 'Замена трех точек на знак многоточия',
 				'simple_replace'=> true,
+				'case_sensitive'=> true,
 				'pattern' 		=> '...',
 				'replacement'	=> '&hellip;'
 			],

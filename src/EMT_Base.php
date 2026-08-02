@@ -63,7 +63,7 @@ class EMT_Base
 	{
 		if(!$this->debug_enabled) return;
 		$this->debug_info[] = [
-				'tret'  => $class == $this ? false: true,
+				'tret'  => $class !== $this,
 				'class' => is_object($class)? get_class($class) : $class,
 				'place' => $place,
 				'text'  => $after_text,

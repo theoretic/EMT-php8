@@ -67,14 +67,19 @@ class EMT_Tret_Etc extends EMT_Tret
 		$b = preg_quote($arr[0], '/');
 		$e = preg_quote($arr[1], '/');
 
+		// счётчик замен вместо повторного preg_match, плюс предел итераций —
+		// раньше оба цикла были неограниченными
 		$match = '/(^|[^a-zа-яё])([a-zа-яё]+)\&nbsp\;('.$b.')/iu';
+		$iter = 0;
 		do {
-			$this->_text = preg_replace($match, '\1\3\2 ', $this->_text);
-		} while(preg_match($match, $this->_text));
+			$this->_text = preg_replace($match, '\1\3\2 ', $this->_text, -1, $count);
+		} while($count > 0 && ++$iter < self::MAX_CYCLES);
+
 		$match = '/('.$e.')\&nbsp\;([a-zа-яё]+)($|[^a-zа-яё])/iu';
+		$iter = 0;
 		do {
-			$this->_text = preg_replace($match, ' \2\1\3', $this->_text);
-		} while(preg_match($match, $this->_text));
+			$this->_text = preg_replace($match, ' \2\1\3', $this->_text, -1, $count);
+		} while($count > 0 && ++$iter < self::MAX_CYCLES);
 
 		$this->_text = $this->preg_replace_e('/'.$b.'.*?'.$e.'/iue', 'str_replace("&nbsp;"," ",$m[0]);' , $this->_text );
 	}

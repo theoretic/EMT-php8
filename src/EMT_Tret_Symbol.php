@@ -73,6 +73,7 @@ class EMT_Tret_Symbol extends EMT_Tret
 		'euro_symbol' => [
 				'description'	=> 'Символ евро',
 				'simple_replace' => true,
+				'case_sensitive' => true,
 				'pattern' 		=> '€',
 				'replacement' 	=> '&euro;'
 			],
