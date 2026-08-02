@@ -364,8 +364,15 @@ class EMT_Base
 		$this->_text = EMT_Lib::clear_special_chars($this->_text);
 		$this->debug($this, 'clear_special_chars', $this->_text);
 
-		foreach ($atrets as $tret) 
+		foreach ($atrets as $tret)
 		{
+			// трэт мог быть не создан (класс не найден) или запрошен по неизвестному имени
+			if(!isset($this->tret_objects[$tret]))
+			{
+				$this->error("Трэт с идентификатором $tret не найден, пропускаем");
+				continue;
+			}
+
 			// если установлен режим разметки тэгов то выставим его
 			if($this->use_layout_set)
 				$this->tret_objects[$tret]->set_tag_layout_ifnotset($this->use_layout);

@@ -684,8 +684,16 @@ class EMT_Lib
 		return $cond ? $true : $false;
 	}
 
+	/**
+	 * Разбить число на триады, разделённые пробелом.
+	 * Работает со строкой, а не через number_format(), т.к. правило
+	 * split_number_to_triads не ограничивает длину числа сверху.
+	 *
+	 * @param string|int $num
+	 * @return string
+	 */
 	public static function split_number($num) {
-		return number_format($num, 0, '', ' ');
+		return strrev(implode(' ', str_split(strrev((string)$num), 3)));
 	}
 
 }

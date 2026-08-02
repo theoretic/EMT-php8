@@ -110,7 +110,7 @@ class EMT_Tret_Quote extends EMT_Tret
 
 		foreach($texts_in as $textx) {
 
-			$okposstack = ['0'];
+			$okposstack = [0];
 			$okpos = 0;
 			$level = 0;
 			$off = 0;
@@ -138,7 +138,7 @@ class EMT_Tret_Quote extends EMT_Tret
 					if(!$this->is_on('no_inches'))
 					{
 						do{
-							$lokpos = array_pop($okposstack);
+							$lokpos = array_pop($okposstack) ?? 0;
 							$k = substr($textx, $lokpos, $off-$lokpos);
 							$k = str_replace(self::QUOTE_CRAWSE_OPEN, self::QUOTE_FIRS_OPEN, $k);
 							$k = str_replace(self::QUOTE_CRAWSE_CLOSE, self::QUOTE_FIRS_CLOSE, $k);

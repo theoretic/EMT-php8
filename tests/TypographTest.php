@@ -167,4 +167,57 @@ class TypographTest extends TestCase
         $style = $obj->get_style();
         $this->assertIsString($style);
     }
+
+    // ---------------------------------------------------------------
+    // Regressions
+    // ---------------------------------------------------------------
+
+    /** split_number() used to hit number_format()'s int|float type under strict_types */
+    public function testLongNumberSplitIntoTriads(): void
+    {
+        $out = $this->typo('Сумма 1000000 рублей.');
+        $this->assertStringContainsString('1&thinsp;000&thinsp;000', $out);
+    }
+
+    /** number length is unbounded in the pattern, so no int overflow either */
+    public function testVeryLongNumberSplitIntoTriads(): void
+    {
+        $out = $this->typo('Код 123456789012345678901234 конец.');
+        $this->assertStringContainsString('123&thinsp;456&thinsp;789&thinsp;012&thinsp;345&thinsp;678&thinsp;901&thinsp;234', $out);
+    }
+
+    public function testSplitNumberHelper(): void
+    {
+        $this->assertSame('1 000 000', \EMT\EMT_Lib::split_number('1000000'));
+        $this->assertSame('12 345', \EMT\EMT_Lib::split_number(12345));
+        $this->assertSame('123', \EMT\EMT_Lib::split_number('123'));
+    }
+
+    /** the ok-position stack was seeded with the string '0', tripping substr() */
+    public function testUnbalancedClosingQuoteDoesNotCrash(): void
+    {
+        $out = $this->typo('Он сказал да" и ушел');
+        $this->assertIsString($out);
+        $this->assertStringContainsString('ушел', $out);
+    }
+
+    public function testMultipleUnbalancedQuotesDoNotCrash(): void
+    {
+        $out = $this->typo('текст" еще" и" тут"');
+        $this->assertIsString($out);
+        $this->assertStringContainsString('тут', $out);
+    }
+
+    /** apply() indexed tret_objects unguarded -> fatal on an unknown name */
+    public function testApplyWithUnknownTretIsGraceful(): void
+    {
+        $obj = new EMTypograph();
+        $obj->set_text('Тест.');
+        $result = $obj->apply('NoSuchTret');
+
+        $this->assertIsString($result);
+        $this->assertStringContainsString('Тест', $result);
+        $this->assertFalse($obj->ok);
+        $this->assertNotEmpty($obj->errors);
+    }
 }
