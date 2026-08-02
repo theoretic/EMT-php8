@@ -81,9 +81,9 @@ class EMT_Tret_Abbr extends EMT_Tret
 						'/(^|\s|\&nbsp\;)в( |\&nbsp\;)т\.?[ ]?ч(\.|$|\s|\&nbsp\;)/ue',
 					],
 				'replacement' 	=> [
-						'$m[1].$this->tag("и т. д.", "span",  ["class" => "nowrap"]).($m[3]!="."? $m[3] : "" ]',
-						'$m[1].$this->tag("и т. п.", "span",  ["class" => "nowrap"]).($m[3]!="."? $m[3] : "" ]',
-						'$m[1].$this->tag("в т. ч.", "span",  ["class" => "nowrap"]).($m[3]!="."? $m[3] : "" ]',
+						'$m[1].$this->tag("и т. д.", "span",  ["class" => "nowrap"]).($m[3]!="."? $m[3] : "" )',
+						'$m[1].$this->tag("и т. п.", "span",  ["class" => "nowrap"]).($m[3]!="."? $m[3] : "" )',
+						'$m[1].$this->tag("в т. ч.", "span",  ["class" => "nowrap"]).($m[3]!="."? $m[3] : "" )',
 					]
 			],
 		'nbsp_te'	=> [
@@ -117,25 +117,5 @@ class EMT_Tret_Abbr extends EMT_Tret
 						'$m[1]."ГОСТ ".$m[3]."&ndash;".$m[5]',
 						],
 			],
-			
-		'nobr_vtch_itd_itp'	=> [
-				'description'	=> 'Привязка сокращений до н.э., н.э.',
-				'pattern' 		=> [
-
-				//IV в до н.э, в V-VIвв до нэ., третий в. н.э.
-
-						'/(\s|\&nbsp\;)и( |\&nbsp\;)т\.?[ ]?д\./ue',
-						'/(\s|\&nbsp\;)и( |\&nbsp\;)т\.?[ ]?п\./ue',
-						'/(\s|\&nbsp\;)в( |\&nbsp\;)т\.?[ ]?ч\./ue',
-					],
-				'replacement' 	=> [
-						'$m[1].$this->tag("и т. д.", "span",  ["class" => "nowrap"])',
-						'$m[1].$this->tag("и т. п.", "span",  ["class" => "nowrap"])',
-						'$m[1].$this->tag("в т. ч.", "span",  ["class" => "nowrap"])',
-					]
-			],
-		
-
-
 		];
 }

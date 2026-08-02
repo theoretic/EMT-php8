@@ -208,6 +208,168 @@ class TypographTest extends TestCase
         $this->assertStringContainsString('тут', $out);
     }
 
+    /** the domain-zone guard was an array literal, so it was always truthy */
+    public function testSpaceInsertedAfterDotBeforeShortWord(): void
+    {
+        $out = $this->typo('Привет.Мир и еще текст');
+        $this->assertStringContainsString('Привет. Мир', $out);
+    }
+
+    public function testNoSpaceInsertedInsideDomainName(): void
+    {
+        $out = $this->typo('Смотри сайт.ру и еще');
+        $this->assertStringContainsString('сайт.ру', $out);
+        $this->assertStringNotContainsString('сайт. ру', $out);
+    }
+
+    /** the character class had a stray ] so semicolons were never collapsed */
+    public function testRepeatedSemicolonsCollapse(): void
+    {
+        $this->assertStringContainsString('Текст; тут', $this->typo('Текст;;; тут'));
+        $this->assertStringContainsString('Текст, тут', $this->typo('Текст,,, тут'));
+        $this->assertStringContainsString('Текст: тут', $this->typo('Текст::: тут'));
+    }
+
+    /** Abbr declared nobr_vtch_itd_itp twice; the ^-anchored variant was discarded */
+    public function testAbbreviationAtStringStart(): void
+    {
+        $out = $this->typo('и т.д. — это всё');
+        $this->assertStringContainsString('т. д.', $out);
+        $this->assertStringContainsString('<nobr>', $out);
+    }
+
+    public function testAbbrHasNoDuplicateRuleDefinition(): void
+    {
+        $tret = new \EMT\EMT_Tret_Abbr();
+        $this->assertArrayHasKey('nobr_vtch_itd_itp', $tret->rules);
+        $this->assertSame(
+            'Объединение сокращений и т.д., и т.п., в т.ч.',
+            $tret->rules['nobr_vtch_itd_itp']['description']
+        );
+    }
+
+    /**
+     * Replacements paired with an /e-flagged pattern are eval()'d as PHP
+     * expressions, so a typo there is a latent ParseError rather than a
+     * failing assertion. Lint every one of them.
+     */
+    public function testEvalRuleReplacementsCompile(): void
+    {
+        $obj     = new EMTypograph();
+        $trets   = $obj->get_trets_list();
+        $checked = 0;
+        $this->assertNotEmpty($trets);
+
+        foreach ($trets as $class) {
+            $tret = new $class();
+            foreach ($tret->rules as $id => $rule) {
+                if (!isset($rule['pattern'], $rule['replacement'])) continue;
+                if (!empty($rule['simple_replace'])) continue;
+                if (!empty($rule['function'])) continue;
+
+                $patterns = (array) $rule['pattern'];
+                foreach ($patterns as $i => $pattern) {
+                    if (!self::hasEvalFlag($pattern)) continue;
+
+                    $repl = is_string($rule['replacement'])
+                        ? $rule['replacement']
+                        : $rule['replacement'][$i];
+
+                    $error = self::lintError('<?php return function(array $m) { return ' . $repl . '; };');
+                    $this->assertNull($error, "$class::\$rules[$id] replacement #$i is not valid PHP: $error");
+                    $checked++;
+                }
+            }
+        }
+
+        $this->assertGreaterThan(0, $checked, 'no /e replacements were linted');
+    }
+
+    /** Mirrors EMT_Tret::apply_rule() — the trailing delimiter section carries the flags. */
+    private static function hasEvalFlag(string $pattern): bool
+    {
+        $parts = explode(substr($pattern, 0, 1), $pattern);
+        return str_contains(end($parts), 'e');
+    }
+
+    private static function lintError(string $code): ?string
+    {
+        try {
+            // token_get_all with TOKEN_PARSE runs the parser without executing
+            token_get_all($code, TOKEN_PARSE);
+        } catch (\ParseError $e) {
+            return $e->getMessage();
+        }
+        return null;
+    }
+
+    /** log_on() flipped debug_enabled instead of logging */
+    public function testTretLogOnEnablesLogging(): void
+    {
+        $tret = new \EMT\EMT_Tret_Quote();
+        $tret->log_on();
+        $this->assertTrue($tret->logging);
+        $this->assertFalse($tret->debug_enabled);
+    }
+
+    /** diagnostics used to accumulate across applies, pinning ok to false forever */
+    public function testDiagnosticsResetBetweenApplies(): void
+    {
+        $obj = new EMTypograph();
+        $obj->debug_on();
+        $obj->log_on();
+
+        $obj->set_text('Тест "раз".');
+        $obj->apply();
+        $debug = count($obj->debug_info);
+        $logs  = count($obj->logs);
+
+        $obj->set_text('Тест "два".');
+        $obj->apply();
+
+        $this->assertSame($debug, count($obj->debug_info));
+        $this->assertSame($logs, count($obj->logs));
+    }
+
+    public function testOkFlagRecoversAfterEarlierError(): void
+    {
+        $obj = new EMTypograph();
+        $obj->get_tret('NoSuchTret');       // records an error
+        $this->assertNotEmpty($obj->errors);
+
+        $obj->set_text('Тест.');
+        $obj->apply();
+
+        $this->assertTrue($obj->ok);
+        $this->assertEmpty($obj->errors);
+    }
+
+    /** out-of-range numeric entities were coerced to "" and vanished */
+    public function testOutOfRangeEntityIsPreserved(): void
+    {
+        $text = '&#99999999; и &#xFFFFFFFF;';
+        \EMT\EMT_Lib::convert_html_entities_to_unicode($text);
+        $this->assertStringContainsString('&#99999999;', $text);
+        $this->assertStringContainsString('&#xFFFFFFFF;', $text);
+    }
+
+    public function testInRangeEntityIsConverted(): void
+    {
+        $text = '&#1055;&#x41;';
+        \EMT\EMT_Lib::convert_html_entities_to_unicode($text);
+        $this->assertSame('ПA', $text);
+    }
+
+    /** the tag name was interpolated raw into the open pattern */
+    public function testSafeTagNameIsEscaped(): void
+    {
+        $obj = new EMTypograph();
+        $obj->add_safe_tag('my.tag');
+        $blocks = $obj->get_all_safe_blocks();
+        $block  = end($blocks);
+        $this->assertStringContainsString('my\.tag', $block['open']);
+    }
+
     /** apply() indexed tret_objects unguarded -> fatal on an unknown name */
     public function testApplyWithUnknownTretIsGraceful(): void
     {

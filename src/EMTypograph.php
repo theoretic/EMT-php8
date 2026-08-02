@@ -230,7 +230,7 @@ class EMTypograph extends EMT_Base
 	 */
 	public static function fast_apply($text, $options = null)
 	{
-		$obj = new self();
+		$obj = new static();
 		if(is_array($options)) $obj->setup($options);
 		$obj->set_text($text);
 		return $obj->apply();

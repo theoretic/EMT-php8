@@ -645,11 +645,13 @@ class EMT_Lib
 	 */
 	public static function convert_html_entities_to_unicode(&$text)
 	{
-		$text = preg_replace_callback("/\&#([0-9]+)\;/", 
-				function($m) { return EMT_Lib::_getUnicodeChar(intval($m[1])); }
+		// вне диапазона юникода _getUnicodeChar вернёт false — оставляем сущность как есть,
+		// иначе PCRE приведёт false к "" и текст молча потеряется
+		$text = preg_replace_callback("/\&#([0-9]+)\;/",
+				function($m) { $r = EMT_Lib::_getUnicodeChar(intval($m[1])); return $r === false ? $m[0] : $r; }
 				, $text);
-		$text = preg_replace_callback("/\&#x([0-9A-F]+)\;/", 
-				function($m) { return EMT_Lib::_getUnicodeChar(hexdec($m[1])); }
+		$text = preg_replace_callback("/\&#x([0-9A-F]+)\;/",
+				function($m) { $c = hexdec($m[1]); $r = is_int($c) ? EMT_Lib::_getUnicodeChar($c) : false; return $r === false ? $m[0] : $r; }
 				, $text);
 		$text = preg_replace_callback("/\&([a-zA-Z0-9]+)\;/", 
 				function($m) { $r = EMT_Lib::html_char_entity_to_unicode($m[1]); return $r ? $r : $m[0]; }

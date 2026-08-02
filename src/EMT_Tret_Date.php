@@ -45,11 +45,8 @@ class EMT_Tret_Date extends EMT_Tret
 					'$m[1].$this->tag($m[2],"span", ["class"=>"nowrap"]).$m[4]',
 					],
 			],
-		'space_posle_goda' => [
-				'description'	=> 'Пробел после года',
-				'pattern' 		=> '/(^|\040|\&nbsp\;)([0-9]{3,4})(год([ауе]|ом)?)([^a-zа-яё]|$)/ui', 
-				'replacement' 	=> '\1\2 \3\5'
-			],
+		// 'space_posle_goda' здесь не дублируется — правило живёт в EMT_Tret_Space,
+		// который выполняется раньше.
 		'nbsp_posle_goda_abbr' => [
 				'description'	=> 'Пробел после года',
 				'pattern' 		=> '/(^|\040|\&nbsp\;|\"|\&laquo\;)([0-9]{3,4})[ ]?(г\.)([^a-zа-яё]|$)/ui', 

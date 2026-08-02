@@ -116,7 +116,7 @@ class EMT_Tret {
 	}
 	public function log_on()
 	{
-		$this->debug_enabled = true;
+		$this->logging = true;
 	}
 
 	private function getmethod($name)
@@ -146,12 +146,6 @@ class EMT_Tret {
 			call_user_func($m);
 		}
 		$this->post_parse();
-	}
-	private function rule_order_sort($a, $b)
-	{
-		if($a['order'] == $b['order']) return 0;
-		if($a['order'] < $b['order']) return -1;
-		return 1;
 	}
 	private function apply_rule($rule)
 	{
@@ -289,21 +283,20 @@ class EMT_Tret {
 		$cb = $this->repl_cache[$replacement] ??= $this->make_repl_closure($replacement);
 		return preg_replace_callback($patt, $cb, $text);
 	}
-	private string $thereplacement = '';
 	/** @var array<string, \Closure> Cache of compiled replacement closures keyed by replacement expression */
 	private array $repl_cache = [];
 
-	/** Compile a replacement expression string into a reusable Closure (cached). */
+	/**
+	 * Compile a replacement expression string into a reusable Closure (cached).
+	 *
+	 * SECURITY: the expression is eval()'d. This replaces the legacy /e regex flag
+	 * and is safe for the rule sets shipped with this package, but any replacement
+	 * reaching put_rule()/set_rule() from untrusted input is arbitrary code execution.
+	 */
 	private function make_repl_closure(string $repl): \Closure
 	{
 		// phpcs:ignore Squiz.PHP.Eval.Discouraged
 		return eval('return function(array $m) { return ' . ($repl !== '' ? $repl : '""') . '; };');
-	}
-	private function thereplcallback($m)
-	{
-		$x = "";
-		eval('$x = '.($this->thereplacement? $this->thereplacement : '""').';');
-		return $x;
 	}
 	private function _apply($list)
 	{
@@ -320,7 +313,9 @@ class EMT_Tret {
 			$rule['order'] = $rule['order'] ?? 5;
 			$rulelist[] = $rule;
 		}
-		//usort($rulelist, [$this, 'rule_order_sort']);
+		// usort в PHP 8 стабилен, поэтому правила с одинаковым order
+		// сохраняют порядок объявления
+		usort($rulelist, fn($a, $b) => $a['order'] <=> $b['order']);
 
 		foreach($rulelist as $rule)
 		{

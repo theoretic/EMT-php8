@@ -86,18 +86,4 @@ class EMT_Tret_Etc extends EMT_Tret
 		$e = preg_quote($arr[1], '/');
 		$this->_text = $this->preg_replace_e('/'.$b.'(.*?)'.$e.'/iue', 'str_replace(" ","&nbsp;",$m[1]);' , $this->_text );
 	}
-/*
-	protected function split_number () {
-
-		$this->preg_replace_e("/([^a-zA-Z<]|^)([0-9]{5,})([^a-zA-Z>]|$)/u", );
-
-		$match = '';
-		while(preg_match($match, $this->_text, $m)) {
-			$repl = "";
-			for($i = strlen($m[2]); $i >=0 ; $i-=3) 
-				if($i-3>=0) $repl = ($i>3?"&thinsp;":"").substr($m[2], $i-3, 3) . $repl; else $repl = substr($m[2], 0, $i) . $repl;
-			$this->_text = str_replace($m[1], $repl, $this->_text);
-		}
-	}
-*/
 }

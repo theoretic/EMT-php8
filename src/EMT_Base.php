@@ -143,8 +143,8 @@ class EMT_Base
 	* @return  void
 	*/
 	public function add_safe_tag($tag)
-	{	 
-		$open = preg_quote("<", '/'). $tag."[^>]*?" .  preg_quote(">", '/');
+	{
+		$open = preg_quote("<", '/'). preg_quote($tag, '/') ."[^>]*?" .  preg_quote(">", '/');
 		$close = preg_quote("</$tag>", '/');
 		$this->_add_safe_block($tag, $open, $close, $tag);
 		return true;
@@ -182,10 +182,10 @@ class EMT_Base
 	* Сохранение содержимого защищенных блоков
 	*
 	* @param	string $text
-	* @param	bool $safe если true, то содержимое блоков будет сохранено, иначе - раскодировано. 
+	* @param	bool $way если true, то содержимое блоков будет сохранено, иначе - раскодировано.
 	* @return  string
 	*/
-	public function safe_blocks($text, $way, $show = true)
+	public function safe_blocks($text, $way)
 	{
 		if (count($this->_safe_blocks)) 
 		{
@@ -345,6 +345,11 @@ class EMT_Base
 	public function apply($trets = null)
 	{
 		$this->ok = false;
+		// диагностика относится к текущему запуску, иначе $ok навсегда остаётся
+		// ложным после первой ошибки, а логи растут при повторном использовании объекта
+		$this->errors     = [];
+		$this->logs       = [];
+		$this->debug_info = [];
 
 		$this->init();
 		$this->_init();
