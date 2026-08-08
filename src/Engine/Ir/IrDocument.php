@@ -24,12 +24,41 @@ final class IrDocument
     /** @var array<string, int> placeholder string => expected count */
     private array $expectedPlaceholders;
 
+    /**
+     * Token indices created by rules mid-run (TagBuilder). Rules may insert
+     * such a placeholder any number of times (or drop it), so these are
+     * exempt from the strict multiset check that guards input tokens.
+     *
+     * @var array<int, true>
+     */
+    private array $createdTokens = [];
+
+    /** @var array<string, string> raw tag => placeholder, memoized by createTag() */
+    private array $createdByRaw = [];
+
     /** @param array<int, Token> $tokenTable */
     public function __construct(array $tokenTable, string $text)
     {
         $this->tokenTable = $tokenTable;
         $this->text = $text;
-        $this->expectedPlaceholders = self::countPlaceholders($text);
+        $this->expectedPlaceholders = $this->countPlaceholders($text);
+    }
+
+    /**
+     * Register a rule-emitted tag and return its placeholder. The same raw
+     * string maps to the same token (placeholders carry no per-occurrence
+     * state; rendering just substitutes the raw bytes).
+     */
+    public function createTag(string $raw, ?string $name, bool $closing): string
+    {
+        if (isset($this->createdByRaw[$raw])) {
+            return $this->createdByRaw[$raw];
+        }
+        $index = count($this->tokenTable) === 0 ? 0 : max(array_keys($this->tokenTable)) + 1;
+        $token = new Token(\EMT\Engine\Lexer\TokenType::Tag, $raw, $name, $closing);
+        $this->tokenTable[$index] = $token;
+        $this->createdTokens[$index] = true;
+        return $this->createdByRaw[$raw] = Placeholder::forToken($token, $index);
     }
 
     public function text(): string
@@ -43,7 +72,7 @@ final class IrDocument
      */
     public function setText(string $text): void
     {
-        $found = self::countPlaceholders($text);
+        $found = $this->countPlaceholders($text);
         if ($found !== $this->expectedPlaceholders) {
             $missing = array_diff_assoc($this->expectedPlaceholders, $found);
             $extra   = array_diff_assoc($found, $this->expectedPlaceholders);
@@ -74,12 +103,15 @@ final class IrDocument
     }
 
     /** @return array<string, int> */
-    private static function countPlaceholders(string $text): array
+    private function countPlaceholders(string $text): array
     {
-        preg_match_all(Placeholder::PATTERN, $text, $m);
+        preg_match_all(Placeholder::PATTERN, $text, $m, PREG_SET_ORDER);
         $counts = [];
-        foreach ($m[0] as $placeholder) {
-            $counts[$placeholder] = ($counts[$placeholder] ?? 0) + 1;
+        foreach ($m as $match) {
+            if (isset($this->createdTokens[(int) $match[2]])) {
+                continue;
+            }
+            $counts[$match[0]] = ($counts[$match[0]] ?? 0) + 1;
         }
         ksort($counts);
         return $counts;

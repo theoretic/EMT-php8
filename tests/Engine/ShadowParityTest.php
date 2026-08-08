@@ -1,0 +1,59 @@
+<?php
+declare(strict_types=1);
+
+use EMT\EMTypograph;
+use EMT\Engine\Pipeline;
+use EMT\Engine\Rules\Registry;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+
+/**
+ * Shadow parity: for every migrated rule group, the v3 pipeline must produce
+ * byte-identical output to the legacy engine restricted to the same tret(s),
+ * over the whole golden corpus. Quarantine inputs are excluded by design
+ * (documented v2 bugs, see docs/v3-behavior-changes.md).
+ *
+ * Ad-hoc exploration: php tools/shadow_diff.php <Group...> | --all | --combined
+ */
+final class ShadowParityTest extends TestCase
+{
+    public static function cases(): iterable
+    {
+        $sets = array_map(static fn(string $g): array => [$g], Registry::migratedInOrder());
+        $sets[] = Registry::migratedInOrder(); // all migrated groups in one run
+
+        foreach ($sets as $set) {
+            $label = implode('+', $set);
+            foreach (self::corpus() as $name => $input) {
+                yield "$label/$name" => [$set, $input];
+            }
+        }
+    }
+
+    /** @param list<string> $groups */
+    #[DataProvider('cases')]
+    public function testParity(array $groups, string $input): void
+    {
+        $legacy = new EMTypograph();
+        $legacy->set_text($input);
+        $v2 = $legacy->apply(array_map(static fn(string $g): string => "EMT\\EMT_Tret_$g", $groups));
+
+        $v3 = (new Pipeline())->run($input, $groups);
+
+        self::assertSame($v2, $v3);
+    }
+
+    /** @return array<string, string> */
+    private static function corpus(): array
+    {
+        static $corpus = null;
+        if ($corpus === null) {
+            $corpus = [];
+            foreach (glob(__DIR__ . '/../Golden/corpus/*.{txt,html}', GLOB_BRACE) as $file) {
+                $corpus[basename($file)] = (string) file_get_contents($file);
+            }
+            ksort($corpus);
+        }
+        return $corpus;
+    }
+}
