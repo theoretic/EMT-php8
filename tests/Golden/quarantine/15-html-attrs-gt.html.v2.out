@@ -1,0 +1,2 @@
+<p>Ссылка с&nbsp;&laquo;хитрым&raquo; атрибутом: <a href="/compare?a>b&quot; title="сравнение a > b&nbsp;&mdash; результат">итог теста</a> прилагается.</p>
+<p>Картинка: <img src="/formula.png" alt="если x> y, то&nbsp;все хорошо">&nbsp;&mdash; и&nbsp;подпись с&nbsp;тире.</p>

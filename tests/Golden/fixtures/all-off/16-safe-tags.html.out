@@ -1,0 +1,17 @@
+<p>Пример кода&nbsp;&mdash; функция "приветствия" на PHP:</p>
+<pre>
+function hello($name) {
+    // строки в "кавычках" не трогаем - это код
+    return "Привет, " . $name . "...";
+}
+</pre>
+<script>
+var msg = "Не типографить - это скрипт..."; if (a < b) { console.log(msg); }
+</script>
+<style>
+/* комментарий - в стилях "кавычки" тоже не трогаем */
+.quote::before { content: '"'; }
+</style>
+<p>А вот этот текст&nbsp;&mdash; обычный, тут "кавычки" заменятся...</p>
+<span class="_notg_start"></span>Внутри notg текст - не обрабатывается: "так" и 1/2 останутся...<span class="_notg_end"></span>
+<p>И снова обычный текст&nbsp;&mdash; с тире и "кавычками".</p>

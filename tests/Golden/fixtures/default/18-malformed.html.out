@@ -1,0 +1,5 @@
+<p><p>Незакрытый абзац&nbsp;&mdash; с&nbsp;&laquo;кавычками&raquo; и&nbsp;тире&hellip;<br />
+<div>Блок без&nbsp;закрытия <span>вложенный span с&nbsp;&laquo;текстом&raquo;<br />
+<p>Еще один абзац&nbsp;&mdash; <b>жирный без&nbsp;закрытия и &frac12; дроби.<br />
+<em>Курсив с&nbsp;&laquo;цитатой&raquo;&nbsp;&mdash; и&nbsp;все это без&nbsp;закрывающих тегов.<br />
+Просто текст в&nbsp;конце&nbsp;&mdash; &laquo;кавычки&raquo; <nobr>и т. д.</nobr> должны обработаться.</p>

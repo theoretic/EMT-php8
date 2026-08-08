@@ -1,0 +1,17 @@
+<p>Пример кода&nbsp;&mdash; функция<span class="oa_oqoute_sp_s"> </span><span class="oa_oqoute_sp_q">&laquo;</span>приветствия&raquo; на&nbsp;PHP:</p><br />
+<pre>
+function hello($name) {
+    // строки в "кавычках" не трогаем - это код
+    return "Привет, " . $name . "...";
+}
+</pre><br />
+<script>
+var msg = "Не типографить - это скрипт..."; if (a < b) { console.log(msg); }
+</script><br />
+<style>
+/* комментарий - в стилях "кавычки" тоже не трогаем */
+.quote::before { content: '"'; }
+</style><br />
+<p>А&nbsp;вот этот текст&nbsp;&mdash; обычный, тут<span class="oa_oqoute_sp_s"> </span><span class="oa_oqoute_sp_q">&laquo;</span>кавычки&raquo; заменятся&hellip;</p><br />
+<span class="_notg_start"></span>Внутри notg текст - не обрабатывается: "так" и 1/2 останутся...<span class="_notg_end"></span><br />
+<p>И&nbsp;снова обычный текст&nbsp;&mdash; с&nbsp;тире и&nbsp;&laquo;кавычками&raquo;.</p>

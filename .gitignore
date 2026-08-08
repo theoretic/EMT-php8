@@ -2,7 +2,13 @@
 .vscode/
 .cursorrules
 *.md
+!README.md
+!CLAUDE.md
+!bench/BASELINE.md
+!docs/*.md
+vendor/**/*.md
 *.log
 *.tmp
 *.bak
 .github/
+.phpunit.result.cache
