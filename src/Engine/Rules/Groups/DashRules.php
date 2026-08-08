@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EMT\Engine\Rules\Groups;
 
+use EMT\Engine\Rules\Gate;
 use EMT\Engine\Rules\Rule;
 use EMT\Engine\Rules\RuleContext;
 
@@ -27,11 +28,13 @@ final class DashRules
                 id: 'double_minus_to_html_mdash',
                 patterns: ['/ [\-]{2} /iu'],
                 replacements: [' &mdash; '],
+                gate: Gate::any('--'),
             ),
             new Rule(
                 id: 'mdash_symbol_to_html_mdash',
                 patterns: ['/ — /iu'],
                 replacements: [' &mdash; '],
+                gate: Gate::any('—'),
             ),
             new Rule(
                 id: 'mdash',

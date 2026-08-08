@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EMT\Engine\Rules\Groups;
 
+use EMT\Engine\Rules\Gate;
 use EMT\Engine\Rules\Rule;
 use EMT\Engine\Rules\RuleContext;
 
@@ -32,6 +33,7 @@ final class DateRules
                         . (isset($m[6]) ? '&nbsp;гг.' : '')
                         . ($m[9] ?? ''),
                 ],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'mdash_month_interval',
@@ -60,11 +62,13 @@ final class DateRules
                     static fn(array $m, RuleContext $ctx): string =>
                         $m[1] . $ctx->tag($m[2], 'span', ['class' => 'nowrap']) . $m[4],
                 ],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'nbsp_posle_goda_abbr',
                 patterns: ['/(^|\040|\&nbsp\;|\"|\&laquo\;)([0-9]{3,4})[ ]?(г\.)([^a-zа-яё]|$)/ui'],
                 replacements: ['\1\2&nbsp;\3\4'],
+                gate: Gate::digits(),
             ),
         ];
     }

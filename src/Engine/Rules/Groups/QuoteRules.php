@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EMT\Engine\Rules\Groups;
 
 use EMT\EMT_Lib;
+use EMT\Engine\Rules\Gate;
 use EMT\Engine\Rules\Rule;
 use EMT\Engine\Rules\RuleContext;
 
@@ -32,6 +33,7 @@ final class QuoteRules
                 id: 'quotes_outside_a',
                 patterns: ['/(\x{E000}a[0-9]+\x{E001})\"(.+?)\"(\x{E000}\/a[0-9]+\x{E001})/su'],
                 replacements: ['"\1\2\3"'],
+                gate: Gate::any('"'),
             ),
             new Rule(
                 id: 'open_quote',
@@ -40,6 +42,7 @@ final class QuoteRules
                     static fn(array $m, RuleContext $ctx): string =>
                         $m[1] . str_repeat(self::OPEN, substr_count($m[2], '"')) . $m[4],
                 ],
+                gate: Gate::any('"'),
             ),
             new Rule(
                 id: 'close_quote',
@@ -48,6 +51,7 @@ final class QuoteRules
                     static fn(array $m, RuleContext $ctx): string =>
                         $m[1] . str_repeat(self::CLOSE, substr_count($m[2], '"')) . $m[4],
                 ],
+                gate: Gate::any('"'),
             ),
             new Rule(
                 id: 'close_quote_adv',
@@ -78,6 +82,7 @@ final class QuoteRules
                     static fn(array $m, RuleContext $ctx): string =>
                         str_repeat(self::CLOSE, substr_count($m[1], '"')),
                 ],
+                gate: Gate::any('"', '&laquo;'),
             ),
             new Rule(
                 id: 'open_quote_adv',
@@ -86,6 +91,7 @@ final class QuoteRules
                     static fn(array $m, RuleContext $ctx): string =>
                         $m[1] . self::OPEN . $m[4],
                 ],
+                gate: Gate::any('"'),
             ),
             new Rule(
                 id: 'close_quote_adv_2',
@@ -94,25 +100,30 @@ final class QuoteRules
                     static fn(array $m, RuleContext $ctx): string =>
                         $m[1] . str_repeat(self::CLOSE, substr_count($m[2], '"')) . $m[4],
                 ],
+                gate: Gate::any('"'),
             ),
             new Rule(
                 id: 'quotation',
                 procedure: self::buildSubQuotations(...),
+                gate: Gate::any(self::OPEN, self::CLOSE),
             ),
             new Rule(
                 id: 'backtick',
                 patterns: ['/`/'],
                 replacements: ['&backquote;'],
+                gate: Gate::any('`'),
             ),
             new Rule(
                 id: 'apostrophe_open',
                 patterns: ['/ʻ/'],
                 replacements: ['&lsquo;'],
+                gate: Gate::any('ʻ'),
             ),
             new Rule(
                 id: 'apostrophe_close',
                 patterns: ['/ʼ/'],
                 replacements: ['&rsquo;'],
+                gate: Gate::any('ʼ'),
             ),
         ];
     }

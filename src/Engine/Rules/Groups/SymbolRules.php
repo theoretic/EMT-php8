@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EMT\Engine\Rules\Groups;
 
+use EMT\Engine\Rules\Gate;
 use EMT\Engine\Rules\Rule;
 use EMT\Engine\Rules\RuleContext;
 
@@ -28,6 +29,7 @@ final class SymbolRules
                 id: 'tm_replace',
                 patterns: ['/([\040\t])?\(tm\)/i'],
                 replacements: ['&trade;'],
+                gate: Gate::anyCI('(tm)'),
             ),
             new Rule(
                 id: 'r_sign_replace',
@@ -35,6 +37,7 @@ final class SymbolRules
                 replacements: [
                     static fn(array $m, RuleContext $ctx): string => $m[1] . '&reg;' . $m[2],
                 ],
+                gate: Gate::anyCI('(r)'),
             ),
             new Rule(
                 id: 'copy_replace',
@@ -46,12 +49,14 @@ final class SymbolRules
                     '&copy;&nbsp;',
                     '&copy;\2',
                 ],
+                gate: Gate::any('('),
             ),
             new Rule(
                 id: 'apostrophe',
                 patterns: ['/(\s|^|\x{E001}|\&rsquo\;)([a-zа-яё]{1,})\'([a-zа-яё]+)/ui'],
                 replacements: ['\1\2&rsquo;\3'],
                 cycled: true,
+                gate: Gate::any("'"),
             ),
             new Rule(
                 id: 'degree_f',
@@ -60,6 +65,7 @@ final class SymbolRules
                     static fn(array $m, RuleContext $ctx): string =>
                         '' . $ctx->tag($m[1] . ' &deg;F', 'span', ['class' => 'nowrap']) . $m[2],
                 ],
+                gate: Gate::any('F'),
             ),
             new Rule(
                 id: 'euro_symbol',
@@ -72,6 +78,7 @@ final class SymbolRules
                 id: 'arrows_symbols',
                 patterns: ['/\-\>/', '/\<\-/', '/→/u', '/←/u'],
                 replacements: ['&rarr;', '&larr;', '&rarr;', '&larr;'],
+                gate: Gate::any('->', '<-', '→', '←'),
             ),
         ];
     }

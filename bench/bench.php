@@ -30,13 +30,15 @@ $cases = [
     '14-html-fragment.html',
     '22-medium-15k.html',
     '23-large-100k.html',
+    'sparse-15k.txt', // bench-only (bench/): prose without digits/quotes/links — shows rule-gate skips
 ];
 
 $corpusDir = __DIR__ . '/../tests/Golden/corpus';
 $results = [];
 
 foreach ($cases as $case) {
-    $input = file_get_contents("$corpusDir/$case");
+    $path = file_exists("$corpusDir/$case") ? "$corpusDir/$case" : __DIR__ . "/$case";
+    $input = file_get_contents($path);
     if ($input === false) {
         fwrite(STDERR, "missing corpus file: $case\n");
         exit(1);

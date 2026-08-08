@@ -1,6 +1,6 @@
 {
 	"name": "atispro/emt-php8",
-	"version": "2.0.0",
+	"version": "3.0.0",
 	"type": "library",
 	"description": "EMT typograf compatible with php8+",
 	"keywords": ["typograf","EMT"],

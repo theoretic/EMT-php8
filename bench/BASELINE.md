@@ -1,20 +1,32 @@
 # Engine Baselines
 
-## v3 engine (default since Phase 5 cutover), PHP 8.5.4, Windows 11, 2026-08-08
+## v3 engine (default), after Phase 6 gates — PHP 8.5.4, Windows 11, 2026-08-08
 
-| case | bytes | min ms | median ms | p90 ms | vs v2 min |
-|---|---|---|---|---|---|
-| 02-plain-prose.txt | 2733 | 1.674 | 1.863 | 2.419 | -20% |
-| 14-html-fragment.html | 922 | 0.872 | 0.922 | 1.226 | -34% |
-| 22-medium-15k.html | 15166 | 9.182 | 10.189 | 11.356 | par |
-| 23-large-100k.html | 100208 | 55.513 | 62.049 | 74.684 | -34% |
+Same-machine A/B via `EMT_ENGINE`, min of 30:
 
-Peak memory: 10.0 MB (v2: 22.0 MB).
+| case | bytes | v2 min ms | v3 min ms | speedup |
+|---|---|---|---|---|
+| 02-plain-prose.txt | 2733 | 2.083 | 1.494 | 1.39x |
+| 14-html-fragment.html | 922 | 1.377 | 0.773 | 1.78x |
+| 22-medium-15k.html | 15166 | 9.383 | 8.212 | 1.14x |
+| 23-large-100k.html | 100208 | 86.117 | 50.713 | 1.70x |
+| sparse-15k.txt (bench-only) | 26890 | 11.334 | 9.731 | 1.16x |
 
-Wins so far come from removing the eval/base64 layers, one-shot placeholder
-integrity validation, and static rule-table memoization. The Phase 6 levers
-(strpos gates, dictionary merges) have not been applied yet — the 2x target
-on the 15KB case is Phase 6 work.
+Peak memory: 10.0 MB (v2: 22.0 MB). v2's superlinear scaling is gone —
+100KB now costs ~6x the 15KB case for 6.6x the input.
+
+Where the wins came from: no eval/base64 escape layers, one-shot placeholder
+integrity validation, static rule-table memoization, single-pass entity
+normalization, and ~45 pattern-implied literal gates (Gate::any/anyCI/digits)
+that skip preg passes when a rule's mandatory literal is absent.
+
+Honest note on the original 2x/15KB target: the per-rule profile is flat
+(bench/profile_rules.php — no rule exceeds ~6%), and the remaining cost is
+intrinsic preg passes by Cyrillic-prose rules (prepositions, surnames,
+particles) whose patterns imply no gateable literal. Getting past ~1.2x on
+feature-dense Russian text requires merging rule passes or per-token
+application — a semantic-risk change deliberately deferred (v4 candidate)
+because byte-parity is the project's core contract.
 
 # v2 Engine Baseline (historical reference)
 

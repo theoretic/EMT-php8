@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EMT\Engine\Rules\Groups;
 
 use EMT\EMT_Lib;
+use EMT\Engine\Rules\Gate;
 use EMT\Engine\Rules\Rule;
 use EMT\Engine\Rules\RuleContext;
 use EMT\Engine\Rules\RuleEngine;
@@ -31,6 +32,7 @@ final class EtcRules
                 id: 'acute_accent',
                 patterns: ['/(у|е|ы|а|о|э|я|и|ю|ё)\`(\w)/i'],
                 replacements: ['\1&#769;\2'],
+                gate: Gate::any('`'),
             ),
             new Rule(
                 id: 'word_sup',
@@ -39,6 +41,7 @@ final class EtcRules
                     static fn(array $m, RuleContext $ctx): string =>
                         '' . $ctx->tag($ctx->tag($m[3], 'small'), 'sup') . $m[4],
                 ],
+                gate: Gate::any('^'),
             ),
             new Rule(
                 id: 'century_period',
@@ -47,6 +50,7 @@ final class EtcRules
                     static fn(array $m, RuleContext $ctx): string =>
                         $m[1] . $ctx->tag($m[2] . '&mdash;' . $m[4] . ' вв.', 'span', ['class' => 'nowrap']),
                 ],
+                gate: Gate::bytes('XIV'),
             ),
             new Rule(
                 id: 'time_interval',
@@ -55,6 +59,7 @@ final class EtcRules
                     static fn(array $m, RuleContext $ctx): string =>
                         $m[1] . $ctx->tag($m[2] . '&mdash;' . $m[4], 'span', ['class' => 'nowrap']) . $m[5],
                 ],
+                gate: Gate::any(':'),
             ),
             new Rule(
                 id: 'split_number_to_triads',
@@ -63,10 +68,12 @@ final class EtcRules
                     static fn(array $m, RuleContext $ctx): string =>
                         $m[1] . str_replace(' ', '&thinsp;', EMT_Lib::split_number($m[2])) . $m[3],
                 ],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'expand_no_nbsp_in_nobr',
                 procedure: self::removeNbsp(...),
+                gate: Gate::any('&nbsp;'),
             ),
             new Rule(
                 id: 'nobr_to_nbsp',

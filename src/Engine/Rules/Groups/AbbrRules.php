@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EMT\Engine\Rules\Groups;
 
+use EMT\Engine\Rules\Gate;
 use EMT\Engine\Rules\Rule;
 use EMT\Engine\Rules\RuleContext;
 
@@ -26,11 +27,13 @@ final class AbbrRules
                 id: 'nobr_abbreviation',
                 patterns: ['/(\s+|^|\>|\x{E001})(\d+)(\040|\t)*(dpi|lpi)([\s\;\.\?\!\:\(]|$)/iu'],
                 replacements: ['\1\2&nbsp;\4\5'],
+                gate: Gate::anyCI('dpi', 'lpi'),
             ),
             new Rule(
                 id: 'nobr_acronym',
                 patterns: ['/(\s|^|\>|\x{E001}|\()(гл|стр|рис|илл?|ст|п|с)\.(\040|\t)*(\d+)(\&nbsp\;|\s|\.|\,|\?|\!|$)/iu'],
                 replacements: ['\1\2.&nbsp;\4\5'],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'nobr_sm_im',
@@ -62,16 +65,19 @@ final class AbbrRules
                         $m[1] . $m[2] . '&nbsp;' . $m[4]
                         . ($m[5] == '3' || $m[5] == '2' ? '&sup' . $m[5] . ';' : $m[5]) . $m[6],
                 ],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'nbsp_before_weight_unit',
                 patterns: ['/(\s|^|\>|\x{E001}|\&nbsp\;|\,)(\d+)( |\&nbsp\;)?(г|кг|мг|т)(\s|\.|\!|\?|\,|$|\&nbsp\;|\;)/iu'],
                 replacements: ['\1\2&nbsp;\4\5'],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'nobr_before_unit_volt',
                 patterns: ['/(\d+)([вВ]| В)(\s|\.|\!|\?|\,|$)/u'],
                 replacements: ['\1&nbsp;В\3'],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'ps_pps',
@@ -84,6 +90,7 @@ final class AbbrRules
                             ['class' => 'nowrap']
                         ) . $m[5],
                 ],
+                gate: Gate::anyCI('p.'),
             ),
             new Rule(
                 id: 'nobr_vtch_itd_itp',
@@ -120,16 +127,19 @@ final class AbbrRules
                         . '&nbsp;'
                         . (!preg_match('#у[\.]? ?е[\.]?#iu', $m[7]) ? $m[7] : 'у.е.'),
                 ],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'nbsp_money_abbr_rev',
                 patterns: ['/(€|&euro;|\$)\s?(\d)/iu'],
                 replacements: ['\1&nbsp;\2'],
+                gate: Gate::anyCI('€', '&euro;', '$'),
             ),
             new Rule(
                 id: 'nbsp_org_abbr',
                 patterns: ['/([^a-zA-Zа-яёА-ЯЁ]|^)(ООО|ЗАО|ОАО|НИИ|ПБОЮЛ) ([a-zA-Zа-яёА-ЯЁ]|\"|\&laquo\;|\&bdquo\;|<|\x{E000})/u'],
                 replacements: ['\1\2&nbsp;\3'],
+                gate: Gate::any('ООО', 'ЗАО', 'ОАО', 'НИИ', 'ПБОЮЛ'),
             ),
             new Rule(
                 id: 'nobr_gost',
@@ -151,6 +161,7 @@ final class AbbrRules
                     static fn(array $m, RuleContext $ctx): string =>
                         $m[1] . 'ГОСТ ' . $m[3] . '&ndash;' . $m[5],
                 ],
+                gate: Gate::digits(),
             ),
         ];
     }

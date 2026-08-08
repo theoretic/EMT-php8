@@ -31,16 +31,19 @@ final class IrBuilder
 
         foreach ($stream as $token) {
             if ($token->type === TokenType::Text) {
-                $chunk = Placeholder::escapeText($token->raw);
-                if ($this->normalize) {
-                    $chunk = EMT_Lib::clear_special_chars($chunk);
-                }
-                $text .= $chunk;
+                $text .= Placeholder::escapeText($token->raw);
                 continue;
             }
             $table[$index] = $token;
             $text .= Placeholder::forToken($token, $index);
             $index++;
+        }
+
+        if ($this->normalize) {
+            // One strtr over the whole IR string instead of one per text
+            // token: no normalization key contains a PUA codepoint, so
+            // placeholders are opaque to the map and the result is identical.
+            $text = EMT_Lib::clear_special_chars($text);
         }
 
         return new IrDocument($table, $text);

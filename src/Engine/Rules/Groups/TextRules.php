@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EMT\Engine\Rules\Groups;
 
 use EMT\EMT_Lib;
+use EMT\Engine\Rules\Gate;
 use EMT\Engine\Rules\Rule;
 use EMT\Engine\Rules\RuleContext;
 
@@ -42,6 +43,7 @@ final class TextRules
                             . $m[5];
                     },
                 ],
+                gate: Gate::any('://'),
             ),
             new Rule(
                 id: 'email',
@@ -56,6 +58,7 @@ final class TextRules
                         )
                         . $m[5],
                 ],
+                gate: Gate::any('@'),
             ),
             new Rule(
                 id: 'no_repeat_words',

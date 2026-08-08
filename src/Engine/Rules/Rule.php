@@ -30,6 +30,8 @@ final class Rule
         public readonly bool $cycled = false,
         public readonly bool $disabled = false,
         public readonly ?\Closure $procedure = null,
+        /** @var \Closure(string): bool|null cheap skip check, see Gate */
+        public readonly ?\Closure $gate = null,
     ) {
     }
 }

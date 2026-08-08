@@ -16,6 +16,10 @@ final class RuleEngine
 
     public function apply(Rule $rule, RuleContext $ctx): void
     {
+        if ($rule->gate !== null && !($rule->gate)($ctx->doc->text())) {
+            return;
+        }
+
         if ($rule->procedure !== null) {
             ($rule->procedure)($ctx);
             return;

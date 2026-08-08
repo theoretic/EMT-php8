@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EMT\Engine\Rules\Groups;
 
 use EMT\EMT_Lib;
+use EMT\Engine\Rules\Gate;
 use EMT\Engine\Rules\Rule;
 use EMT\Engine\Rules\RuleContext;
 
@@ -83,11 +84,13 @@ final class SpaceRules
                 id: 'clear_percent',
                 patterns: ['/(\d+)([\t\040]+)\%/'],
                 replacements: ['\1%'],
+                gate: Gate::any('%'),
             ),
             new Rule(
                 id: 'nbsp_before_open_quote',
                 patterns: ['/(^|\040|\t|>|\x{E001})([a-zа-яё]{1,2})\040(\&laquo\;|\&bdquo\;)/u'],
                 replacements: ['\1\2&nbsp;\3'],
+                gate: Gate::any('&laquo;', '&bdquo;'),
             ),
             new Rule(
                 id: 'nbsp_before_pretext',
@@ -98,11 +101,13 @@ final class SpaceRules
                 id: 'nbsp_after_numbers',
                 patterns: ['/(\d+)((\s|&nbsp;|\t)+)([a-zA-Zа-яёА-ЯЁ])/iu'],
                 replacements: ['\1&nbsp;\4'],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'nbsp_before_month',
                 patterns: ['/(\d)(\s)+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)([^\<\x{E000}]|$)/iu'],
                 replacements: ['\1&nbsp;\3\4'],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'spaces_on_end',
@@ -113,11 +118,13 @@ final class SpaceRules
                 id: 'no_space_posle_hellip',
                 patterns: ['/(\&laquo\;|\&bdquo\;)( |\&nbsp\;)?\&hellip\;( |\&nbsp\;)?([a-zа-яё])/ui'],
                 replacements: ['\1&hellip;\4'],
+                gate: Gate::anyCI('&hellip;'),
             ),
             new Rule(
                 id: 'space_posle_goda',
                 patterns: ['/(^|\040|\&nbsp\;)([0-9]{3,4})(год([ауе]|ом)?)([^a-zа-яё]|$)/ui'],
                 replacements: ['\1\2 \3\5'],
+                gate: Gate::digits(),
             ),
         ];
     }

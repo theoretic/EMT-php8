@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EMT\Engine\Rules\Groups;
 
 use EMT\Engine\Ir\Placeholder;
+use EMT\Engine\Rules\Gate;
 use EMT\Engine\Rules\Rule;
 use EMT\Engine\Rules\RuleContext;
 
@@ -57,6 +58,7 @@ final class NobrRules
                     '/([^\d\+]|^)([\+]?[0-9]{1,3})( |\&nbsp\;|\&thinsp\;)([0-9]{3,4}|[0-9]{3,4})( |\&nbsp\;|\&thinsp\;)([0-9]{2,3})(-|\&minus\;)([0-9]{2})(-|\&minus\;)([0-9]{2})([^\d]|$)/u',
                 ],
                 replacements: [$phone, $phone],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'phone_builder_v2',
@@ -67,6 +69,7 @@ final class NobrRules
                         . $ctx->tag('+' . $m[2] . ' ' . $m[3] . ' ' . $m[4] . '-' . $m[5] . '-' . $m[6], 'span', ['class' => 'nowrap'])
                         . $m[7],
                 ],
+                gate: Gate::any('+'),
             ),
             new Rule(
                 id: 'ip_address',
@@ -75,6 +78,7 @@ final class NobrRules
                     static fn(array $m, RuleContext $ctx): string =>
                         $m[1] . self::nowrapIpAddress($ctx, $m[2]),
                 ],
+                gate: Gate::digits(),
             ),
             new Rule(
                 id: 'dots_for_surname_abbr',
@@ -127,6 +131,7 @@ final class NobrRules
                 id: 'nbsp_celcius',
                 patterns: ['/(\s|^|\>|\x{E001}|\&nbsp\;)(\d+)( |\&nbsp\;)?(°|\&deg\;)(C|С)(\s|\.|\!|\?|\,|$|\&nbsp\;|\;)/iu'],
                 replacements: ['\1\2&nbsp;\4C\6'],
+                gate: Gate::anyCI('°', '&deg;'),
             ),
             new Rule(
                 id: 'hyphen_nowrap_in_small_words',
