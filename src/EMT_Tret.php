@@ -29,6 +29,8 @@ class EMT_Tret {
 
 	private array  $disabled = [];
 	private array  $enabled  = [];
+	/** true после put_rule()/set_rule() — v3-движок не умеет кастомные правила, откат на v2 */
+	public bool $custom_rules = false;
 	protected string $_text = '';
 	public bool  $logging = false;
 	public array $logs   = [];
@@ -385,8 +387,27 @@ class EMT_Tret {
 	 */
 	public function put_rule($name, $params)
 	{
-		$this->rules[$name] = $params; 
+		$this->rules[$name] = $params;
+		$this->custom_rules = true;
 		return $this;
+	}
+
+	/**
+	 * Снимок включений/выключений правил (enable_rule/disable_rule) для
+	 * моста настроек v3-движка: id правила => включено.
+	 *
+	 * @return array<string, bool>
+	 */
+	public function get_activation_overrides()
+	{
+		$overrides = [];
+		foreach ($this->disabled as $name => $flag) {
+			if ($flag) $overrides[$name] = false;
+		}
+		foreach ($this->enabled as $name => $flag) {
+			if ($flag) $overrides[$name] = true;
+		}
+		return $overrides;
 	}
 	/**
 	 * Отключить правило, в обработке
@@ -450,6 +471,7 @@ class EMT_Tret {
 	public function set_rule($rulename, $key, $value)
 	{
 		$this->rules[$rulename][$key] = $value;
+		$this->custom_rules = true;
 	}
 	/**
 	 * Включить правила, согласно списку

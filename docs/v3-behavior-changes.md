@@ -4,8 +4,14 @@ Policy: the v3 rewrite is parity-with-bug by default (golden fixtures are the
 contract). Only the pre-approved broken classes below may produce different
 output, each with a quarantine case in `tests/Golden/quarantine/`.
 
-These take effect only at engine cutover (Phase 5). Until then the v2 engine
-is the default and none of this is user-visible.
+**The v3 engine is the default since the Phase 5 cutover** (EMT_Base::DEFAULT_ENGINE).
+Select explicitly with `EMT_Base::$engine = 'v2'|'v3'|'shadow'` or the
+`EMT_ENGINE` env var; 'shadow' runs both and reports divergence in `$errors`.
+Configurations v3 does not cover fall back to v2 automatically: custom trets
+(`add_tret`), custom rules (`put_rule`/`set_rule`), regex safe blocks
+(`add_safe_block` with `$quoted = true`), and debug/log modes.
+
+Quarantine behavior under v3 is pinned by `tests/Golden/quarantine/*.v3.expected`.
 
 ## 1. Marker injection (quarantine: 24-injection.txt)
 

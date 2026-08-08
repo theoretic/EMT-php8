@@ -22,9 +22,12 @@ declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use EMT\EMT_Base;
 use EMT\EMTypograph;
 use EMT\Engine\Pipeline;
 use EMT\Engine\Rules\Registry;
+
+EMT_Base::$engine = 'v2'; // the legacy side must stay legacy regardless of the default
 
 $args = array_slice($argv, 1);
 $includeQuarantine = in_array('--quarantine', $args, true);

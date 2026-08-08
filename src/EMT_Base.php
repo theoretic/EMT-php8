@@ -40,6 +40,16 @@ class EMT_Base
 	public bool  $disable_notg_replace = false;
 	public bool  $remove_notg = false;
 	public array $settings = [];
+
+	/** Движок по умолчанию; переопределяется EMT_Base::$engine или env EMT_ENGINE. */
+	public const DEFAULT_ENGINE = 'v3';
+	/**
+	 * Выбор движка: 'v2' (легаси), 'v3' (Engine\Pipeline), 'shadow' (оба,
+	 * расхождение попадает в $errors). null — взять EMT_ENGINE или DEFAULT_ENGINE.
+	 * Конфигурации, которые v3 не покрывает (кастомные треты/правила,
+	 * regex-блоки, debug/log), автоматически откатываются на v2.
+	 */
+	public static ?string $engine = null;
 	protected function log($str, $data = null)
 	{
 		if(!$this->logging) return;
@@ -105,13 +115,17 @@ class EMT_Base
 	* @param 	string $tag тэг
 	* @return  void
 	*/
-	private function _add_safe_block($id, $open, $close, $tag)
+	private function _add_safe_block($id, $open, $close, $tag, $raw_open = null, $raw_close = null)
 	{
 		$this->_safe_blocks[] = [
 				'id' => $id,
 				'tag' => $tag,
 				'open' =>  $open,
 				'close' =>  $close,
+				// литеральные строки для лексера v3; null => блок задан регэкспом
+				// и v3-движок для него неприменим (откат на v2)
+				'raw_open' => $raw_open,
+				'raw_close' => $raw_close,
 			];
 	}
 	/**
@@ -146,7 +160,7 @@ class EMT_Base
 	{
 		$open = preg_quote("<", '/'). preg_quote($tag, '/') ."[^>]*?" .  preg_quote(">", '/');
 		$close = preg_quote("</$tag>", '/');
-		$this->_add_safe_block($tag, $open, $close, $tag);
+		$this->_add_safe_block($tag, $open, $close, $tag, $tag, $tag);
 		return true;
 	}
 
@@ -168,10 +182,14 @@ class EMT_Base
 			return false;
 		}
 
-		if (false === $quoted) 
+		if (false === $quoted)
 		{
+			$raw_open = $open;
+			$raw_close = $close;
 			$open = preg_quote($open, '/');
-		  $close = preg_quote($close, '/');
+			$close = preg_quote($close, '/');
+			$this->_add_safe_block($id, $open, $close, "", $raw_open, $raw_close);
+			return true;
 		}
 
 		$this->_add_safe_block($id, $open, $close, "");
@@ -358,6 +376,20 @@ class EMT_Base
 		if(is_string($trets)) $atrets = [$trets];
 		elseif(is_array($trets)) $atrets = $trets;
 
+		// --- Выбор движка (v3 rewrite, см. docs/v3-behavior-changes.md) ---
+		$engine = self::$engine ?? (getenv('EMT_ENGINE') ?: self::DEFAULT_ENGINE);
+		$shadow_v3 = null;
+		if ($engine !== 'v2' && $this->v3_eligible($atrets)) {
+			if ($engine === 'v3') {
+				return $this->apply_v3($atrets);
+			}
+			if ($engine === 'shadow') {
+				$saved_errors = $this->errors;
+				$shadow_v3 = $this->run_v3($atrets);
+				$this->errors = $saved_errors; // ошибки v3 не смешиваем с боевым прогоном
+			}
+		}
+
 		$this->debug($this, 'init', $this->_text);
 
 		$this->_text = $this->safe_blocks($this->_text, true);
@@ -441,7 +473,97 @@ class EMT_Base
 		}
 		$this->_text = trim($this->_text);
 		$this->ok = (count($this->errors)==0);
+
+		if ($shadow_v3 !== null && $shadow_v3 !== $this->_text) {
+			$this->error('shadow: v3 engine output diverged from v2', $shadow_v3);
+			$this->ok = false;
+		}
+
 		return $this->_text;
+	}
+
+	/**
+	 * Пригоден ли v3-движок для текущей конфигурации. Кастомные треты,
+	 * кастомные правила (put_rule/set_rule), regex-блоки (add_safe_block с
+	 * $quoted=true) и режимы диагностики обрабатываются только v2-движком.
+	 */
+	protected function v3_eligible($atrets)
+	{
+		if ($this->debug_enabled || $this->logging) return false;
+		foreach ($atrets as $tret) {
+			$short = $this->v3_group_name($tret);
+			if ($short === null || !\EMT\Engine\Rules\Registry::has($short)) return false;
+			if (!isset($this->tret_objects[$tret])) return false;
+			if ($this->tret_objects[$tret]->custom_rules) return false;
+		}
+		foreach ($this->_safe_blocks as $block) {
+			if ($block['tag'] === '' && ($block['raw_open'] ?? null) === null) return false;
+		}
+		return true;
+	}
+
+	private function v3_group_name($tret)
+	{
+		if (is_string($tret) && preg_match('/EMT_Tret_([a-zA-Z0-9]+)$/', $tret, $m)) {
+			return $m[1];
+		}
+		return null;
+	}
+
+	/** Прогон v3-движка + перенос ошибок/статуса в свойства фасада. */
+	private function apply_v3($atrets)
+	{
+		$this->_text = $this->run_v3($atrets);
+		$this->ok = (count($this->errors) == 0);
+		return $this->_text;
+	}
+
+	/**
+	 * Собрать конфигурацию v3-конвейера из текущего состояния фасада
+	 * (третов, настроек, защищённых блоков) и выполнить его.
+	 */
+	private function run_v3($atrets)
+	{
+		$tags = [];
+		$delims = [];
+		foreach ($this->_safe_blocks as $block) {
+			if ($block['tag'] !== '') {
+				$tags[] = $block['tag'];
+			} elseif (($block['raw_open'] ?? null) !== null) {
+				$delims[] = $block;
+			}
+		}
+		$safeBlocks = new \EMT\Engine\Lexer\SafeBlockSet($tags);
+		foreach ($delims as $block) {
+			$safeBlocks->addDelimiterBlock($block['id'], $block['raw_open'], $block['raw_close']);
+		}
+
+		$tagBuilder = new \EMT\Engine\Support\TagBuilder(
+			$this->use_layout,
+			$this->class_layout_prefix ?: false
+		);
+
+		$groups = [];
+		$groupSettings = [];
+		$ruleOverrides = [];
+		foreach ($atrets as $tret) {
+			$short = $this->v3_group_name($tret);
+			$groups[] = $short;
+			$obj = $this->tret_objects[$tret];
+			$groupSettings[$short] = $obj->settings;
+			$ruleOverrides[$short] = $obj->get_activation_overrides();
+		}
+
+		$pipeline = new \EMT\Engine\Pipeline($safeBlocks, $tagBuilder, $groupSettings, $ruleOverrides);
+		$pipeline->disableNotgReplace = $this->disable_notg_replace;
+		$pipeline->removeNotg = $this->remove_notg;
+		$pipeline->dounicode = $this->is_on('dounicode');
+
+		$out = $pipeline->run($this->_text, $groups);
+		foreach ($pipeline->errors as $err) {
+			$this->error($err['info'], $err['text']);
+		}
+		return $out;
 	}
 	/**
 	 * Получить содержимое <style></style> при использовании классов

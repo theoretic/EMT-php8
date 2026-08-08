@@ -63,6 +63,31 @@ final class GoldenTest extends TestCase
         }
     }
 
+    public static function quarantineCases(): iterable
+    {
+        foreach (glob(self::GOLDEN_DIR . '/quarantine/*.{txt,html}', GLOB_BRACE) as $file) {
+            yield basename($file) => [$file];
+        }
+    }
+
+    /**
+     * Quarantine inputs are v2-pathological (documented bugs, see
+     * docs/v3-behavior-changes.md). Since the v3 cutover their behavior is
+     * defined and pinned by *.v3.expected fixtures; *.v2.out remains as a
+     * historical reference.
+     */
+    #[DataProvider('quarantineCases')]
+    public function testQuarantineV3Behavior(string $file): void
+    {
+        $expected = "$file.v3.expected";
+        self::assertFileExists($expected);
+        self::assertSame(
+            file_get_contents($expected),
+            self::runEngine((string) file_get_contents($file), []),
+            'v3 quarantine behavior diverged for ' . basename($file)
+        );
+    }
+
     /** @return array<string,string> */
     private static function corpus(): array
     {

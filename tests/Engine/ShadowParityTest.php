@@ -17,6 +17,18 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 final class ShadowParityTest extends TestCase
 {
+    public static function setUpBeforeClass(): void
+    {
+        // The "legacy" side of the comparison must run the legacy engine even
+        // after the v3 default cutover.
+        \EMT\EMT_Base::$engine = 'v2';
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        \EMT\EMT_Base::$engine = null;
+    }
+
     public static function cases(): iterable
     {
         $sets = array_map(static fn(string $g): array => [$g], Registry::migratedInOrder());

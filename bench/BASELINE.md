@@ -1,4 +1,22 @@
-# v2 Engine Baseline
+# Engine Baselines
+
+## v3 engine (default since Phase 5 cutover), PHP 8.5.4, Windows 11, 2026-08-08
+
+| case | bytes | min ms | median ms | p90 ms | vs v2 min |
+|---|---|---|---|---|---|
+| 02-plain-prose.txt | 2733 | 1.674 | 1.863 | 2.419 | -20% |
+| 14-html-fragment.html | 922 | 0.872 | 0.922 | 1.226 | -34% |
+| 22-medium-15k.html | 15166 | 9.182 | 10.189 | 11.356 | par |
+| 23-large-100k.html | 100208 | 55.513 | 62.049 | 74.684 | -34% |
+
+Peak memory: 10.0 MB (v2: 22.0 MB).
+
+Wins so far come from removing the eval/base64 layers, one-shot placeholder
+integrity validation, and static rule-table memoization. The Phase 6 levers
+(strpos gates, dictionary merges) have not been applied yet — the 2x target
+on the 15KB case is Phase 6 work.
+
+# v2 Engine Baseline (historical reference)
 
 Recorded with `php bench/bench.php` (median of 30 runs, warmup excluded) against
 the committed golden corpus. These are the numbers the v3 engine is measured

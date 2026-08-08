@@ -79,6 +79,14 @@ final class IrDocument
         return $index;
     }
 
+    /**
+     * When true (default), every setText() validates the placeholder multiset
+     * — precise attribution of a tag-eating rule, at the cost of a full-text
+     * scan per rule. The pipeline turns this off for production runs and calls
+     * validate() once at the end instead.
+     */
+    public bool $validateOnWrite = true;
+
     public function text(): string
     {
         return $this->text;
@@ -86,11 +94,20 @@ final class IrDocument
 
     /**
      * @throws PlaceholderIntegrityError when a placeholder was lost, forged
-     *         or duplicated by the caller
+     *         or duplicated by the caller (only when $validateOnWrite is on)
      */
     public function setText(string $text): void
     {
-        $found = $this->countPlaceholders($text);
+        $this->text = $text;
+        if ($this->validateOnWrite) {
+            $this->validate();
+        }
+    }
+
+    /** @throws PlaceholderIntegrityError */
+    public function validate(): void
+    {
+        $found = $this->countPlaceholders($this->text);
         if ($found !== $this->expectedPlaceholders) {
             $missing = array_diff_assoc($this->expectedPlaceholders, $found);
             $extra   = array_diff_assoc($found, $this->expectedPlaceholders);
@@ -100,7 +117,6 @@ final class IrDocument
                 implode(', ', array_keys($extra))
             ));
         }
-        $this->text = $text;
     }
 
     /** Restore the original byte stream around the (possibly rewritten) text. */

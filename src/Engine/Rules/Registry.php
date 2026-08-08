@@ -48,11 +48,16 @@ final class Registry
         return array_values(array_filter(self::ORDER, self::has(...)));
     }
 
+    /** @var array<string, list<Rule>> */
+    private static array $rulesCache = [];
+
     /** @return list<Rule> */
     public static function rulesFor(string $group): array
     {
-        $provider = self::PROVIDERS[$group] ?? throw new \InvalidArgumentException("unknown group: $group");
-        return $provider::rules();
+        // Rule objects and their closures are stateless (context comes in as
+        // a parameter), so one table per process serves every run.
+        return self::$rulesCache[$group] ??= (self::PROVIDERS[$group]
+            ?? throw new \InvalidArgumentException("unknown group: $group"))::rules();
     }
 
     /** @return array<string, string> */

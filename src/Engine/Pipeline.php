@@ -27,6 +27,8 @@ final class Pipeline
     /** Legacy EMT_Base::$disable_notg_replace / $remove_notg flags. */
     public bool $disableNotgReplace = false;
     public bool $removeNotg = false;
+    /** Legacy 'dounicode' setting: convert entities to unicode before render. */
+    public bool $dounicode = false;
 
     /** @param array<string, array<string, mixed>> $groupSettings group => settings */
     public function __construct(
@@ -46,6 +48,9 @@ final class Pipeline
 
         $stream = (new Lexer($this->safeBlocks))->tokenize($input);
         $doc = (new IrBuilder())->build($stream);
+        // One integrity validation at the end of the run instead of one per
+        // rule write — the per-rule scan costs more than the rules themselves.
+        $doc->validateOnWrite = false;
         $engine = new RuleEngine();
 
         foreach ($groups as $group) {
@@ -65,6 +70,17 @@ final class Pipeline
             foreach ($ctx->errors as $error) {
                 $this->errors[] = $error;
             }
+        }
+
+        $doc->validate();
+
+        if ($this->dounicode) {
+            // Legacy order: conversion ran before tag decode, so entities
+            // inside tag markup were never converted — placeholders give the
+            // same effect here.
+            $text = $doc->text();
+            \EMT\EMT_Lib::convert_html_entities_to_unicode($text);
+            $doc->setText($text);
         }
 
         $out = $doc->render();
