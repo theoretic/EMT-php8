@@ -43,6 +43,29 @@ final class ShadowParityTest extends TestCase
         self::assertSame($v2, $v3);
     }
 
+    /**
+     * Deterministic fuzz for the quote nester — the hardest parity item:
+     * random soups of quotes, digits, words and inches must come out
+     * byte-identical from both engines.
+     */
+    public function testQuoteNesterFuzz(): void
+    {
+        mt_srand(20260808);
+        $alphabet = ['"', '"', '"', 'слово', 'word', ' ', ' ', '3.5', '25', '.', ',', '!', "\n\n", '«', '»', '(', ')'];
+        for ($round = 0; $round < 300; $round++) {
+            $s = '';
+            $len = mt_rand(1, 25);
+            for ($k = 0; $k < $len; $k++) {
+                $s .= $alphabet[mt_rand(0, count($alphabet) - 1)];
+            }
+            $legacy = new EMTypograph();
+            $legacy->set_text($s);
+            $v2 = $legacy->apply(['EMT\EMT_Tret_Quote']);
+            $v3 = (new Pipeline())->run($s, ['Quote']);
+            self::assertSame($v2, $v3, 'quote fuzz round ' . $round . ' input: ' . var_export($s, true));
+        }
+    }
+
     /** @return array<string, string> */
     private static function corpus(): array
     {

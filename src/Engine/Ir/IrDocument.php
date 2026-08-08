@@ -54,11 +54,29 @@ final class IrDocument
         if (isset($this->createdByRaw[$raw])) {
             return $this->createdByRaw[$raw];
         }
-        $index = count($this->tokenTable) === 0 ? 0 : max(array_keys($this->tokenTable)) + 1;
         $token = new Token(\EMT\Engine\Lexer\TokenType::Tag, $raw, $name, $closing);
+        $index = $this->registerCreated($token);
+        return $this->createdByRaw[$raw] = Placeholder::forToken($token, $index, created: true);
+    }
+
+    /**
+     * Register a rule-created protected fragment (legacy EMT_Lib::iblock()):
+     * the raw bytes are restored verbatim at render, and the placeholder
+     * carries class 'ib' so paragraph rules can address it.
+     */
+    public function createInternalBlock(string $raw): string
+    {
+        $token = new Token(\EMT\Engine\Lexer\TokenType::Protected, $raw);
+        $index = $this->registerCreated($token);
+        return Placeholder::OPEN . 'ib' . $index . Placeholder::CLOSE;
+    }
+
+    private function registerCreated(Token $token): int
+    {
+        $index = count($this->tokenTable) === 0 ? 0 : max(array_keys($this->tokenTable)) + 1;
         $this->tokenTable[$index] = $token;
         $this->createdTokens[$index] = true;
-        return $this->createdByRaw[$raw] = Placeholder::forToken($token, $index);
+        return $index;
     }
 
     public function text(): string

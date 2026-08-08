@@ -23,28 +23,44 @@ final class Placeholder
     public const CLOSE = "\u{E001}";
     public const ESC   = "\u{E004}";
 
-    /** Tag names rules distinguish; every other tag collapses to class "t". */
-    private const NAMED_CLASSES = ['a', 'p', 'br', 'nobr'];
-
     /** Matches one placeholder; capture 1 = class, capture 2 = index. */
     public const PATTERN = '/\x{E000}([a-z\/]{1,6})([0-9]+)\x{E001}/u';
 
-    public static function forToken(Token $token, int $index): string
+    public static function forToken(Token $token, int $index, bool $created = false): string
     {
-        return self::OPEN . self::classOf($token) . $index . self::CLOSE;
+        return self::OPEN . self::classOf($token, $created) . $index . self::CLOSE;
     }
 
-    public static function classOf(Token $token): string
+    /**
+     * Class assignment mirrors the legacy engine's string-equality semantics:
+     *  - 'a': input tags whose name starts with "a" (the legacy `%%___` marker
+     *    keyed off the first character, so <abbr>/<article> were marked too).
+     *    Rule-created tags were plain base64 without the marker — never 'a'.
+     *  - 'p'/'br'/'nobr': only the exact bare forms <p>, </p>, <br />, <nobr>,
+     *    </nobr> — the only forms whose legacy base64 encoding equals the
+     *    BASE64_*_TAG constants rules match against. <p class="x"> is generic.
+     *  - 'ib': rule-created internal blocks (legacy EMT_Lib::iblock()).
+     *  - 'prot': protected bodies, comments, CDATA, doctypes.
+     */
+    public static function classOf(Token $token, bool $created = false): string
     {
-        if ($token->type === TokenType::Tag && $token->name !== null
-            && in_array($token->name, self::NAMED_CLASSES, true)
-        ) {
-            return ($token->closing ? '/' : '') . $token->name;
+        if ($token->type !== TokenType::Tag) {
+            return 'prot';
         }
-        if ($token->type === TokenType::Tag) {
-            return $token->closing ? '/t' : 't';
+        $slash = $token->closing ? '/' : '';
+        if (!$created && $token->name !== null && $token->name[0] === 'a') {
+            return $slash . 'a';
         }
-        return 'prot';
+        $bare = match ($token->raw) {
+            '<p>', '</p>' => 'p',
+            '<br />' => 'br',
+            '<nobr>', '</nobr>' => 'nobr',
+            default => null,
+        };
+        if ($bare !== null) {
+            return $slash . $bare;
+        }
+        return $slash . 't';
     }
 
     /** Escape literal PUA codepoints in input text (total, reversible). */

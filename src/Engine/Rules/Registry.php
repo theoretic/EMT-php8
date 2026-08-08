@@ -10,8 +10,8 @@ use EMT\Engine\Rules\Groups;
  * sequential rule semantics are observable (groups feed each other), so the
  * order is part of the parity contract.
  *
- * Groups not yet ported (Phase 4: Quote, OptAlign, Text) are absent; the
- * pipeline can only run migrated groups until cutover.
+ * All 12 groups are registered; the legacy engine remains the default until
+ * the Phase 5 cutover.
  */
 final class Registry
 {
@@ -23,6 +23,9 @@ final class Registry
 
     /** @var array<string, class-string> */
     private const PROVIDERS = [
+        'Quote'     => Groups\QuoteRules::class,
+        'OptAlign'  => Groups\OptAlignRules::class,
+        'Text'      => Groups\TextRules::class,
         'Symbol'    => Groups\SymbolRules::class,
         'Punctmark' => Groups\PunctmarkRules::class,
         'Number'    => Groups\NumberRules::class,

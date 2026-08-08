@@ -60,17 +60,28 @@ final class IrTest extends TestCase
 
     public function testPlaceholderClasses(): void
     {
-        $input = 'x<a href="/">y</a><p>z</p><br><em>w</em><pre>q</pre>';
+        $input = 'x<a href="/">y</a><p>z</p><br /><em>w</em><pre>q</pre><abbr title="a">b</abbr>';
         $stream = (new Lexer())->tokenize($input);
         $doc = (new IrBuilder(normalize: false))->build($stream);
         $text = $doc->text();
 
         self::assertMatchesRegularExpression('/\x{E000}a\d+\x{E001}/u', $text);
         self::assertMatchesRegularExpression('/\x{E000}\/a\d+\x{E001}/u', $text);
-        self::assertMatchesRegularExpression('/\x{E000}p\d+\x{E001}/u', $text);
-        self::assertMatchesRegularExpression('/\x{E000}br\d+\x{E001}/u', $text);
+        self::assertMatchesRegularExpression('/\x{E000}p\d+\x{E001}/u', $text, 'bare <p> is class p');
+        self::assertMatchesRegularExpression('/\x{E000}br\d+\x{E001}/u', $text, '<br /> exact form is class br');
         self::assertMatchesRegularExpression('/\x{E000}t\d+\x{E001}/u', $text, 'em collapses to generic t');
         self::assertMatchesRegularExpression('/\x{E000}prot\d+\x{E001}/u', $text, 'pre body is prot');
+        // Legacy %%___ marker keyed off the first character, so the whole
+        // a-family is marked — <abbr> included.
+        self::assertSame(2, preg_match_all('/\x{E000}a\d+\x{E001}/u', $text));
+    }
+
+    public function testBrAndAttributedPCollapseToGeneric(): void
+    {
+        $input = '<br><p class="x">y</p>';
+        $doc = (new IrBuilder(normalize: false))->build((new Lexer())->tokenize($input));
+        self::assertDoesNotMatchRegularExpression('/\x{E000}br\d+\x{E001}/u', $doc->text(), '<br> without space-slash is generic');
+        self::assertDoesNotMatchRegularExpression('/\x{E000}p\d+\x{E001}/u', $doc->text(), 'attributed <p> is generic');
     }
 
     public function testSetTextValidatesPlaceholderIntegrity(): void

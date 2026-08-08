@@ -81,6 +81,12 @@ final class EtcRules
     {
         $probe = $ctx->tag('###', 'span', ['class' => 'nowrap']);
         $arr = explode('###', $probe);
+        // When the probe is a bare <nobr> (nowrap layout off), match by
+        // placeholder class so literal <nobr> tags from the input are covered
+        // too — the legacy base64 string was identical for both.
+        if (preg_match('/^\x{E000}nobr[0-9]+\x{E001}$/u', $arr[0]) === 1) {
+            return ['\x{E000}nobr[0-9]+\x{E001}', '\x{E000}\/nobr[0-9]+\x{E001}'];
+        }
         return [preg_quote($arr[0], '/'), preg_quote($arr[1], '/')];
     }
 
