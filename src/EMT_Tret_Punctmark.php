@@ -26,7 +26,7 @@ class EMT_Tret_Punctmark extends EMT_Tret
 			], 
 		'punctuation_marks_base_limit' => [
 				'description'	=> 'Лишние запятые, двоеточия, точки с запятой',
-				'pattern' 		=> '/([\,\:\;]){2,}/',
+				'pattern' 		=> '/&(?:\#\d+|\#x[0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]*);(*SKIP)(*F)|([\,\:\;]){2,}/',
 				'replacement' 	=> '\1'
 			],
 		'hellip' => [

@@ -19,11 +19,14 @@ declare(strict_types=1);
  *
  * Quarantine inputs (tests/Golden/quarantine/) are pathological cases the
  * current engine handles badly (documented v2 bugs). Their output is recorded
- * as *.v2.out for reference but never asserted by GoldenTest.
+ * as *.v2.out for reference but never asserted by GoldenTest. That capture is
+ * pinned to the v2 engine — it is a v2 reference by definition, so the v3
+ * default must not silently rewrite it.
  */
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use EMT\EMT_Base;
 use EMT\EMTypograph;
 
 const GOLDEN_DIR = __DIR__ . '/../tests/Golden';
@@ -114,11 +117,17 @@ if ($profileFilter === null) {
 
 // ---- Quarantine: record, never assert --------------------------------------
 if ($profileFilter === null && $filter === null) {
-    foreach ($quarantine as $case => $input) {
-        $output = run_engine($input, []);
-        if ($update) {
-            write_fixture(GOLDEN_DIR . "/quarantine/$case.v2.out", $output);
+    $prevEngine = EMT_Base::$engine;
+    EMT_Base::$engine = 'v2';
+    try {
+        foreach ($quarantine as $case => $input) {
+            $output = run_engine($input, []);
+            if ($update) {
+                write_fixture(GOLDEN_DIR . "/quarantine/$case.v2.out", $output);
+            }
         }
+    } finally {
+        EMT_Base::$engine = $prevEngine;
     }
 }
 

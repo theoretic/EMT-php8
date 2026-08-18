@@ -27,7 +27,7 @@ final class PunctmarkRules
             ),
             new Rule(
                 id: 'punctuation_marks_base_limit',
-                patterns: ['/([\,\:\;]){2,}/'],
+                patterns: ['/&(?:\#\d+|\#x[0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]*);(*SKIP)(*F)|([\,\:\;]){2,}/'],
                 replacements: ['\1'],
             ),
             new Rule(

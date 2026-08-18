@@ -1,2 +1,9 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Golden corpus, fixtures and quarantine captures are byte-exact contracts:
+# GoldenTest compares them with assertSame, so EOL conversion on checkout
+# breaks every parity assertion on Windows. Never convert these.
+tests/Golden/corpus/** -text
+tests/Golden/fixtures/** -text
+tests/Golden/quarantine/** -text

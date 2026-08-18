@@ -230,6 +230,61 @@ class TypographTest extends TestCase
         $this->assertStringContainsString('Текст: тут', $this->typo('Текст::: тут'));
     }
 
+    /**
+     * punctuation_marks_base_limit had ; in its character class, so an entity
+     * terminator followed by , : ; read as a doubled mark and the ; was eaten:
+     * "&Oslash;, mm" shipped as "&Oslash, mm".
+     */
+    public function testEntitySemicolonSurvivesFollowingPunctuation(): void
+    {
+        // entities EMT_Lib does not normalize away (&copy; becomes (c) before punctmark runs)
+        $entities = ['&Oslash;', '&dagger;', '&Prime;', '&#216;', '&#x2126;'];
+
+        foreach ($entities as $entity) {
+            foreach ([',', ':', ';'] as $mark) {
+                $out = $this->typo("Размер {$entity}{$mark} дальше текст");
+                $this->assertStringContainsString($entity . $mark, $out);
+            }
+        }
+    }
+
+    /** entities the engine itself emits are just as vulnerable */
+    public function testGeneratedEntitySemicolonSurvivesFollowingComma(): void
+    {
+        $out = $this->typo('"Погода в Питере - это лотерея", сказал официант.');
+        $this->assertStringContainsString('&raquo;,', $out);
+        $this->assertStringNotContainsString('&raquo,', $out);
+    }
+
+    /** guarding entities must not stop genuine duplicate collapsing */
+    public function testDuplicateMarksAfterEntityStillCollapse(): void
+    {
+        $this->assertStringContainsString('&Oslash;, x', $this->typo('&Oslash;,, x'));
+        $this->assertStringContainsString('&Oslash;; x', $this->typo('&Oslash;;; x'));
+    }
+
+    /** the guard must be identical in both engines or shadow parity drifts */
+    public function testEntityGuardIsIdenticalInBothEngines(): void
+    {
+        $inputs = [
+            'Размер &Oslash;, мм',
+            'Знак &copy;: подпись',
+            'Код &#216;; далее',
+            '"Цитата", сказал он.',
+            'Текст,,, тут',
+        ];
+
+        foreach ($inputs as $input) {
+            \EMT\EMT_Base::$engine = 'v2';
+            $v2 = EMTypograph::fast_apply($input);
+            \EMT\EMT_Base::$engine = 'v3';
+            $v3 = EMTypograph::fast_apply($input);
+            \EMT\EMT_Base::$engine = null;
+
+            $this->assertSame($v2, $v3, "engines diverged on: $input");
+        }
+    }
+
     /** Abbr declared nobr_vtch_itd_itp twice; the ^-anchored variant was discarded */
     public function testAbbreviationAtStringStart(): void
     {
