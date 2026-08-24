@@ -7,3 +7,26 @@
 tests/Golden/corpus/** -text
 tests/Golden/fixtures/** -text
 tests/Golden/quarantine/** -text
+
+# Keep the distributed package to what a consumer actually runs: src/ is the only
+# psr-4 root and it depends on nothing outside itself.
+#
+# vendor/ is committed to this repo, so without the rule below every consuming
+# site received 5.3 MB of phpunit it has no use for -- a library's dependencies
+# are resolved by the consuming project, never shipped inside it. tests/ adds
+# another 3.1 MB of golden corpus on top.
+#
+# This governs both install paths: `git archive` builds the dist zip for a VCS
+# install, and a Composer path repository with symlink:false applies the same
+# rules while mirroring the working directory.
+
+/.gitattributes		export-ignore
+/.gitignore		export-ignore
+/.github		export-ignore
+/CLAUDE.md		export-ignore
+/bench			export-ignore
+/docs			export-ignore
+/tests			export-ignore
+/tools			export-ignore
+/vendor			export-ignore
+/phpunit.xml		export-ignore
