@@ -11,22 +11,29 @@ tests/Golden/quarantine/** -text
 # Keep the distributed package to what a consumer actually runs: src/ is the only
 # psr-4 root and it depends on nothing outside itself.
 #
-# vendor/ is committed to this repo, so without the rule below every consuming
-# site received 5.3 MB of phpunit it has no use for -- a library's dependencies
-# are resolved by the consuming project, never shipped inside it. tests/ adds
-# another 3.1 MB of golden corpus on top.
+# vendor/ used to be committed to this repo, so without the rule below every
+# consuming site received 5.3 MB of phpunit it has no use for -- a library's
+# dependencies are resolved by the consuming project, never shipped inside it.
+# tests/ adds another 3.1 MB of golden corpus on top. vendor/ is untracked now,
+# but the rule stays so a stray local vendor/ can never leak into a dist built
+# from the working tree. composer.lock goes too: Composer ignores a dependency's
+# lock file, so it would only ship a pinned dev-dependency graph.
 #
 # This governs both install paths: `git archive` builds the dist zip for a VCS
 # install, and a Composer path repository with symlink:false applies the same
 # rules while mirroring the working directory.
 
+/.ai			export-ignore
+/.cursorrules		export-ignore
 /.gitattributes		export-ignore
 /.gitignore		export-ignore
 /.github		export-ignore
 /CLAUDE.md		export-ignore
+/composer.lock		export-ignore
 /bench			export-ignore
 /docs			export-ignore
 /tests			export-ignore
 /tools			export-ignore
 /vendor			export-ignore
 /phpunit.xml		export-ignore
+/.phpunit.result.cache	export-ignore

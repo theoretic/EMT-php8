@@ -1,13 +1,12 @@
 .ai/
 .vscode/
+/vendor/
 .cursorrules
 *.md
 !README.md
 !CLAUDE.md
 !bench/BASELINE.md
 !docs/*.md
-vendor/**/*.md
-vendor/**/.github/
 *.log
 *.tmp
 *.bak
