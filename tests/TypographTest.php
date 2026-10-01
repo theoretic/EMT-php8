@@ -222,6 +222,44 @@ class TypographTest extends TestCase
         $this->assertStringNotContainsString('сайт. ру', $out);
     }
 
+    /** any word.word got split: "на sla.events" shipped as "на sla. events" */
+    public function testDottedNamesStayJoined(): void
+    {
+        $out = $this->typo('Места на sla.events и task.er, рисует three.js, а сервер на Node.JS и ASP.NET');
+        foreach (['sla.events', 'task.er', 'three.js', 'Node.JS', 'ASP.NET'] as $name) {
+            $this->assertStringContainsString($name, $out);
+        }
+    }
+
+    /** a Capitalized word after the dot is still a missed sentence break */
+    public function testSpaceStillInsertedBeforeCapitalizedWord(): void
+    {
+        $this->assertStringContainsString('конец. Начало', $this->typo('Это конец.Начало нового'));
+        $this->assertStringContainsString('конец. Начало', $this->typo('Это конец .Начало нового'));
+        $this->assertStringContainsString('г. Москва', $this->typo('Живёт в г.Москва давно'));
+        $this->assertStringContainsString('Washington. He', $this->typo('Went to Washington.He said'));
+    }
+
+    public function testAutospaceAfterDotIsIdenticalInBothEngines(): void
+    {
+        $inputs = [
+            'Места на sla.events и task.er, рисует three.js.',
+            'Это конец.Начало нового, живёт в г.Москва.',
+            'Mr.Smith went to Washington.He said hi.',
+            'Сайт odnaco.me, файл index.html, Node.JS и ASP.NET.',
+        ];
+
+        foreach ($inputs as $input) {
+            \EMT\EMT_Base::$engine = 'v2';
+            $v2 = EMTypograph::fast_apply($input);
+            \EMT\EMT_Base::$engine = 'v3';
+            $v3 = EMTypograph::fast_apply($input);
+            \EMT\EMT_Base::$engine = null;
+
+            $this->assertSame($v2, $v3, "engines diverged on: $input");
+        }
+    }
+
     /** the character class had a stray ] so semicolons were never collapsed */
     public function testRepeatedSemicolonsCollapse(): void
     {

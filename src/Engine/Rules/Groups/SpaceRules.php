@@ -57,9 +57,12 @@ final class SpaceRules
             ),
             new Rule(
                 id: 'autospace_after_dot',
+                // Only a Capitalized word after the dot is a missed sentence
+                // break; a lowercase or ALL-CAPS tail is a name (sla.events,
+                // three.js, Node.JS) and stays joined. Case-sensitive on purpose.
                 patterns: [
-                    '/(\040|\t|\&nbsp\;|^)([a-zа-яё0-9]+)(\040|\t|\&nbsp\;)?\.([а-яёa-z]{5,})($|[^a-zа-яё])/iu',
-                    '/(\040|\t|\&nbsp\;|^)([a-zа-яё0-9]+)\.([а-яёa-z]{1,4})($|[^a-zа-яё])/iu',
+                    '/(\040|\t|\&nbsp\;|^)([a-zA-Zа-яёА-ЯЁ0-9]+)(\040|\t|\&nbsp\;)?\.([А-ЯЁA-Z][а-яёa-z]{4,})($|[^a-zA-Zа-яёА-ЯЁ])/u',
+                    '/(\040|\t|\&nbsp\;|^)([a-zA-Zа-яёА-ЯЁ0-9]+)\.([А-ЯЁA-Z][а-яёa-z]{0,3})($|[^a-zA-Zа-яёА-ЯЁ])/u',
                 ],
                 replacements: [
                     static fn(array $m, RuleContext $ctx): string =>
